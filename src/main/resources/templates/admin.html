@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Admin Panel')}"></div>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('admin')}"></div>
+
+<div class="container mt-5">
+    <h2 class="section-title mt-4">Administračný Panel</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="content-card admin-sidebar p-3" style="min-height: 50vh;">
+                <ul class="nav nav-pills flex-column admin-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/overview}" href="admin-overview.html"><i class="fa fa-dashboard me-2"></i> Prehľad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/news}" href="admin-news.html"><i class="fa fa-newspaper-o me-2"></i> Novinky</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/users}" href="admin-users.html"><i class="fa fa-users me-2"></i> Užívatelia</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9 admin-tab-content">
+            <div id="admin-overview" class="admin-tab">
+                <h4 class="text-warning">Stav Systému (Prehľad)</h4>
+                <div class="content-card p-3">
+                    <p><i class="fa fa-check-circle text-success me-2"></i> Server Core je stabilný. Online: 78/150.</p>
+                    <p>Toto je základný prehľad. Pre publikovanie noviniek použite bočné menu.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div> <div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

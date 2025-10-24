@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="recaptcha_v2">
+
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
+
+    <div class="g-recaptcha"
+         th:attr="data-sitekey=${@recaptchaProperties.getSiteKey()}">
+    </div>
+
+</div>
+
+</body>
+</html>
