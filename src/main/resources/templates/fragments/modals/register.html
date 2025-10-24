@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="registerModal" class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content content-card">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerModalLabel" style="color: #ffbf00;">REGISTRÁCIA</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form th:action="@{/register}" th:object="${userRegistrationDto}" method="POST" style="color:white">
+                    <div class="mb-3"><label class="form-label">Užívateľské meno</label><input type="text" class="form-control" name="minecraftNick" id="minecraftNick" th:field="*{minecraftNick}" required /></div>
+                    <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" name="email" id="email" th:field="*{email}" required /></div>
+                    <div class="mb-3"><label class="form-label">Heslo</label><input type="password" class="form-control" name="password" id="password" th:field="*{password}" required /></div>
+                    <div class="mb-3"><label class="form-label">Potvrdiť Heslo</label><input type="password" class="form-control" name="confirm_password"  id="confirm_password" th:field="*{confirmPassword}" required /></div>
+
+                    <div th:replace="~{fragments/recaptcha :: recaptcha_v2}"></div>
+                    <button type="submit" class="btn btn-minecraft btn-lg w-100 my-3">Registrovať sa <i class="fa fa-check-circle"></i></button>
+                </form>
+                <div class="text-center mt-3" style="color:white">
+                    Už máte účet? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Prihláste sa</a>
+                </div>
+                <form th:action="@{/resend_verification_code}" th:object="${userVerificationCodeDto}" method="POST" style="color:white">
+                    <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" name="email"  th:field="*{email}" required /></div>
+                    <button type="submit" class="btn btn-minecraft btn-lg w-100 my-3">Odoslať znovu aktivačný kód!</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="footer">
+
+    <footer class="text-center mt-5">
+        <p><i class="fa fa-code"></i> Kódované pre NexusChunk | &copy; 2025</p>
+    </footer>
+
+    <div th:replace="~{fragments/modals/login :: loginModal}"></div>
+    <div th:replace="~{fragments/modals/register :: registerModal}"></div>
+    <div th:replace="~{fragments/modals/forgot-password :: forgotModal}"></div>
+    <div th:replace="~{fragments/toast :: toast}"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const modalToOpen = urlParams.get('modal');
+            if (modalToOpen === 'login') {
+                const loginModalEl = document.getElementById('loginModal');
+                if (loginModalEl) {
+                    const loginModal = new bootstrap.Modal(loginModalEl);
+                    loginModal.show();
+                    if (urlParams.has('registered')) {
+                         console.log("Registrácia úspešná. Prosím, prihláste sa.");
+                    }
+                }
+            }
+        });
+    </script>
+</div> </body>
+</html>

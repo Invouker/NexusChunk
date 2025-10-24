@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="loginModal" class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content content-card">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel" style="color: #ffbf00;">PRIHLÁSENIE</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form th:action="@{/login}" th:object="${userLoginDto}" method="POST" style="color:white">
+                    <div class="mb-3"><label class="form-label">Užívateľské meno</label><input type="text" class="form-control" name="username" id="username" th:field="*{username}" required></div>
+                    <div class="mb-3"><label class="form-label">Heslo</label><input type="password" class="form-control" name="password"  id="password" th:field="*{password}" required></div>
+
+                    <button type="submit" class="btn btn-minecraft btn-lg w-100 my-3">Prihlásiť sa <i class="fa fa-sign-in"></i></button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#forgotModal" data-bs-dismiss="modal">Zabudnuté heslo</a> | <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Registrácia</a>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal"><a href="/oauth2/authorization/google">Prihlásiť sa cez Google</a></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
