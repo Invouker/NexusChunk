@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.auth.controller;
+package eu.invouk.nexuschunk.auth.listeners;
 
 import eu.invouk.nexuschunk.auth.services.LoginAttemptService;
 import org.springframework.context.event.EventListener;

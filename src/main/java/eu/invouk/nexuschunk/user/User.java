@@ -1,5 +1,6 @@
 package eu.invouk.nexuschunk.user;
 
+import eu.invouk.nexuschunk.user.permissions.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 

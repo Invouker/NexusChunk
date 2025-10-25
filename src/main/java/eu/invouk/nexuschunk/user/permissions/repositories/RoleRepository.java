@@ -1,6 +1,6 @@
 package eu.invouk.nexuschunk.user.permissions.repositories;
 
-import eu.invouk.nexuschunk.user.Role;
+import eu.invouk.nexuschunk.user.permissions.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

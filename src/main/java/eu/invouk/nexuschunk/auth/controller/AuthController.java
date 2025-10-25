@@ -3,7 +3,7 @@ package eu.invouk.nexuschunk.auth.controller;
 import eu.invouk.nexuschunk.auth.model.EmailDto;
 import eu.invouk.nexuschunk.auth.model.RecaptchaProperties;
 import eu.invouk.nexuschunk.auth.model.UserRegistrationDto;
-import eu.invouk.nexuschunk.user.Role;
+import eu.invouk.nexuschunk.user.permissions.Role;
 import eu.invouk.nexuschunk.user.User;
 import eu.invouk.nexuschunk.user.VerificationToken;
 import eu.invouk.nexuschunk.user.permissions.repositories.RoleRepository;
