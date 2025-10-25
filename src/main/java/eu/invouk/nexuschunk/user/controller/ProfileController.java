@@ -1,5 +1,6 @@
 package eu.invouk.nexuschunk.user.controller;
 
+import eu.invouk.nexuschunk.services.AvatarService;
 import eu.invouk.nexuschunk.user.User;
 import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +20,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 public class ProfileController {
 
     private final UserRepository userRepository;
+    private final AvatarService avatarService;
 
-    public ProfileController(UserRepository userRepository) {
+    public ProfileController(UserRepository userRepository, AvatarService avatarService) {
         this.userRepository = userRepository;
+        this.avatarService = avatarService;
     }
 
     @GetMapping({"/profile/{minecraftNick}", "/profile"})
@@ -87,6 +90,7 @@ public class ProfileController {
 
         model.addAttribute("targetUser", targetUser);
         model.addAttribute("isOwner", isOwner);
+        model.addAttribute("avatar", avatarService.getAvatar(targetUser, 100));
 
         return "profile";
     }
