@@ -54,4 +54,10 @@ public class User {
     @Column
     private LocalDateTime registrationDate;
 
+    @Column
+    private LocalDateTime lastLogin;
+
+    @Column
+    private LocalDateTime lastActivity;
+
 }

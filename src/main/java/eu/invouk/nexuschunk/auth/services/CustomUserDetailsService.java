@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         if(loginAttemptService.isBlocked(username)) {
             throw new LockedException("Účet je zablokovaný z príliš vela neúspešných pokusov o prihlásenie.");
         }
@@ -40,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                                 () -> new UsernameNotFoundException("Uživateľ (" + username +") s podobným nicknamom sa nenašiel!")
                         ));
 
-        //loginAttemptService.loginSuccess(username);
+        user.setLastLogin(LocalDateTime.now());
 
         Set<GrantedAuthority> authorities = new HashSet<>();
 

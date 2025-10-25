@@ -4,6 +4,7 @@ import eu.invouk.nexuschunk.services.AvatarService;
 import eu.invouk.nexuschunk.user.User;
 import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -88,10 +91,18 @@ public class ProfileController {
         log.debug("Prihlásený vlastník: {}", authenticatedUser != null ? authenticatedUser.getMinecraftNick() : "NIE");
         log.debug("Je vlastník: {}", isOwner);
 
+        model.addAttribute("isOnline", isOnline(targetUser));
         model.addAttribute("targetUser", targetUser);
-        model.addAttribute("isOwner", isOwner);
         model.addAttribute("avatar", avatarService.getAvatar(targetUser, 100));
 
         return "profile";
+    }
+
+    public boolean isOnline(@NotNull User user) {
+        if(user.getLastActivity() == null)
+            return false;
+
+        Duration duration = Duration.between(user.getLastActivity(), LocalDateTime.now());
+        return duration.toMinutes() < 5;
     }
 }
