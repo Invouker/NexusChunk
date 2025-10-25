@@ -87,12 +87,15 @@ public class SecurityConfiguration {
             }
 
             switch (cause) {
-                case LockedException lockedException -> response.sendRedirect("/?modal=login&error=locked_account");
-                case DisabledException disabledException ->
+                case LockedException _ -> response.sendRedirect("/?modal=login&error=locked_account");
+                case DisabledException _ ->
                         response.sendRedirect("/?modal=login&error=disabled_account");
-                case BadCredentialsException badCredentialsException ->
+                case BadCredentialsException _ ->
                         response.sendRedirect("/?modal=login&error=bad_credentials");
-                case null, default -> response.sendRedirect("/?modal=login&error=" + authException.toString());
+                case null, default -> {
+                    assert authException != null;
+                    response.sendRedirect("/?modal=login&error=" + authException);
+                }
             }
         };
     }

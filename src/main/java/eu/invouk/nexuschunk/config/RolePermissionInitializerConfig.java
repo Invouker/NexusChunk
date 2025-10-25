@@ -36,7 +36,7 @@ public class RolePermissionInitializerConfig {
             // 🔥 Vložíme novú transakčnú službu
             RolePermissionInitializerService initializerService
     ) {
-        return args -> {
+        return _ -> {
             // 1. Inicializácia Povolení (táto časť nepotrebuje transakciu)
             Map<String, Permission> createdPermissions = initializePermissions(permissionRepository);
 
