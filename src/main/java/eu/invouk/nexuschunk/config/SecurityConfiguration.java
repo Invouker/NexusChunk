@@ -40,11 +40,12 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/**").hasAuthority(EPermission.ADMIN_VIEW.getPermission())
 
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
-                        .requestMatchers("/profile", "/dashboard").authenticated()
+                        .requestMatchers("/dashboard").authenticated()
 
                         // Verejné URL: Prístupné pre kohokoľvek (aj neautentifikovaných)
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll() // static files
                         .requestMatchers("/resend_verification_code", "/verify", "/forgot-password", "/login", "/logout").permitAll()  // verification token
+                        .requestMatchers("/profile/**").permitAll()
 
                         // Akékoľvek iné URL: Musia byť autentifikované (prihlásené)
                         .anyRequest().authenticated()
