@@ -16,7 +16,8 @@ public class LoginAttemptService {
 
     private static final Logger log = LoggerFactory.getLogger(LoginAttemptService.class);
 
-    private final int MAX_ATTEMPTS = 2; // DEBUG ONLY
+    @SuppressWarnings("FieldCanBeLocal")
+    private final int MAX_ATTEMPTS = 4; // DEBUG ONLY
     private final LoadingCache<String, AtomicInteger> attemptsCache;
 
     public LoginAttemptService() {
