@@ -1,9 +1,9 @@
-package eu.invouk.nexuschunk.services;
+package eu.invouk.nexuschunk.auth.services;
 
-import eu.invouk.nexuschunk.model.user.Role;
-import eu.invouk.nexuschunk.model.user.repositories.RoleRepository;
-import eu.invouk.nexuschunk.permissions.EPermission;
-import eu.invouk.nexuschunk.permissions.Permission;
+import eu.invouk.nexuschunk.user.Role;
+import eu.invouk.nexuschunk.user.permissions.repositories.RoleRepository;
+import eu.invouk.nexuschunk.user.EPermission;
+import eu.invouk.nexuschunk.user.Permission;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

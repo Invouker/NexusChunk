@@ -1,7 +1,7 @@
-package eu.invouk.nexuschunk.services;
+package eu.invouk.nexuschunk.auth.services;
 
-import eu.invouk.nexuschunk.model.user.User;
-import eu.invouk.nexuschunk.model.user.repositories.UserRepository;
+import eu.invouk.nexuschunk.user.User;
+import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

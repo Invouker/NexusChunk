@@ -1,5 +1,8 @@
-package eu.invouk.nexuschunk.controller.auth;
+package eu.invouk.nexuschunk.auth.controller;
 
+import eu.invouk.nexuschunk.auth.model.EmailDto;
+import eu.invouk.nexuschunk.auth.model.UserLoginDto;
+import eu.invouk.nexuschunk.auth.model.UserRegistrationDto;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 

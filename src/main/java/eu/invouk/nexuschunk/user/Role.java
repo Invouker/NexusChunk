@@ -1,6 +1,5 @@
-package eu.invouk.nexuschunk.model.user;
+package eu.invouk.nexuschunk.user;
 
-import eu.invouk.nexuschunk.permissions.Permission;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

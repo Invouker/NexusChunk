@@ -1,9 +1,9 @@
-package eu.invouk.nexuschunk.services;
+package eu.invouk.nexuschunk.auth.services;
 
-import eu.invouk.nexuschunk.model.user.Role;
-import eu.invouk.nexuschunk.model.user.User;
-import eu.invouk.nexuschunk.model.user.repositories.RoleRepository;
-import eu.invouk.nexuschunk.model.user.repositories.UserRepository;
+import eu.invouk.nexuschunk.user.Role;
+import eu.invouk.nexuschunk.user.User;
+import eu.invouk.nexuschunk.user.permissions.repositories.RoleRepository;
+import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;

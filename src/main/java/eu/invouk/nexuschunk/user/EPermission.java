@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.permissions;
+package eu.invouk.nexuschunk.user;
 
 import lombok.Getter;
 

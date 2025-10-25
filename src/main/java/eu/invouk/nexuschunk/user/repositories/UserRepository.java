@@ -1,6 +1,6 @@
-package eu.invouk.nexuschunk.model.user.repositories;
+package eu.invouk.nexuschunk.user.repositories;
 
-import eu.invouk.nexuschunk.model.user.User;
+import eu.invouk.nexuschunk.user.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

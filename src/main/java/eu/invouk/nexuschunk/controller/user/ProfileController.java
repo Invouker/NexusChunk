@@ -1,12 +1,11 @@
 package eu.invouk.nexuschunk.controller.user;
 
-import eu.invouk.nexuschunk.model.user.User;
-import eu.invouk.nexuschunk.model.user.repositories.UserRepository;
+import eu.invouk.nexuschunk.user.User;
+import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;

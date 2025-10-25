@@ -1,7 +1,7 @@
-package eu.invouk.nexuschunk.model.user.repositories;
+package eu.invouk.nexuschunk.user.repositories;
 
-import eu.invouk.nexuschunk.model.user.User;
-import eu.invouk.nexuschunk.model.user.VerificationToken;
+import eu.invouk.nexuschunk.user.User;
+import eu.invouk.nexuschunk.user.VerificationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

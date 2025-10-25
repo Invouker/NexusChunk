@@ -1,10 +1,9 @@
 package eu.invouk.nexuschunk.config;
 
-import eu.invouk.nexuschunk.model.user.repositories.RoleRepository;
-import eu.invouk.nexuschunk.permissions.EPermission;
-import eu.invouk.nexuschunk.permissions.Permission;
-import eu.invouk.nexuschunk.permissions.PermissionRepository;
-import eu.invouk.nexuschunk.services.RolePermissionInitializerService; // 🔥 Nový import
+import eu.invouk.nexuschunk.user.EPermission;
+import eu.invouk.nexuschunk.user.Permission;
+import eu.invouk.nexuschunk.user.permissions.repositories.PermissionRepository;
+import eu.invouk.nexuschunk.auth.services.RolePermissionInitializerService; // 🔥 Nový import
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

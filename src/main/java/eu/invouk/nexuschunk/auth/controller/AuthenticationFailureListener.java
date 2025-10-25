@@ -1,6 +1,6 @@
-package eu.invouk.nexuschunk.controller.auth;
+package eu.invouk.nexuschunk.auth.controller;
 
-import eu.invouk.nexuschunk.services.LoginAttemptService;
+import eu.invouk.nexuschunk.auth.services.LoginAttemptService;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.stereotype.Component;

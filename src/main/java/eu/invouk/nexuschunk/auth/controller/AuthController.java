@@ -1,11 +1,14 @@
-package eu.invouk.nexuschunk.controller.auth;
+package eu.invouk.nexuschunk.auth.controller;
 
-import eu.invouk.nexuschunk.model.user.Role;
-import eu.invouk.nexuschunk.model.user.User;
-import eu.invouk.nexuschunk.model.user.VerificationToken;
-import eu.invouk.nexuschunk.model.user.repositories.RoleRepository;
-import eu.invouk.nexuschunk.model.user.repositories.UserRepository;
-import eu.invouk.nexuschunk.model.user.repositories.VerificationTokenRepository;
+import eu.invouk.nexuschunk.auth.model.EmailDto;
+import eu.invouk.nexuschunk.auth.model.RecaptchaProperties;
+import eu.invouk.nexuschunk.auth.model.UserRegistrationDto;
+import eu.invouk.nexuschunk.user.Role;
+import eu.invouk.nexuschunk.user.User;
+import eu.invouk.nexuschunk.user.VerificationToken;
+import eu.invouk.nexuschunk.user.permissions.repositories.RoleRepository;
+import eu.invouk.nexuschunk.user.repositories.UserRepository;
+import eu.invouk.nexuschunk.user.repositories.VerificationTokenRepository;
 import eu.invouk.nexuschunk.services.EmailService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

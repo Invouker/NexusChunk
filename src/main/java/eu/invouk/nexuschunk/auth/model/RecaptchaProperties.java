@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.controller.auth;
+package eu.invouk.nexuschunk.auth.model;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

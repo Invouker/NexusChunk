@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.config;
+package eu.invouk.nexuschunk.auth.controller;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
