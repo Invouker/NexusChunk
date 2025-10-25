@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'disabled_account':
                 errorMessage = 'Chyba prihlásenia: Váš účet nie je aktivovaný alebo je deaktivovaný. Skontrolujte email.';
                 break;
+            case 'bad_credentials':
+                errorMessage = 'Chyba prihlásenia: Zlé prihlasovacie údaje!';
+                break;
             case 'true':
             case 'generic':
                 errorMessage = 'Prihlásenie zlyhalo. Skontrolujte prosím svoje prihlasovacie údaje.';

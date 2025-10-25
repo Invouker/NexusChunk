@@ -41,7 +41,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                                 () -> new UsernameNotFoundException("Uživateľ (" + username +") s podobným nicknamom sa nenašiel!")
                         ));
 
-        loginAttemptService.loginSuccess(username);
+        //loginAttemptService.loginSuccess(username);
 
         Set<GrantedAuthority> authorities = new HashSet<>();
 

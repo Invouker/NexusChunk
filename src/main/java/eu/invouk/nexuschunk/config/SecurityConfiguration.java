@@ -7,7 +7,9 @@ import eu.invouk.nexuschunk.auth.services.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -77,10 +79,18 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, authException) -> {
-            if(authException instanceof LockedException) {
+
+            Throwable cause = authException;
+            if (authException instanceof InternalAuthenticationServiceException && authException.getCause() != null) {
+                cause = authException.getCause();
+            }
+
+            if(cause instanceof LockedException) {
                 response.sendRedirect("/?modal=login&error=locked_account");
-            }else if(authException instanceof DisabledException) {
+            }else if(cause instanceof DisabledException) {
                 response.sendRedirect("/?modal=login&error=disabled_account");
+            }else if(cause instanceof BadCredentialsException) {
+                response.sendRedirect("/?modal=login&error=bad_credentials");
             } else {
                 response.sendRedirect("/?modal=login&error=" + authException.toString());
             }
