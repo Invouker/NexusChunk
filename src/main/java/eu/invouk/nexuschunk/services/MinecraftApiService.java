@@ -2,6 +2,7 @@ package eu.invouk.nexuschunk.services;
 
 import eu.invouk.nexuschunk.user.dto.AshconUserDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -16,7 +17,6 @@ public class MinecraftApiService {
     private static final String ASHCON_API_URL = "https://api.ashcon.app/mojang/v2/user/";
 
     public MinecraftApiService(WebClient.Builder webClientBuilder) {
-        // Inicializácia WebClient s bázovou URL
         this.webClient = webClientBuilder.baseUrl(ASHCON_API_URL).build();
     }
 
@@ -27,6 +27,7 @@ public class MinecraftApiService {
      * @param username Minecraft prezývka.
      * @return Optional obsahujúci UUID, ak bol nájdený, inak prázdny Optional.
      */
+    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()")
     public Optional<String> getUuidByUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             return Optional.empty();

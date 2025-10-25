@@ -1,6 +1,7 @@
 package eu.invouk.nexuschunk.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -31,6 +32,7 @@ public class MinecraftAvatarService {
      * @param username Minecraft prezývka.
      * @return Optional obsahujúci base64 encoded obrázok v png.
      */
+    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()")
     public Optional<String> getBase64Avatar(String username) {
         Optional<byte[]> bytesAvatar = getAvatarImageBytes(username);
 
@@ -48,6 +50,7 @@ public class MinecraftAvatarService {
      * @param username Minecraft prezývka.
      * @return Optional obsahujúci pole bajtov obrázka (PNG), ak bol nájdený, inak prázdny Optional.
      */
+    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()")
     public Optional<byte[]> getAvatarImageBytes(String username) {
         // 1. Získanie UUID pomocou existujúcej služby
         Optional<String> uuidOptional = minecraftApiService.getUuidByUsername(username);
