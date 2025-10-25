@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.controller.user;
+package eu.invouk.nexuschunk.user.controller;
 
 import eu.invouk.nexuschunk.user.User;
 import eu.invouk.nexuschunk.user.repositories.UserRepository;
