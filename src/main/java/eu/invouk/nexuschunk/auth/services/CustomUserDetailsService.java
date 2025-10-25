@@ -61,9 +61,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getEmail(), // Prihlasovacie meno (email)
                 user.getPassword(), // Heslo (už zašifrované!)
                 user.isEnabled(),true,true,true,
-                user.getRoles().stream()
-                        .map(role -> new SimpleGrantedAuthority(role.getName()))
-                        .collect(Collectors.toList())
+                authorities
         );
     }
 

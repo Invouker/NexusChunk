@@ -50,13 +50,10 @@ public class MinecraftApiService {
                 return Optional.of(userDto.getUuid());
             }
 
-        } catch (WebClientResponseException.NotFound ex) {
+        } catch (WebClientResponseException.NotFound | WebClientResponseException.BadRequest ex) {
             // Ak Ashcon vráti 404 (používateľ nebol nájdený)
             log.warn("Hráč s prezývkou '{}' nebol nájdený.", username); }
-        catch (WebClientResponseException.BadRequest ex) {
-                // Ak Ashcon vráti 404 (používateľ nebol nájdený)
-            log.warn("Hráč s prezývkou '{}' nebol nájdený.", username);
-        } catch (Exception ex) {
+        catch (Exception ex) {
             // Ak nastane iná chyba (napr. problém so sieťou, timeout)
             log.error("Chyba pri získavaní UUID pre prezývku '{}'.", username, ex);
         }

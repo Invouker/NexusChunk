@@ -27,9 +27,9 @@ publishing {
             from components.java
 
             // Nastavte ID artefaktu, ktoré sa bude používať
-            groupId = 'sk.invouk'       // Zmeňte na svoje Group ID
-            artifactId = 'nexuschunk' // Zmeňte na svoje Artifact ID
-            version = '0.0.1-SNAPSHOT' // Zmeňte na vašu verziu (alebo použite project.version)
+            groupId = 'sk.invouk' as Publication       // Zmeňte na svoje Group ID
+            artifactId = 'nexuschunk' as Publication // Zmeňte na svoje Artifact ID
+            version = '0.0.1-SNAPSHOT' as Publication // Zmeňte na vašu verziu (alebo použite project.version)
         }
     }
     repositories {

@@ -15,15 +15,14 @@ import java.util.*;
 @Order(100)
 public class RolePermissionInitializerConfig {
 
+    // Žiadne špeciálne permisie pre bežného užívateľa
     // Mapa zostáva
     private static final Map<String, List<EPermission>> ROLE_PERMISSIONS = Map.of(
-            "ROLE_USER", Arrays.asList(
-                    // Žiadne špeciálne permisie pre bežného užívateľa
-            ),
-            "ROLE_MODERATOR", Arrays.asList(
+            "ROLE_USER", List.of(),
+            "ROLE_MODERATOR", List.of(
                     EPermission.ADMIN_VIEW
             ),
-            "ROLE_ADMIN", Arrays.asList(
+            "ROLE_ADMIN", List.of(
                     EPermission.ADMIN_VIEW,
                     EPermission.USER_MANAGEMENT_WRITE,
                     EPermission.SERVER_CONTROL

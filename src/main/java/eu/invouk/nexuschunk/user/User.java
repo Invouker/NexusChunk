@@ -48,7 +48,7 @@ public class User {
     @Column(name = "oauth_provider")
     private String oauthProvider;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private VerificationToken verificationToken;
 
     @Column

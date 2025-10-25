@@ -36,31 +36,21 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
-
-        log.info("loadUser");
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
 
-        log.info("loadUser 02");
         String email = oAuth2User.getAttributes().get("email").toString();
         String name = oAuth2User.getAttributes().get("name").toString();
 
-        log.info("loadUser 03");
         Optional<User> optionalUser = userRepository.findByEmail(email);
         User user;
 
         user = optionalUser.orElseGet(() -> registerNewUser(email, name));
 
-        log.info("loadUser 04");
-        Set<Role> roles = user.getRoles();
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(
                 new SimpleGrantedAuthority(user.getRoles().iterator().next().getName())
         );
 
-        // Vrátenie OAuth2User objektu, ktorý Spring Security uloží do SecurityContextu
-        // Používame našu entitu (user) ako 'Principal'
-
-        log.info("loadUser 05 {}", user);
         return new DefaultOAuth2User(
                 authorities,
                 oAuth2User.getAttributes(),

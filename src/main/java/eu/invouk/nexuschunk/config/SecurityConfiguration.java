@@ -79,21 +79,20 @@ public class SecurityConfiguration {
 
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
-        return (request, response, authException) -> {
+        return (_, response, authException) -> {
 
             Throwable cause = authException;
             if (authException instanceof InternalAuthenticationServiceException && authException.getCause() != null) {
                 cause = authException.getCause();
             }
 
-            if(cause instanceof LockedException) {
-                response.sendRedirect("/?modal=login&error=locked_account");
-            }else if(cause instanceof DisabledException) {
-                response.sendRedirect("/?modal=login&error=disabled_account");
-            }else if(cause instanceof BadCredentialsException) {
-                response.sendRedirect("/?modal=login&error=bad_credentials");
-            } else {
-                response.sendRedirect("/?modal=login&error=" + authException.toString());
+            switch (cause) {
+                case LockedException lockedException -> response.sendRedirect("/?modal=login&error=locked_account");
+                case DisabledException disabledException ->
+                        response.sendRedirect("/?modal=login&error=disabled_account");
+                case BadCredentialsException badCredentialsException ->
+                        response.sendRedirect("/?modal=login&error=bad_credentials");
+                case null, default -> response.sendRedirect("/?modal=login&error=" + authException.toString());
             }
         };
     }

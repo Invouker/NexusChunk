@@ -75,8 +75,9 @@ public class MinecraftAvatarService {
                     .bodyToMono(byte[].class) // Očakáva binárny obsah (pole bajtov)
                     .block(); // Blokuje pre synchrónne vrátenie výsledku
 
+            assert imageBytes != null;
             log.info("Úspešne stiahnutý avatar pre {}. ({} bajtov)", username, imageBytes.length);
-            return Optional.ofNullable(imageBytes);
+            return Optional.of(imageBytes);
 
         } catch (WebClientResponseException ex) {
             // Ak Crafatar vráti 4xx alebo 5xx, avšak Crafatar pre neznáme UUID zvyčajne vráti default obrázok,

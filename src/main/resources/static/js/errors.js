@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const errorCode = urlParams.get('error');
 
     if (errorCode) {
-        let errorMessage = '';
+        let errorMessage;
         let toastType = 'danger'; // Predvolený typ pre chyby
 
         switch (errorCode) {

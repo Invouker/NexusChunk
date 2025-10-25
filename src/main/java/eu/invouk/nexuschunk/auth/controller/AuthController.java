@@ -202,7 +202,7 @@ public class AuthController {
         return token;
     }
 
-    private String resetPasswordForUser(User user) {
+    private void resetPasswordForUser(User user) {
         String tokenizedPassword = getToken();
         String passwordShorted = tokenizedPassword.substring(0, 10); // max 10 char password
 
@@ -217,7 +217,6 @@ public class AuthController {
                         "Prosím ihneď si ho zmeň!"
         );
 
-        return passwordShorted;
     }
 
     private String getToken() {

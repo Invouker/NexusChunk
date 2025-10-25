@@ -58,11 +58,10 @@ public class GravatarService {
         }
 
         // Konštrukcia URL s parametrami
-        String url = GRAVATAR_BASE_URL + hash +
+
+        return GRAVATAR_BASE_URL + hash +
                 "?s=" + size +
                 "&d=" + defaultType;
-
-        return url;
     }
 
     /**
