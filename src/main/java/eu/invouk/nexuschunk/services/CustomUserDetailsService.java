@@ -3,12 +3,16 @@ package eu.invouk.nexuschunk.services;
 import eu.invouk.nexuschunk.model.user.User;
 import eu.invouk.nexuschunk.model.user.repositories.UserRepository;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         if(loginAttemptService.isBlocked(username)) {
@@ -38,9 +43,20 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         loginAttemptService.loginSuccess(username);
 
-        /*if(!user.isEnabled())
-            throw new LockedException("User is disabled.");
-*/
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        // 1. Pridanie Rolí (ROLE_USER, ROLE_ADMIN, atď.)
+        user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .forEach(authorities::add);
+
+        // 2. Pridanie Povolení (ADMIN_VIEW, NEWS_CREATE, atď.)
+        // Predpokladá, že getPermissions() už nikdy nevráti null (pozri predchádzajúci fix)
+        user.getRoles().stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .forEach(authorities::add);
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), // Prihlasovacie meno (email)
                 user.getPassword(), // Heslo (už zašifrované!)
@@ -50,4 +66,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                         .collect(Collectors.toList())
         );
     }
+
+
 }

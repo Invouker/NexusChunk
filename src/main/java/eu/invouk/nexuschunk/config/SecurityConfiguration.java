@@ -1,6 +1,6 @@
 package eu.invouk.nexuschunk.config;
 
-import eu.invouk.nexuschunk.permissions.PERMISSION;
+import eu.invouk.nexuschunk.permissions.EPermission;
 import eu.invouk.nexuschunk.services.CustomOAuth2UserService;
 import eu.invouk.nexuschunk.services.CustomOIDCUserService;
 import eu.invouk.nexuschunk.services.CustomUserDetailsService;
@@ -11,7 +11,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -36,7 +35,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
-                        .requestMatchers("/admin/**").hasAuthority(PERMISSION.ADMIN_VIEW.getPermission())
+                        .requestMatchers("/admin/**").hasAuthority(EPermission.ADMIN_VIEW.getPermission())
 
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         .requestMatchers("/profile", "/dashboard").authenticated()
