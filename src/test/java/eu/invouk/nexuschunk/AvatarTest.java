@@ -4,7 +4,7 @@ import eu.invouk.nexuschunk.services.AvatarService;
 import eu.invouk.nexuschunk.services.GravatarService;
 import eu.invouk.nexuschunk.services.MinecraftApiService;
 import eu.invouk.nexuschunk.services.MinecraftAvatarService;
-import eu.invouk.nexuschunk.user.User; // Dôležité: Import triedy User
+import eu.invouk.nexuschunk.user.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

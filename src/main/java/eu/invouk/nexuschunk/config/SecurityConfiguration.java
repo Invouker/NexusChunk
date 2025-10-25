@@ -1,9 +1,9 @@
 package eu.invouk.nexuschunk.config;
 
-import eu.invouk.nexuschunk.user.permissions.EPermission;
 import eu.invouk.nexuschunk.auth.services.CustomOAuth2UserService;
 import eu.invouk.nexuschunk.auth.services.CustomOIDCUserService;
 import eu.invouk.nexuschunk.auth.services.CustomUserDetailsService;
+import eu.invouk.nexuschunk.user.permissions.EPermission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

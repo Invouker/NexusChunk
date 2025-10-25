@@ -1,7 +1,7 @@
 package eu.invouk.nexuschunk.auth.services;
 
-import eu.invouk.nexuschunk.user.permissions.Role;
 import eu.invouk.nexuschunk.user.User;
+import eu.invouk.nexuschunk.user.permissions.Role;
 import eu.invouk.nexuschunk.user.permissions.repositories.RoleRepository;
 import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
