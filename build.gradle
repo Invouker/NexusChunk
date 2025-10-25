@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.6'
 	id 'io.spring.dependency-management' version '1.1.7'
+    id 'maven-publish'
 }
 
 group = 'eu.invouk'
@@ -17,6 +18,30 @@ java {
 bootJar {
     // NAHRADTE TENTO PRIKLAD SKUTOCNOU CESTOU (napr. eu.invouk.nexuschunk.NexusChunkApplication)
     mainClass = 'eu.invouk.nexuschunk.NexuschunkApplication'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            // Ak je to štandardný Spring Boot projekt, mal by to stačiť
+            from components.java
+
+            // Nastavte ID artefaktu, ktoré sa bude používať
+            groupId = 'sk.invouk'       // Zmeňte na svoje Group ID
+            artifactId = 'nexuschunk' // Zmeňte na svoje Artifact ID
+            version = '0.0.1-SNAPSHOT' // Zmeňte na vašu verziu (alebo použite project.version)
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/Invouk/NexusChunk" // Změňte ${owner} a ${repository}
+            credentials {
+                username = System.getenv("USERNAME") // Zde se to napojí na env var z workflow
+                password = System.getenv("TOKEN")    // Zde se to napojí na env var z workflow
+            }
+        }
+    }
 }
 
 configurations {
