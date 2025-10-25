@@ -1,6 +1,6 @@
 package eu.invouk.nexuschunk.config;
 
-import eu.invouk.nexuschunk.auth.services.RolePermissionInitializerService;
+import eu.invouk.nexuschunk.user.permissions.RolePermissionInitializerService;
 import eu.invouk.nexuschunk.user.permissions.EPermission;
 import eu.invouk.nexuschunk.user.permissions.Permission;
 import eu.invouk.nexuschunk.user.permissions.repositories.PermissionRepository;
@@ -18,11 +18,11 @@ public class RolePermissionInitializerConfig {
     // Žiadne špeciálne permisie pre bežného užívateľa
     // Mapa zostáva
     private static final Map<String, List<EPermission>> ROLE_PERMISSIONS = Map.of(
-            "ROLE_USER", List.of(),
-            "ROLE_MODERATOR", List.of(
+            "USER", List.of(),
+            "MODERATOR", List.of(
                     EPermission.ADMIN_VIEW
             ),
-            "ROLE_ADMIN", List.of(
+            "ADMIN", List.of(
                     EPermission.ADMIN_VIEW,
                     EPermission.USER_MANAGEMENT_WRITE,
                     EPermission.SERVER_CONTROL
