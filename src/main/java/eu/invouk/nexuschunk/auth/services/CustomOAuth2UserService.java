@@ -54,7 +54,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return new DefaultOAuth2User(
                 authorities,
                 oAuth2User.getAttributes(),
-                "email" // Kľúč, ktorý slúži ako 'username' (unikatne ID v rámci providera)
+                "email" // Kľúč, ktorý slúži, ako 'username' (unikátne ID v rámci providera)
         );
     }
 
@@ -67,7 +67,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         newUser.setEmail(email);
         newUser.setMinecraftNick(name);
-        // POZOR: Ak má vaša entita User pole 'password' ako NOT NULL, musíte sem niečo vložiť,
+        // POZOR: Ak má vaša entita User pole 'password', ako NOT NULL, musíte sem niečo vložiť,
         // napr. prázdny reťazec zahashovaný Bcryptom. Pre Google používateľov sa heslo nepoužíva.
         newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); // Náhodné heslo,
 
