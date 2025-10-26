@@ -44,7 +44,7 @@ public class AuthController {
     private final WebClient webClient;
     private final EmailService emailService;
 
-    private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+    private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
     public AuthController(UserRepository userRepository, RoleRepository roleRepository,VerificationTokenRepository verificationTokenRepository, PasswordEncoder passwordEncoder, WebClient webClient, RecaptchaProperties recaptchaProperties, EmailService emailService) {
