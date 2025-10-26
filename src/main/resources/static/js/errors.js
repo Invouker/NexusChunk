@@ -13,6 +13,21 @@ document.addEventListener('DOMContentLoaded', function() {
             case 'disabled_account':
                 errorMessage = 'Chyba prihlásenia: Váš účet nie je aktivovaný alebo je deaktivovaný. Skontrolujte email.';
                 break;
+            case 'password_too_short':
+                errorMessage = 'Chyba Registrácie: Heslo je príliš krátke. (minimálna dĺžka je 6 znakov))';
+                break;
+            case 'recaptcha':
+                errorMessage = 'Chyba Registrácie: Neni vyplnená Recaptcha!)';
+                break;
+            case 'password_not_match':
+                errorMessage = 'Chyba Registrácie: Heslá sa nezhodujú.)';
+                break;
+            case 'user_registered':
+                errorMessage = 'Chyba Registrácie: Uživateľ s týmto menom alebo emailom už je zaregistrovaný.)';
+                break;
+            case 'password_complexity':
+                errorMessage = 'Chyba Registrácie: Heslo musí obsahovať minimálne jedno veľké, jedno mále písmeno a číslo.';
+                break;
             case 'bad_credentials':
                 errorMessage = 'Chyba prihlásenia: Zlé prihlasovacie údaje!';
                 break;
