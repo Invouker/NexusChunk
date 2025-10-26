@@ -3,6 +3,7 @@ package eu.invouk.nexuschunk.user.permissions;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Permission> permissions = new HashSet<>();
 
     public Role() {

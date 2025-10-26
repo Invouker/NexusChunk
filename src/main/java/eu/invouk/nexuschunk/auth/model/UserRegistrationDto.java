@@ -6,8 +6,8 @@ import lombok.Data;
 public class UserRegistrationDto {
 
     private String email;
+    private String username;
     private String password;
     private String confirmPassword;
-    private String minecraftNick;
 
 }

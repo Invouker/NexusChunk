@@ -16,15 +16,26 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /*@Column(unique = true, nullable = false)
-    private String name;*/
+
+    @Basic
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Basic
     @Column(unique = true, nullable = false)
     private String email;
+
+    @Basic
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "minecraft_nick", unique = true, nullable = false)
+    @Basic
+    @Column(name = "minecraft_nick", unique = true)
     private String minecraftNick;
+
+    @Basic
+    @Column(name = "minecraft_uuid", unique = true)
+    private String minecraftUuid;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

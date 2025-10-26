@@ -49,7 +49,7 @@ public class ProfileController {
             } else {
                 // Ak je to OAUTH2/Custom Principal, nájdeme ho v DB podľa mena/emailu
                 String authName = authentication.getName();
-                authenticatedUser = userRepository.findByMinecraftNick(authName)
+                authenticatedUser = userRepository.findByUsername(authName)
                         .orElseGet(() -> userRepository.findByEmail(authName).orElse(null));
             }
         }
@@ -58,7 +58,7 @@ public class ProfileController {
 
         // Ak je URL /profile A používateľ je prihlásený, zobrazíme jeho vlastný profil
         if (nickToLoad == null && authenticatedUser != null) {
-            nickToLoad = authenticatedUser.getMinecraftNick();
+            nickToLoad = authenticatedUser.getUsername();
             // Automaticky vieme, že je to vlastník
             isOwner = true;
         }
@@ -69,7 +69,7 @@ public class ProfileController {
         }
 
         // --- 3. Načítanie Cieľového Používateľa---
-        Optional<User> optionalTargetUser = userRepository.findByMinecraftNick(nickToLoad);
+        Optional<User> optionalTargetUser = userRepository.findByUsername(nickToLoad);
 
         // Ak sa nenašiel nickom, skúsime to podľa emailu (ak je zadaný v URL, čo je zriedkavé)
         if (optionalTargetUser.isEmpty()) {
@@ -84,11 +84,11 @@ public class ProfileController {
 
         // --- 4. Finálna kontrola Vlastníctva (ak to nebolo určené v kroku 2) ---
         if (!isOwner && authenticatedUser != null) {
-            isOwner = targetUser.getMinecraftNick().equals(authenticatedUser.getMinecraftNick());
+            isOwner = targetUser.getUsername().equals(authenticatedUser.getUsername());
         }
 
-        log.debug("Cieľový profil: {}", targetUser.getMinecraftNick());
-        log.debug("Prihlásený vlastník: {}", authenticatedUser != null ? authenticatedUser.getMinecraftNick() : "NIE");
+        log.debug("Cieľový profil: {}", targetUser.getUsername());
+        log.debug("Prihlásený vlastník: {}", authenticatedUser != null ? authenticatedUser.getUsername() : "NIE");
         log.debug("Je vlastník: {}", isOwner);
 
         model.addAttribute("isOnline", isOnline(targetUser));

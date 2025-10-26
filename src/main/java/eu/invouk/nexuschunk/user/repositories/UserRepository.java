@@ -7,6 +7,5 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<User,Long> {
     Optional<User> findByEmail(String email);
-    Optional<User> findByMinecraftUuid(String email);
-    Optional<User> findByMinecraftNick(String minecraftNick);
+    Optional<User> findByUsername(String userName);
 }

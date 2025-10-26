@@ -46,12 +46,13 @@ public class CustomOIDCUserService implements OAuth2UserService<OidcUserRequest,
         // Atribúty získavame z OidcUser (cez metódu getAttributes(), ktorá vráti Mapu)
         String email = oidcUser.getAttributes().get("email").toString();
         String name = oidcUser.getAttributes().get("name").toString();
+        String userName = name.split(" ")[0]; // Iba username bez secondname bereme!
 
         log.info("loadUser 03 - Hľadanie používateľa: {}", email);
         Optional<User> optionalUser = userRepository.findByEmail(email);
         User user;
 
-        user = optionalUser.orElseGet(() -> registerNewUser(email, name));
+        user = optionalUser.orElseGet(() -> registerNewUser(email, userName));
 
         log.info("loadUser 04 - Používateľ: {} má rolu: {}", user.getEmail(), user.getRoles().iterator().next().getName());
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(
@@ -69,12 +70,12 @@ public class CustomOIDCUserService implements OAuth2UserService<OidcUserRequest,
     private User registerNewUser(String email, String name) {
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setMinecraftNick(name);
+        newUser.setUsername(name);
         newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
         newUser.setRegistrationDate(LocalDateTime.now());
 
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Rola ROLE_USER nebola nájdená v databáze."));
+        Role userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new RuntimeException("Rola USER nebola nájdená v databáze."));
 
         newUser.setRoles(Collections.singleton(userRole));
 

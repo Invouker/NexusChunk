@@ -30,7 +30,7 @@ public class AvatarService {
      * @return AvatarDTO obsahujúci URL avatara, typ a zdroj.
      */
     public AvatarDto getAvatar(User user, int size, String defaultGravatar) {
-        Optional<String> imageBase = minecraftAvatarService.getBase64Avatar(user.getMinecraftNick());
+        Optional<String> imageBase = minecraftAvatarService.getBase64Avatar(user.getUsername());
         if(imageBase.isPresent()) {
             return AvatarDto.createMinecraftAvatar(imageBase.get());
         } else {

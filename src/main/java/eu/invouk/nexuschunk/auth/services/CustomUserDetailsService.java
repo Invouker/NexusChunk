@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = userRepository.findByEmail(username)
                 .orElseGet(
-                        () -> userRepository.findByMinecraftNick(username)
+                        () -> userRepository.findByUsername(username)
                         .orElseThrow(
                                 () -> new UsernameNotFoundException("Uživateľ (" + username +") s podobným nicknamom sa nenašiel!")
                         ));
@@ -44,7 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         Set<GrantedAuthority> authorities = new HashSet<>();
 
-        // 1. Pridanie Rolí (ROLE_USER, ROLE_ADMIN, atď.)
+        // 1. Pridanie Rolí (USER, ADMIN, atď.)
         user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .forEach(authorities::add);

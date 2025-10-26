@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body p-4">
                 <form th:action="@{/register}" th:object="${userRegistrationDto}" method="POST" style="color:white">
-                    <div class="mb-3"><label class="form-label">Užívateľské meno</label><input type="text" class="form-control" name="minecraftNick" id="minecraftNick" th:field="*{minecraftNick}" required /></div>
+                    <div class="mb-3"><label class="form-label">Užívateľské meno</label><input type="text" class="form-control" name="minecraftNick" id="minecraftNick" th:field="*{username}" required /></div>
                     <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" name="email" id="email" th:field="*{email}" required /></div>
                     <div class="mb-3"><label class="form-label">Heslo</label><input type="password" class="form-control" name="password" id="password" th:field="*{password}" required /></div>
                     <div class="mb-3"><label class="form-label">Potvrdiť Heslo</label><input type="password" class="form-control" name="confirm_password"  id="confirm_password" th:field="*{confirmPassword}" required /></div>

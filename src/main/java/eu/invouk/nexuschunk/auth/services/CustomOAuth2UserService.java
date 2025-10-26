@@ -66,14 +66,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // takže použijeme fiktívny zahashovaný reťazec alebo necháme pole nullable.
 
         newUser.setEmail(email);
-        newUser.setMinecraftNick(name);
+        newUser.setUsername(name);
         // POZOR: Ak má vaša entita User pole 'password', ako NOT NULL, musíte sem niečo vložiť,
         // napr. prázdny reťazec zahashovaný Bcryptom. Pre Google používateľov sa heslo nepoužíva.
         newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); // Náhodné heslo,
 
         // Pridelenie predvolenej roly (napr. ROLE_USER)
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Rola ROLE_USER nebola nájdená v databáze."));
+        Role userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new RuntimeException("Rola USER nebola nájdená v databáze."));
 
         newUser.setRoles(Collections.singleton(userRole));
 

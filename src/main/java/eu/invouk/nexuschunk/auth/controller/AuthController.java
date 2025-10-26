@@ -118,52 +118,52 @@ public class AuthController {
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto registrationDto, @RequestParam(name = "g-recaptcha-response") String recaptchaResponse, Model model) {
         if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
             model.addAttribute("error", "Užívateľ s týmto emailom už existuje.");
-            log.warn("Email are already registred!");
+            log.debug("Email are already registred!");
             return "redirect:/?error=user_registred&modal=register";
         }
 
-        if (userRepository.findByMinecraftNick(registrationDto.getMinecraftNick()).isPresent()) {
+        if (userRepository.findByUsername(registrationDto.getUsername()).isPresent()) {
             model.addAttribute("error", "Užívateľ s týmto nickom už existuje.");
-            log.warn("Username with this nickname already exists!");
+            log.debug("Username with this nickname already exists!");
             return "redirect:/?error=user_registered&modal=register";
         }
 
         if(passwordEncoder.matches(registrationDto.getPassword(), registrationDto.getConfirmPassword())) {
             model.addAttribute("error", "Heslá sa nezhodujú!");
-            log.warn("Password doesnt match!");
+            log.debug("Password doesnt match!");
             return "redirect:/?error=password_not_match&modal=register";
         }
 
         if (!verifyRecaptcha(recaptchaResponse)) {
             //model.addAttribute("error", "Prosím, overte, že nie ste robot.");
-            log.warn("Recaptcha not recognized!");
+            log.debug("Recaptcha not recognized!");
             model.addAttribute("user", registrationDto); // Vráti dáta naspäť
             return "redirect:/?error=recaptcha&modal=register";
         }
 
-        if(registrationDto.getPassword().length() < 8) {
-            log.warn("Password it too short!");
+        if(registrationDto.getPassword().length() <= 5) {
+            log.debug("Password it too short!");
             return "redirect:/?error=password_too_short&modal=register";
         }
 
-        if(validatePassword(registrationDto.getPassword())) {
-            log.warn("Password it not complex!");
+        if(!validatePassword(registrationDto.getPassword())) {
+            log.debug("Password it not complex!");
             return "redirect:/?error=password_complexity&modal=register";
         }
 
-        Optional<Role> userRoleOptional = roleRepository.findByName("ROLE_USER");
+        Optional<Role> userRoleOptional = roleRepository.findByName("USER");
         Role userRole;
         if (userRoleOptional.isEmpty()) {
             userRole = new Role();
-            userRole.setName("ROLE_USER");
+            userRole.setName("USER");
             roleRepository.save(userRole);
         } else userRole = userRoleOptional.get();
 
         User user = new User();
         user.setEmail(registrationDto.getEmail());
-        user.setMinecraftNick(registrationDto.getMinecraftNick());
+        user.setUsername(registrationDto.getUsername());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
-        user.setRoles(Collections.singleton(userRole)); // Priradíme rolu ROLE_USER
+        user.setRoles(Collections.singleton(userRole)); // Priradíme rolu USER
         user.setRegistrationDate(LocalDateTime.now());
         user.setEnabled(false);
 
