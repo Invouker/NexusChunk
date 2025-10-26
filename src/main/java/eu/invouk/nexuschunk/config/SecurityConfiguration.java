@@ -44,7 +44,7 @@ public class SecurityConfiguration {
 
                         // Verejné URL: Prístupné pre kohokoľvek (aj neautentifikovaných)
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll() // static files
-                        .requestMatchers("/resend_verification_code", "/verify", "/forgot-password", "/login", "/logout").permitAll()  // verification token
+                        .requestMatchers("/resend_verification_code", "/verify", "/forgot-password", "/login", "/logout", "/register").permitAll()  // verification token
                         .requestMatchers("/profile/**").permitAll()
 
                         // Akékoľvek iné URL: Musia byť autentifikované (prihlásené)
