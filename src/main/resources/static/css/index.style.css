@@ -1,3 +1,33 @@
+:root {
+    /* --- POZADIE & HRANICE --- */
+    --color-bg-primary: #100E22; /* Tmavomodrá/Fialová (Pre news/sidebar pozadie) */
+    --color-border-primary: #161329; /* Tmavá hranica/oddeľovač */
+    --color-bg-secondary: #2c2c44; /* Tmavá farba pre ikony/avatary v sidebaroch */
+
+    /* --- TEXTOVÉ FARBY (ŠEDÉ TÓNY) --- */
+    --color-text-primary: #ffffff; /* Biely text */
+    --color-text-secondary: #606199; /* Šedý/Fialový text (Obsah sidebar/news content) */
+    --color-text-detail: #7d84a7; /* Detailný/Informačný text (Autor, dátum) */
+    --color-text-light: #b6b6b6; /* Svetlejší text (Stat name) */
+    --color-text-hover: #b1baec; /* Text pri hoveri */
+
+    /* --- AKCENTNÉ FARBY --- */
+    --color-accent-discord: #7289DA; /* Discord Modrá */
+    --color-accent-discord-hover: #4a568f; /* Discord Modrá pri hoveri */
+    --color-accent-money: #4a902f; /* Zelená (Peniaze/Money) */
+    --color-accent-news-title: #f5c542; /* Žltá/Oranžová (News title) */
+    --color-accent-stat: #9b91ff; /* Svetlá fialová (Stat Value) */
+    --color-accent-icon: #997bff; /* Stredná fialová (Stat Icon) */
+    --color-accent-heart: red; /* Červená (Srdce) */
+    --color-accent-heart-bg: rgba(78, 42, 119, 0.6); /* Pozadie pre srdce */
+
+    /* --- TIEŇOVANIE --- */
+    --shadow-text-default: 2px 2px 7px #0C0B1A; /* Text tieň (Pre title) */
+    --shadow-text-outline: -1px -1px 7px #000, 1px -1px 7px #000, -1px 1px 7px #000, 1px 1px 7px #000; /* Outline tieň */
+}
+
+
+
 .welcome {
     min-height: 25rem;
     background-position: center;
@@ -68,8 +98,8 @@
     float: right;
     width: 30%;
 
-    background-color: white;
-    color: #7289DA;
+    background-color: var(--color-text-primary);
+    color: var(--color-accent-discord);
     font-weight: bold;
     font-size: 1.3rem;
     border: none;
@@ -80,19 +110,19 @@
 .info-image .title {
     font-weight: bold;
     font-size: 1.7rem;
-    text-shadow: 2px 2px 7px #0C0B1A;
+    text-shadow: var(--shadow-text-default);
 }
 
 .info-image .subtitle {
     font-weight: bold;
-    text-shadow: -1px -1px 7px #000, 1px -1px 7px #000, -1px 1px 7px #000, 1px 1px 7px #000;
+    text-shadow: var(--shadow-text-outline);
 }
 .info-image .btn:hover {
     transform: scale(1.07);
 }
 
 .welcome .logo {
-    height: 100%; /* Rozširujeme na celú výšku bannera */
+    height: 100%;
     width: 100%;
     position: absolute;
     z-index: 10;
@@ -135,7 +165,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9; /* Toto je dôležité! Udržuje partikly nad pozadím (1) a pod logom/villagerom (10) */
+    z-index: 9;
 }
 
 .news-container {
@@ -147,12 +177,13 @@
 }
 
 .news {
-    background-color: #100E22;
+    background-color: var(--color-bg-primary);
     overflow: hidden;
     border-radius: 0.5rem;
-    border: 3px solid #161329;
+    border: 3px solid var(--color-border-primary);
     width: fit-content;
     margin-bottom: 2rem;
+    min-width: 100%;
 }
 
 .image-wrapper {
@@ -182,7 +213,7 @@
     bottom: 0;
     left: 0;
     padding: .7rem 7rem .7rem 1rem;
-    color: #f5c542;
+    color: var(--color-accent-news-title);
     font-size: 1.5rem;
     font-weight: bold;
     z-index: 10;
@@ -193,18 +224,30 @@
 
 .news .content {
     padding: 1rem;
-    color: #606199;
+    color: var(--color-text-secondary);
     margin-bottom: 0.5rem;
+}
+
+.news .content {
+    display: -webkit-box;
+    -webkit-line-clamp: 9; /* Max. 3 riadky */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Pridá ... na konci */
+
+    /* Vlastnosti pre prípad dlhých slov, ktoré sme riešili predtým */
+    overflow-wrap: break-word;
+    word-break: break-all;
 }
 
 .news .footer {
     margin: 0 1rem 1rem 1rem;
-    border-top: 3px solid #161329;
+    border-top: 3px solid var(--color-border-primary);
 }
 
 .news .footer .info {
     margin: .9rem 0 .3rem 0;
-    color: #7d84a7;
+    color: var(--color-text-detail);
     font-weight: bold;
     font-size: 0.95rem;
     width: 100%;
@@ -214,8 +257,8 @@
 }
 
 .news .footer .continue {
-    background-color: #7289DA;
-    color: white;
+    background-color: var(--color-accent-discord);
+    color: var(--color-text-primary);
     font-weight: bold;
     font-size: .85rem;
     padding: 0.7rem;
@@ -223,22 +266,38 @@
 }
 
 .news .footer .continue:hover {
-    background-color: #4a568f;
+    background-color: var(--color-accent-discord-hover);
+}
+
+/* Základná farba srdca (napr. sivá) */
+.hearth-widget .fa-heart {
+    color: #6c757d; /* Farba ikon bez lajku */
+    transition: color 0.2s ease;
+}
+
+/* Farba po lajknutí (trieda 'liked' z th:classappend) */
+.hearth-widget .fa-heart.liked {
+    color: #dc3545; /* Klasická červená */
+}
+
+/* Farba pri hoveri pre nelajknuté srdcia */
+.hearth-widget .hearth:hover .fa-heart {
+    color: #dc3545; /* Pri hoveri sa zmení na červenú */
 }
 
 .news .footer .hearth-widget {
     padding: 0.7rem;
-    background-color: rgba(78, 42, 119, 0.6);
+    background-color: var(--color-accent-heart-bg);
     border-radius: 0.6rem;
     font-size: 0.85rem;
     font-weight: bold;
     position: relative;
     display: inline-flex;
-    color: white;
+    color: var(--color-text-primary);
 }
 
 .news .footer .hearth{
-    color: red;
+    color: var(--color-accent-heart);
     transition: transform 0.3s ease-out;
     position: relative;
     z-index: 2;
@@ -257,13 +316,13 @@
 }
 
 .news .footer .author a {
-    color: #7d84a7;
+    color: var(--color-text-detail);
     text-decoration: none;
     margin-left: 1rem;
 }
 
 .news .footer .author a:hover {
-    color: #b1baec;
+    color: var(--color-text-hover);
 }
 
 .news .footer .wrapper-right {
@@ -278,11 +337,11 @@
 
 .sidebar {
     border-radius: .5rem!important;
-    background-color: #100E22;
+    background-color: var(--color-bg-primary);
     padding: 1rem;
-    color: #606199;
+    color: var(--color-text-secondary);
     font-family: "Quicksand", sans-serif;
-    border: 3px solid #161329;
+    border: 3px solid var(--color-border-primary);
 
 }
 
@@ -292,7 +351,7 @@
 }
 
 /**************************************/
-/********    PLAYER STATS    **********/
+/******** PLAYER STATS    **********/
 /**************************************/
 
 .sidebar.top .content .player {
@@ -302,12 +361,12 @@
 .sidebar.top .content .player .name {
     font-weight: bold;
     font-size: 1.2rem;
-    color: white;
+    color: var(--color-text-primary);
     text-decoration: none!important;
 }
 
 .sidebar.top .content .player img {
-    background-color: #2c2c44;
+    background-color: var(--color-bg-secondary);
     border-radius: 0.5rem;
     padding: 0.3rem;
     transition: transform 0.2s ease-in-out;
@@ -319,12 +378,12 @@
 }
 
 .sidebar.top .content a:hover img {
-    transform: scale(1.2); /* Zväčší obrázok o 20% (1.2 = 120%) */
-    z-index: 10;           /* Zabezpečí, že zväčšený obrázok bude nad ostatnými prvkami */
+    transform: scale(1.2);
+    z-index: 10;
 }
 
 .sidebar.top .content .player .money {
-    color: #4a902f;
+    color: var(--color-accent-money);
 }
 
 .sidebar.space-top {
@@ -333,13 +392,13 @@
 /************************************/
 
 /************************************/
-/********    SERVER STATS    ********/
+/******** SERVER STATS    ********/
 /************************************/
 
 .sidebar.server-stats .content .stat .icon {
-    color: #997bff;
+    color: var(--color-accent-icon);
     font-size: 1.4rem;
-    background-color: #2c2c44;
+    background-color: var(--color-bg-secondary);
     border-radius: 0.5rem;
     padding: 0.6rem;
     margin: 0.4rem;
@@ -348,33 +407,33 @@
 }
 
 .sidebar.server-stats .content .stat .name {
-    color: #b6b6b6;
+    color: var(--color-text-light);
     flex-grow: 1;
     flex-basis: 0;
 }
 
 .sidebar.server-stats .content .stat .value {
-    color: #9b91ff;
+    color: var(--color-accent-stat);
     padding-left: 1rem;
     flex-shrink: 0;
 }
 
 /************************************/
-/*******    TOP LIST STATS    *******/
+/******* TOP LIST STATS    *******/
 /************************************/
 
 .sidebar.top-list .content .player .value {
-    color: #9b91ff;
+    color: var(--color-accent-stat);
 }
 
 .sidebar.top-list .content .player .state {
-    color: #9b91ff;
+    color: var(--color-accent-stat);
     font-weight: bold;
     font-size: 0.95rem;
 }
 
 .sidebar.top-list .content .player .name {
-    color: white;
+    color: var(--color-text-primary);
     font-weight: bold;
     font-size: 1rem;
 }

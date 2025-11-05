@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Úprava člena: Invouk', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+
+<div class="admin-wrapper">
+
+    <div th:replace="~{/admin/fragments/admin_navbar :: admin_navbar('members')}"></div>
+
+    <div class="admin-main-content">
+        <h1 class="section-title"><i class="fa-solid fa-user-pen"></i> Úprava Člena: <span>Username</span></h1>
+
+        <form method="post">
+
+            <div class="admin-card" style="margin-bottom: 20px;">
+                <h4>1. Základné Údaje</h4>
+
+                <div class="form-group">
+                    <label for="username" class="stat-label">Meno / Prezývka:</label>
+                    <input type="text" id="username" required class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="stat-label">Email:</label>
+                    <input type="email" id="email" required class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="minecraftNickname" class="stat-label">Minecraft Nickname:</label>
+                    <input type="text" id="minecraftNickname" class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="aboutMe" class="stat-label">O mne (About Me):</label>
+                    <textarea id="aboutMe" rows="4" class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)"></textarea>
+                </div>
+
+                <hr style="margin: 20px 0;">
+                <div class="form-group">
+                    <label for="newPassword" class="stat-label">Zmeniť Heslo:</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Zadajte nové heslo (ak nechcete meniť, nechajte prázdne)" class="form-control">
+                    <small style="color: var(--text-secondary); display: block; margin-top: 5px;">Heslo sa zmení len vtedy, ak je pole vyplnené.</small>
+                </div>
+            </div>
+
+            <div class="admin-card" style="margin-bottom: 20px;">
+                <h4>2. Stav Účtu a Zablokovanie</h4>
+
+                <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="stat-group">
+                        <label class="stat-label" for="enabled">Povolený účet (Môže sa prihlásiť):</label>
+                        <input type="checkbox" id="enabled" >
+                        <span>ÁNO/NIE</span>
+                    </div>
+
+                    <div class="stat-group">
+                        <label class="stat-label" for="locked">Účet ZABLOKOVANÝ (Dočasne/Trvalo):</label>
+                        <input type="checkbox" id="locked" >
+                        <span>ZABLOKOVANÝ/AKTÍVNY</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-card" style="margin-bottom: 20px;">
+                <h4>3. Nastavenia Oprávnení</h4>
+
+                <div class="form-group">
+                    <label for="role" class="stat-label">Zmena Roly:</label>
+                   <!--
+                     <select id="role" th:field="*{role}" class="form-control" style="width: auto;">
+                        <option th:each="r : ${roles}"
+                                th:value="${r.name}"
+                                th:text="${r.displayName}"
+                                th:selected="${r.name} == *{role} ? true : false">ROLE_USER</option>
+                    </select>
+                    -->
+
+                    <select name="test:)" id="role">
+                        <option value="USER">USER</option>
+                        <option value="MODERATOR">MODERATOR</option>
+                    </select>
+                    <small style="color: var(--accent-color-danger); display: block; margin-top: 5px;">
+                        POZOR: Zmenou Roly meníte prístupové práva člena!
+                    </small>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn-admin" style="background-color: var(--accent-color-success); margin-right: 15px;">
+                    <i class="fa-solid fa-floppy-disk"></i> Uložiť Zmeny Člena
+                </button>
+                <a th:href="@{/admin/members}" class="btn-admin" style="background-color: var(--text-secondary);">
+                    <i class="fa-solid fa-xmark"></i> Zrušiť / Späť na Zoznam
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

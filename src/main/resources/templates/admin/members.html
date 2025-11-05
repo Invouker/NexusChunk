@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Správa Členov', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+
+<div class="admin-wrapper">
+
+    <div th:replace="~{admin/fragments/admin_navbar :: admin_navbar('members')}"></div>
+
+    <div class="admin-main-content">
+        <h1 class="section-title">Správa Členov</h1>
+
+        <div class="admin-card" style="margin-bottom: 25px;">
+            <h4><i class="fa-solid fa-magnifying-glass"></i> Vyhľadávanie Členov</h4>
+            <form class="d-flex" style="display: flex;">
+                <input type="search" placeholder="Zadajte Nick alebo UUID" class="form-control" style="flex-grow: 1; padding: 8px; border-radius: 4px 0 0 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light); margin-right: -1px;">
+                <button class="btn-admin" type="submit" style="border-radius: 0 4px 4px 0;"><i class="fa-solid fa-search"></i> Hľadať</button>
+            </form>
+        </div>
+
+        <div class="admin-card">
+            <h4><i class="fa-solid fa-users"></i> Prehľad Aktívnych Členov</h4>
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Nick</th>
+                    <th>Rola</th>
+                    <th>Discord</th>
+                    <th>Status</th>
+                    <th>Akcie</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>MasterCode_SK</td>
+                    <td style="color: var(--accent-color);">ADMIN</td>
+                    <td>Áno</td>
+                    <td class="status-active">Online</td>
+                    <td><a href="#" class="btn-admin" style="background-color: var(--accent-color-stat);"><i class="fa-solid fa-user-pen"></i> Upraviť</a></td>
+                </tr>
+                <tr>
+                    <td>GameFanatics</td>
+                    <td style="color: var(--accent-color-success);">VIP+</td>
+                    <td>Nie</td>
+                    <td class="status-inactive">Offline</td>
+                    <td><a href="#" class="btn-admin" style="background-color: var(--offline-color);"><i class="fa-solid fa-hand"></i> Ban</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

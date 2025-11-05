@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Správa Členov', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Správa Servera', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/profile.style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+
+<div class="admin-wrapper">
+
+    <div th:replace="~{/admin/fragments/admin_navbar :: admin_navbar('server')}"></div>
+
+    <div class="admin-main-content">
+        <h1 class="section-title">Správa Servera</h1>
+
+        <div class="admin-card" style="margin-bottom: 25px;">
+            <h4><i class="fa-solid fa-gauge-high"></i> Kľúčové Štatistiky</h4>
+
+            <div class="dashboard-grid" style="margin-bottom: 0; padding-bottom: 10px;">
+
+                <div class="admin-card" style="padding: 15px;">
+                    <div th:classappend="${serverStatus == 'ONLINE'} ? 'status-active' : 'status-inactive'"
+                         class="stat-value" style="font-size: 2em;"
+                         th:text="${serverStatus}">ONLINE</div>
+                    <div class="stat-label">Server Status</div>
+                </div>
+
+                <div class="admin-card" style="padding: 15px;">
+                    <div class="stat-value" style="font-size: 2em;" th:text="${onlinePlayers} + ' / ' + ${maxSlots}">25 / 100</div>
+                    <div class="stat-label">Online Hráčov</div>
+                </div>
+
+                <div class="admin-card" style="padding: 15px;">
+                    <div class="stat-value" style="font-size: 2em; color: var(--accent-color-stat);"
+                         th:style="${ping < 100 ? 'color: var(--accent-color-success);' : (ping < 200 ? 'color: var(--warning-color);' : 'color: var(--offline-color);')}"
+                         th:text="${ping} + ' ms'">90 ms</div>
+                    <div class="stat-label">Latencia (Ping)</div>
+                </div>
+
+                <div class="admin-card" style="padding: 15px;">
+                    <div class="stat-value" style="font-size: 2em; color: var(--accent-color-success);"
+                         th:style="${tps >= 19 ? 'color: var(--accent-color-success);' : (tps >= 15 ? 'color: var(--warning-color);' : 'color: var(--offline-color);')}"
+                         th:text="${tps} + ' TPS'">20.0 TPS</div>
+                    <div class="stat-label">Výkon Servera</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+
+            <div class="main-content">
+
+                <div class="admin-card" style="margin-bottom: 20px;">
+                    <h4><i class="fa-solid fa-terminal"></i> Serverová Konzola</h4>
+
+                    <pre style="background: #000; color: #fff; padding: 10px; border-radius: 4px; font-size: 0.9em; max-height: 250px; overflow-y: scroll; border: 1px solid var(--border-color);">
+[20:15:30 INFO]: Server started successfully.
+[20:16:01 INFO]: Player Invouk_Dev joined the game.
+[20:17:15 WARN]: Server load increased to 1.5. TPS dropped to 18.
+[20:17:35 INFO]: Command /say Novinky boli vydane! executed by Admin.
+            </pre>
+
+                    <form style="display: flex; margin-top: 10px;">
+                        <input type="text" placeholder="Odoslať príkaz serveru (napr. say Ahoj)"
+                               class="form-control" style="flex-grow: 1; padding: 8px; border-radius: 4px 0 0 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light); margin-right: -1px;">
+                        <button type="submit" class="btn-admin" style="border-radius: 0 4px 4px 0;"><i class="fa-solid fa-paper-plane"></i> Poslať</button>
+                    </form>
+                </div>
+
+                <div class="admin-card" style="margin-bottom: 20px;">
+                    <h4><i class="fa-solid fa-chart-line"></i> História TPS a Výkonu (Posledné 2h)</h4>
+                    <div style="height: 250px; background-color: var(--bg-secondary); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                        [Graf TPS Placeholder]
+                    </div>
+                </div>
+
+                <div class="admin-card" style="margin-bottom: 20px;">
+                    <h4><i class="fa-solid fa-users-line"></i> Online Hráči (Posledný Deň/Týždeň)</h4>
+                    <div style="height: 250px; background-color: var(--bg-secondary); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+                        [Graf Hráčov Placeholder]
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sidebar-widgets">
+                <div class="profile-card">
+                    <h3><i class="fa-solid fa-bolt"></i> Správa Servera a Radenie</h3>
+
+                    <ul style="padding: 0; list-style: none;">
+                        <li style="padding: 10px 0; border-bottom: 1px dotted var(--border-color);">
+                            <a href="#" class="btn-admin" style="background-color: var(--accent-color-success); width: 100%;">
+                                <i class="fa-solid fa-play"></i> Zapnúť Server
+                            </a>
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px dotted var(--border-color);">
+                            <a href="#" class="btn-admin" style="background-color: var(--accent-color); width: 100%;">
+                                <i class="fa-solid fa-rotate-right"></i> Reštartovať (Graceful)
+                            </a>
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px dotted var(--border-color);">
+                            <a href="#" class="btn-admin" style="background-color: orange; width: 100%;">
+                                <i class="fa-solid fa-stop"></i> Vypnúť (Stop)
+                            </a>
+                        </li>
+                        <li style="padding: 10px 0;">
+                            <a href="#" class="btn-admin" style="background-color: var(--offline-color); width: 100%;">
+                                <i class="fa-solid fa-power-off"></i> Tvrdé Vypnutie (Kill)
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="text-secondary-small" style="margin-top: 10px;">
+                        Použite Tvrdé Vypnutie len v núdzi!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

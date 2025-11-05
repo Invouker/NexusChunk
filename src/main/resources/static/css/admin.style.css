@@ -1,0 +1,253 @@
+:root {
+    /* --- ZÁKLADNÉ FARBY (z vášho nového bloku) --- */
+    --bg-dark: #0C0B1A;      /* Hlavné tmavé pozadie (Pôvodné z body) */
+    --bg-card: #100E22;      /* Pozadie kariet/blokov (Pôvodné --color-bg-primary) */
+    --text-light: #ffffff;   /* Svetlý text (Pôvodné --color-text-primary) */
+    --text-secondary: #7d84a7; /* Sekundárny (šedý) text (Pôvodné --color-text-detail) */
+    --border-color: #161329; /* Farba pre jemné oddeľovače (Pôvodné --color-border-primary) */
+
+    /* --- AKCENTNÉ FARBY (Upravené podľa starého dizajnu) --- */
+    --accent-color: #7289DA; /* Primárny akcent - Discord Modrá (Pôvodné --color-accent-discord) */
+    --accent-color-success: #4a902f; /* Zelený akcent - Peniaze (Pôvodné --color-accent-money) */
+    --accent-color-stat: #9b91ff; /* Fialový akcent - Štatistiky (Pôvodné --color-accent-stat) */
+    --offline-color: #f44336; /* Červená farba (OFFLINE) - Ponechaná z vášho nového bloku */
+    --code-bg: #2c2c44; /* Pozadie pre code/bio (Pôvodné --color-bg-secondary) */
+    --warning-color: orange;
+
+    /* CSS premenné pre dynamický border (DEFAULT - OFFLINE) */
+    --avatar-border-color: var(--offline-color);
+    --avatar-shadow-color: transparent;
+}
+
+/* --- ADMIN LAYOUT --- */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- SIDEBAR MENU --- */
+.admin-sidebar {
+    width: 250px;
+    background-color: var(--bg-card); /* Pozadie ako karty v profile */
+    border-right: 1px solid var(--border-color);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    padding: 20px 0;
+}
+.sidebar-header {
+    padding: 0 20px 20px 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.sidebar-header h3 {
+    color: var(--text-light);
+    margin: 0;
+    font-weight: 600;
+}
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar-nav a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+.sidebar-nav a:hover {
+    background-color: var(--bg-dark); /* Tmavší hover ako na kode */
+    color: var(--text-light);
+}
+.sidebar-nav a.active {
+    background-color: var(--accent-color); /* Primárny akcent pre aktívny tab */
+    color: var(--text-light);
+    border-left: 4px solid var(--accent-color-success); /* Sekundárny akcent ako čiara */
+    font-weight: bold;
+}
+.sidebar-nav i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+/* --- MAIN CONTENT A KARTY --- */
+.admin-main-content {
+    flex-grow: 1;
+    padding: 40px;
+}
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 25px;
+}
+.admin-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.admin-card h4 {
+    color: var(--accent-color);
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.stat-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: var(--accent-color-success);
+}
+.stat-label {
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+/* Tlačidlá (podobné ako .btn-connect, ale menšie) */
+.btn-admin {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+}
+.btn-admin:hover {
+    background-color: var(--accent-color-success);
+}
+.btn-admin i {
+    margin-right: 5px;
+}
+
+/* Tabuľka štýl (na úpravu noviniek/členov) */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+.admin-table th, .admin-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+.admin-table th {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.admin-table tr:hover {
+    background-color: var(--bg-dark);
+}
+.status-active {
+    color: var(--accent-color-success);
+}
+.status-inactive {
+    color: var(--offline-color);
+}
+
+/* Pre formuláre v tmavom pozadí */
+.form-control {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-light);
+    box-sizing: border-box; /* Pre správne spracovanie paddingu a šírky */
+}
+
+/* Pre checkbox/radio inputy v stat-group */
+.stat-group input[type="checkbox"] {
+    margin-left: 10px;
+    transform: scale(1.2); /* Mierne zväčšiť checkbox pre lepšiu viditeľnosť */
+}
+
+input {
+    background-color: #0C0B1A;
+}
+
+/* Flexibilné zarovnanie v stat-group pre nastavenia (pretože sú v jednom riadku) */
+.stat-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Zarovnanie checkboxu s textom */
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--border-color);
+}
+.stat-group:last-of-type {
+    border-bottom: none;
+}
+
+.settings-grid {
+    display: grid;
+    /* Dva stĺpce s minimálnou šírkou 450px a medzerou 25px */
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+/* Zabezpečenie, že na veľmi malej obrazovke sa vrátia na jeden stĺpec */
+@media (max-width: 992px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Nová trieda pre rozloženie stránky Správy Rolí --- */
+.roles-grid {
+    display: grid;
+    /* 1. stĺpec: 300px pre zoznam rolí | 2. stĺpec: Zvyšok pre detaily */
+    grid-template-columns: 300px 1fr;
+    gap: 25px;
+}
+
+/* Pre menšie obrazovky sa vráti na jeden stĺpec */
+@media (max-width: 992px) {
+    .roles-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Štýl pre zoznam rolí */
+.role-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.role-list li {
+    padding: 12px 15px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.role-list li:hover {
+    background-color: var(--bg-secondary);
+}
+.role-list li.selected {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border-color: var(--accent-color);
+}
+.role-list li.selected i {
+    color: var(--text-light); /* Ikony budú biele vo vybranom stave */
+}
+
+a {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}

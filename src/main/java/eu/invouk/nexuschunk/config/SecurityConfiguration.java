@@ -3,12 +3,10 @@ package eu.invouk.nexuschunk.config;
 import eu.invouk.nexuschunk.auth.services.CustomOAuth2UserService;
 import eu.invouk.nexuschunk.auth.services.CustomOIDCUserService;
 import eu.invouk.nexuschunk.auth.services.CustomUserDetailsService;
-import eu.invouk.nexuschunk.user.permissions.EPermission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -68,7 +66,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
-                        .requestMatchers("/admin/**").hasAuthority(EPermission.ADMIN_VIEW.getPermission())
+                        .requestMatchers("/admin/**").permitAll()//.hasAuthority(EPermission.ADMIN_VIEW.getPermission())
 
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         //.requestMatchers("/dashboard").authenticated()
@@ -77,6 +75,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll() // static files
                         .requestMatchers("/resend_verification_code", "/verify", "/forgot-password", "/login", "/logout", "/register").permitAll()  // verification token
                         .requestMatchers("/profile/**").permitAll()
+                        .requestMatchers("/news/**").permitAll()
 
                         // Akékoľvek iné URL: Musia byť autentifikované (prihlásené)
                         .anyRequest().authenticated()

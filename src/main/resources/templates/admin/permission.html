@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Správa Rolí', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+
+<div class="admin-wrapper">
+    <div th:replace="~{/admin/fragments/admin_navbar :: admin_navbar('permission')}"></div>
+    
+    <div class="admin-main-content">
+        <h1 class="section-title"><i class="fa-solid fa-users-gear"></i> Správa Oprávnení a Rolí</h1>
+
+        <div class="roles-grid">
+
+            <div class="role-list">
+
+                <div class="admin-card" style="margin-bottom: 25px;">
+                    <h4><i class="fa-solid fa-list-check"></i> Zoznam Existujúcich Rolí</h4>
+
+                    <ul>
+                        <li class="selected">
+                            <span>ADMIN</span>
+                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                        </li>
+                        <li>
+                            <span>MODERATOR</span>
+                            <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
+                        </li>
+                        <li>
+                            <span>VIP+</span>
+                            <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
+                        </li>
+                        <li>
+                            <span>USER (Základná)</span>
+                            <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="admin-card">
+                    <h4><i class="fa-solid fa-plus"></i> Vytvoriť Novú Rolu</h4>
+                    <form>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="newRoleName" class="stat-label">Názov Roly (napr. TESTER):</label>
+                            <input type="text" id="newRoleName" name="newRoleName" placeholder="Názov roly (veľké písmená)" required class="form-control">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label for="newRoleDisplay" class="stat-label">Zobrazovaný názov:</label>
+                            <input type="text" id="newRoleDisplay" name="newRoleDisplay" placeholder="Zobrazovaný názov" required class="form-control">
+                        </div>
+                        <button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);"><i class="fa-solid fa-plus"></i> Vytvoriť</button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="role-details">
+
+                <div class="admin-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">
+                        <h4 style="border: none; margin: 0; padding: 0; color: var(--accent-color);">Úprava Oprávnení pre: ADMIN</h4>
+                        <button
+                                class="btn-admin"
+                                style="background-color: var(--offline-color);"
+                                onclick="alert('Akcia Zmazať Rolu bola stlačená.')">
+                            <i class="fa-solid fa-trash"></i> Zmazať Rolu
+                        </button>
+                    </div>
+
+                    <form>
+
+                        <h5 style="margin-top: 20px; color: var(--text-light);">Dashboard & Všeobecné</h5>
+                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="perm1" name="permissionCodes" value="DASHBOARD_VIEW" checked style="transform: scale(1.1); margin-right: 15px;">
+                                <label for="perm1" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                    <span>Prezerať Admin Dashboard</span>
+                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(DASHBOARD_VIEW)</small>
+                                </label>
+                            </div>
+                            <span class="status-active">POVOLENÉ</span>
+                        </div>
+
+                        <h5 style="margin-top: 20px; color: var(--text-light);">Novinky a Články</h5>
+                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="perm2" name="permissionCodes" value="NEWS_CREATE" checked style="transform: scale(1.1); margin-right: 15px;">
+                                <label for="perm2" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                    <span>Vytvárať Nové Články</span>
+                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(NEWS_CREATE)</small>
+                                </label>
+                            </div>
+                            <span class="status-active">POVOLENÉ</span>
+                        </div>
+                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="perm3" name="permissionCodes" value="NEWS_EDIT" style="transform: scale(1.1); margin-right: 15px;">
+                                <label for="perm3" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                    <span>Upravovať Novinky</span>
+                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(NEWS_EDIT)</small>
+                                </label>
+                            </div>
+                            <span class="status-inactive">ZAKÁZANÉ</span>
+                        </div>
+
+                        <h5 style="margin-top: 20px; color: var(--text-light);">Správa Členov</h5>
+                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="perm4" name="permissionCodes" value="MEMBERS_VIEW" checked style="transform: scale(1.1); margin-right: 15px;">
+                                <label for="perm4" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                    <span>Prezerať Profily Členov</span>
+                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(MEMBERS_VIEW)</small>
+                                </label>
+                            </div>
+                            <span class="status-active">POVOLENÉ</span>
+                        </div>
+                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" id="perm5" name="permissionCodes" value="MEMBERS_EDIT_ROLE" checked style="transform: scale(1.1); margin-right: 15px;">
+                                <label for="perm5" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                    <span>Meniť Roly a Banovať</span>
+                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(MEMBERS_EDIT_ROLE)</small>
+                                </label>
+                            </div>
+                            <span class="status-active">POVOLENÉ</span>
+                        </div>
+
+                        <p style="margin-top: 30px;">
+                            <button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);">
+                                <i class="fa-solid fa-save"></i> Uložiť Zmeny
+                            </button>
+                        </p>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,197 +1,13 @@
 <!DOCTYPE html>
 <html lang="sk" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="~{fragments/head :: head('NexusChunk Server | ' + ${targetUser.getUsername()})}"></div>
-
-    <style>
-        :root {
-            /* Základné farby */
-            --bg-dark: #1e1e2c;      /* Hlavné tmavé pozadie */
-            --bg-card: #28283c;      /* Pozadie kariet/blokov */
-            --text-light: #f0f0f0;   /* Svetlý text */
-            --text-secondary: #a0a0b0; /* Sekundárny (šedý) text */
-            --accent-color: #4db151; /* Zelená akcentná farba (ONLINE) */
-            --offline-color: #f44336; /* Červená farba (OFFLINE) */
-            --border-color: #3a3a50; /* Farba pre jemné oddeľovače */
-
-            /* CSS premenné pre dynamický border (DEFAULT - OFFLINE) */
-            --avatar-border-color: var(--offline-color);
-            --avatar-shadow-color: transparent;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            margin: 0;
-        }
-
-        .profile-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* NOVÝ CONTAINER PRE ROZDELENIE OBSAHU A WIDGETOV */
-        .content-wrapper {
-            display: flex;
-            gap: 25px;
-            align-items: flex-start;
-        }
-        .main-content {
-            flex: 3;
-            min-width: 60%;
-        }
-        .sidebar-widgets {
-            flex: 1;
-            min-width: 250px;
-            max-width: 300px;
-        }
-
-        .profile-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-            padding: 20px 20px 10px 20px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        /* ŠTÝL PRE VEĽKÝ RANK BADGE */
-        .rank-badge-container {
-            position: absolute;
-            top: -25px;
-            right: -20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: var(--accent-color);
-            border-radius: 10%;
-            color: var(--bg-dark);
-            padding: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 2px 2px 10px rgba(76, 175, 80, 0.5);
-            z-index: 10;
-        }
-        .rank-badge-container .rank-level {
-            font-size: 2.5em;
-            line-height: 1;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
-        }
-
-        .avatar-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin-right: 25px;
-            object-fit: cover;
-            border: 4px solid var(--avatar-border-color);
-            box-shadow: 0 0 10px var(--avatar-shadow-color);
-        }
-
-        h1 { margin: 0 0 5px 0; font-size: 2.5em; }
-        h2 {
-            color: var(--accent-color);
-            border-left: 4px solid var(--accent-color);
-            padding-left: 10px;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.25em;
-            cursor: default;
-            user-select: none;
-        }
-
-        /* Sekcia s informáciami */
-        .info-section { margin-top: 30px; }
-        .stat-group {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dotted var(--border-color);
-        }
-        .stat-group:last-child { border-bottom: none; }
-
-        .stat-label {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 0.95em;
-        }
-
-        /* Špeciálny štýl pre identifikátory (UUID) */
-        code {
-            background: #3a3a50;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            color: var(--text-light);
-            font-family: 'Consolas', monospace;
-        }
-
-        /* Role/Odznak */
-        .role-badge {
-            background-color: #5555ff; /* Modrá pre rolu */
-            color: var(--text-light);
-            font-weight: bold;
-            padding: 3px 10px;
-            border-radius: 5px;
-            font-size: 0.85em;
-            margin-left: 10px;
-        }
-
-        /* Sociálne siete */
-        .social-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            margin-right: 20px;
-            transition: color 0.3s;
-            display: inline-flex;
-            align-items: center;
-        }
-        .social-links a:hover {
-            color: var(--accent-color);
-        }
-        .social-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-            filter: invert(90%);
-        }
-
-        /* Bio/Popis */
-        .bio-text {
-            background: #3a3a50;
-            padding: 15px;
-            border-radius: 8px;
-            line-height: 1.6;
-        }
-
-        /* Štýl pre listy vo widgetoch */
-        .sidebar-widgets ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar-widgets li {
-            padding: 8px 0;
-            border-bottom: 1px dotted var(--border-color);
-        }
-        .sidebar-widgets li:last-child {
-            border-bottom: none;
-        }
-    </style>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | ' + ${targetUser.getUsername()}, false)}"></div>
 </head>
 
 
 <div th:replace="~{fragments/navbar :: navbar('profile')}"></div>
 
+<link rel="stylesheet" th:href="@{/css/profile.style.css}">
 <body>
 
 
@@ -209,14 +25,12 @@
                             <span class="rank-level">MVP</span>
                         </div>
 
-                        <div class="header" style="border-bottom: 1px solid var(--border-color);">
+                        <div class="header">
                             <img
                                     th:src="${profileAvatar.data}"
                                     alt="Avatar používateľa"
                                     class="avatar-img transition-transform duration-300 hover:scale-105"
-                                    th:style="${isOnline} ?
-                        '--avatar-border-color: var(--accent-color); --avatar-shadow-color: rgba(76, 175, 80, 0.7);' :
-                        '--avatar-border-color: var(--offline-color); --avatar-shadow-color: transparent;'"
+                                    th:classappend="${isOnline} ? 'avatar-online' : 'avatar-offline'"
                             />
 
                             <div>
@@ -224,13 +38,14 @@
                                     <span class="role-badge">ADMIN</span>
                                 </h1>
 
-                                <p style="color: var(--accent-color); font-size: 0.9em; margin-top: 5px;">
-                                    <span>• ONLINE</span>
+                                <p class="text-secondary-small"
+                                   th:classappend="${isOnline} ? 'status-online' : 'status-offline'">
+                                    <span th:text="${isOnline} ? '• ONLINE' : '• OFFLINE'">• ONLINE</span>
                                 </p>
                             </div>
                         </div>
 
-                        <div class="info-section" style="margin-top: 0;">
+                        <div class="info-section">
                             <h2>Detaily účtu</h2>
 
                             <div class="stat-group" th:if="${targetUser.getMinecraftUuid() != null && targetUser.getMinecraftUuid() != ''}">
@@ -264,13 +79,11 @@
                                  targetUser.getFacebookName() != null && targetUser.getFacebookName() != ''
                              }">
                             <h2>Sociálne siete a Odkazy</h2>
-                            <div style="text-align: center;">
+                            <div class="social-links-wrapper">
 
                                 <a th:if="${targetUser.getGithubName()}"
                                    th:href="@{'https://github.com/' + ${targetUser.getGithubName()}}"
-                                   target="_blank"
-                                   style="color: var(--text-light); text-decoration: none; margin-right: 20px;">
-
+                                   target="_blank">
                                     <span class="role-badge">
                                         <i class="fa-brands fa-github"></i>
                                         <span th:text="${targetUser.getGithubName()}">GitHub</span>
@@ -279,9 +92,7 @@
 
                                 <a th:if="${targetUser.getDiscordName()}"
                                    th:href="@{'https://discordapp.com/users/' + ${targetUser.getDiscordName()}}"
-                                   target="_blank"
-                                   style="color: var(--text-light); text-decoration: none; margin-right: 20px;">
-
+                                   target="_blank">
                                     <span class="role-badge">
                                         <i class="fa-brands fa-discord"></i>
                                         <span th:text="${targetUser.getDiscordName()}">Discord</span>
@@ -290,9 +101,7 @@
 
                                 <a th:if="${targetUser.getInstagramName()}"
                                    th:href="@{'https://instagram.com/' + ${targetUser.getInstagramName()}}"
-                                   target="_blank"
-                                   style="color: var(--text-light); text-decoration: none; margin-right: 20px;">
-
+                                   target="_blank">
                                     <span class="role-badge">
                                         <i class="fa-brands fa-instagram"></i>
                                         <span th:text="${targetUser.getInstagramName()}">Instagram</span>
@@ -301,9 +110,7 @@
 
                                 <a th:if="${targetUser.getFacebookName()}"
                                    th:href="@{'https://facebook.com/' + ${targetUser.getFacebookName()}}"
-                                   target="_blank"
-                                   style="color: var(--text-light); text-decoration: none; margin-right: 20px;">
-
+                                   target="_blank">
                                     <span class="role-badge">
                                         <i class="fa-brands fa-facebook"></i>
                                         <span th:text="${targetUser.getFacebookName()}">Facebook</span>
@@ -328,7 +135,7 @@
                             <span class="stat-label">Rank na serveri:</span>
                             <span>Diamantový Hráč</span>
                         </div>
-                        <p style="color: var(--text-secondary); font-size: 0.9em; margin-top: 20px; text-align: right;">
+                        <p class="text-secondary-small text-right" style="margin-top: 20px;">
                             Dáta aktualizované: 25.10.2025
                         </p>
                     </div>
@@ -338,20 +145,20 @@
                 <div class="sidebar-widgets">
 
                     <div class="profile-card">
-                        <h2>Moderátorský panel <i class="fa-solid fa-hammer"></i></h2>
+                        <h3>Moderátorský panel <i class="fa-solid fa-hammer"></i></h3>
                         <ul>
                             <li>
-                                <a href="#" style="color: var(--text-light); text-decoration: none; font-weight: 600;">
+                                <a href="#" class="widget-link">
                                     <i class="fa-solid fa-lock"></i> Zamknúť profil
                                 </a>
                             </li>
                             <li>
-                                <a href="#" style="color: var(--text-light); text-decoration: none;">
+                                <a href="#" class="widget-link">
                                     <i class="fa-solid fa-ban"></i> Zabanovať užívateľa
                                 </a>
                             </li>
                             <li>
-                                <a href="#" style="color: var(--text-light); text-decoration: none;">
+                                <a href="#" class="widget-link">
                                     <i class="fa-solid fa-user-slash"></i> Odstrániť profil
                                 </a>
                             </li>
@@ -359,92 +166,99 @@
                     </div>
 
                     <div class="profile-card">
-                        <h2>Nedávne Ocenennia <i class="fa-solid fa-trophy"></i></h2>
-                        <ul style="list-style: none; padding: 0;">
+                        <h3>Nedávne Ocenennia <i class="fa-solid fa-trophy"></i></h3>
+                        <ul>
 
-                            <li style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px dotted var(--border-color);">
-                                <span style="font-size: 1.5em; margin-right: 10px;">⛏️</span>
+                            <li class="widget-detail-item">
+                                <span class="icon-large">⛏️</span>
                                 <div>
-                                    <div style="font-weight: 600;">Hlboko dole (Deep Down)</div>
-                                    <span style="font-size: 0.8em; color: var(--text-secondary);">Minecraft Advancement</span>
+                                    <div class="title-bold">Hlboko dole (Deep Down)</div>
+                                    <span class="text-detail">Minecraft Advancement</span>
                                 </div>
-                                <span style="margin-left: auto; font-size: 0.8em; color: var(--text-secondary);">
+                                <span class="detail-meta">
                                     Pred 2h
                                 </span>
                             </li>
 
-                            <li style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px dotted var(--border-color);">
-                                <span style="font-size: 1.5em; margin-right: 10px;">⭐</span>
+                            <li class="widget-detail-item">
+                                <span class="icon-large">⭐</span>
                                 <div>
-                                    <div style="font-weight: 600;">Veterán Komunity</div>
-                                    <span style="font-size: 0.8em; color: var(--text-secondary);">Web Ocenenie</span>
+                                    <div class="title-bold">Veterán Komunity</div>
+                                    <span class="text-detail">Web Ocenenie</span>
                                 </div>
-                                <span style="margin-left: auto; font-size: 0.8em; color: var(--text-secondary);">
-                    01.05.2025
-                </span>
+                                <span class="detail-meta">
+                                    01.05.2025
+                                </span>
                             </li>
 
-                            <li style="display: flex; align-items: center; padding: 10px 0; border-bottom: 1px dotted var(--border-color);">
-                                <span style="font-size: 1.5em; margin-right: 10px;">🏆</span>
+                            <li class="widget-detail-item">
+                                <span class="icon-large">🏆</span>
                                 <div>
-                                    <div style="font-weight: 600;">Majster Eventov</div>
-                                    <span style="font-size: 0.8em; color: var(--text-secondary);">Trofej zo Servera</span>
+                                    <div class="title-bold">Majster Eventov</div>
+                                    <span class="text-detail">Trofej zo Servera</span>
                                 </div>
-                                <span style="margin-left: auto; font-size: 0.8em; color: var(--text-secondary);">
-                    10.04.2025
-                </span>
+                                <span class="detail-meta">
+                                    10.04.2025
+                                </span>
                             </li>
 
-                            <li style="display: flex; align-items: center; padding: 10px 0;">
-                                <span style="font-size: 1.5em; margin-right: 10px;">🔥</span>
+                            <li class="widget-detail-item">
+                                <span class="icon-large">🔥</span>
                                 <div>
-                                    <div style="font-weight: 600;">Horúca Hlava</div>
-                                    <span style="font-size: 0.8em; color: var(--text-secondary);">Prvý Kill na Frakcii</span>
+                                    <div class="title-bold">Horúca Hlava</div>
+                                    <span class="text-detail">Prvý Kill na Frakcii</span>
                                 </div>
-                                <span style="margin-left: auto; font-size: 0.8em; color: var(--text-secondary);">
-                    Pred 1t
-                </span>
+                                <span class="detail-meta">
+                                    Pred 1t
+                                </span>
                             </li>
 
                         </ul>
-                        <p style="text-align: right; margin-top: 15px;">
-                            <a href="#" style="color: var(--accent-color); text-decoration: none; font-size: 0.9em;">
+                        <p class="text-right" style="margin-top: 15px;">
+                            <a href="#" class="sidebar-footer-link">
                                 Zobraziť všetky ocenenia →
                             </a>
                         </p>
                     </div>
 
                     <div class="profile-card">
-                        <h2>Poslední návštevníci <i class="fa-solid fa-users"></i></h2>
-                        <ul >
-                            <li><a href="#" style="color: var(--text-light); text-decoration: none;">Invouk_Dev</a> <span style="float: right; color: var(--text-secondary);">pred 10m</span></li>
-                            <li><a href="#" style="color: var(--text-light); text-decoration: none;">JavaMaster</a> <span style="float: right; color: var(--text-secondary);">pred 1h</span></li>
-                            <li><a href="#" style="color: var(--text-light); text-decoration: none;">AdminX</a> <span style="float: right; color: var(--text-secondary);">včera</span></li>
+                        <h3>Poslední návštevníci <i class="fa-solid fa-users"></i></h3>
+                        <ul>
+                            <li class="visitor-item">
+                                <a href="#">Invouk_Dev</a>
+                                <span class="time-ago">pred 10m</span>
+                            </li>
+                            <li class="visitor-item">
+                                <a href="#">JavaMaster</a>
+                                <span class="time-ago">pred 1h</span>
+                            </li>
+                            <li class="visitor-item">
+                                <a href="#">AdminX</a>
+                                <span class="time-ago">včera</span>
+                            </li>
                         </ul>
                     </div>
 
                     <div class="profile-card">
-                        <h2>Správa profilu <i class="fa-solid fa-address-card"></i></h2>
+                        <h3>Správa profilu <i class="fa-solid fa-address-card"></i></h3>
                         <ul>
                             <li>
-                                <a href="#" style="color: var(--text-light); text-decoration: none; font-weight: 600;">
+                                <a href="#" class="widget-link">
                                     <i class="fa-solid fa-info"></i> Upraviť informácie
                                 </a>
                             </li>
                             <li>
-                                <a href="#" style="color: var(--text-light); text-decoration: none;">
+                                <a href="#" class="widget-link">
                                     <i class="fa-solid fa-sliders"></i> Nastavenia účtu
                                 </a>
                             </li>
                             <li>
-                                <a href="#" style="color: var(--text-light); text-decoration: none;">
+                                <a href="#" class="widget-link">
                                     <i class="fa-solid fa-message"></i> Odoslať správu
                                 </a>
                             </li>
                         </ul>
                     </div>
-
-
                 </div>
             </div>
         </div>

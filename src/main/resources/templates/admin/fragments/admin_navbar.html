@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+
+
+<body>
+<div th:fragment="admin_navbar(currentPage)" class="admin-sidebar">
+    <div class="sidebar-header">
+        <h3><i class="fa-solid fa-screwdriver-wrench"></i> Admin Panel</h3>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul>
+            <li>
+                <a th:href="@{/admin/dashboard}"
+                   th:classappend="${currentPage == 'dashboard'} ? 'active' : ''">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/news}"
+                   th:classappend="${currentPage == 'news'} ? 'active' : ''">
+                    <i class="fa-solid fa-newspaper"></i> Novinky a Články
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/members}"
+                   th:classappend="${currentPage == 'members'} ? 'active' : ''">
+                    <i class="fa-solid fa-users"></i> Správa Členov
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/permission}"
+                   th:classappend="${currentPage == 'permission'} ? 'active' : ''">
+                    <i class="fa-solid fa-gear"></i> Nastavenia Permisí
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/server}"
+                   th:classappend="${currentPage == 'server'} ? 'active' : ''">
+                    <i class="fa-solid fa-server"></i> Správa Servera
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/settings}"
+                   th:classappend="${currentPage == 'settings'} ? 'active' : ''">
+                    <i class="fa-solid fa-gear"></i> Nastavenia Systému
+                </a>
+            </li>
+
+
+            <li>
+                <hr style="border-top: 1px solid var(--border-color); margin: 15px 20px;">
+                <a href="/" style="color: var(--offline-color);">
+                    <i class="fa-solid fa-arrow-left"></i> Návrat na Web
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>

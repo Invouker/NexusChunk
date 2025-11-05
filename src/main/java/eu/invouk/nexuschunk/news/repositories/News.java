@@ -24,21 +24,22 @@ public class News {
     @Column(length = 30)
     private String author;
 
-    @Lob
-    private byte[] image;
+    @Column
+    private boolean published;
 
-    @ManyToMany
-    @JoinTable(
-            name = "news_category",
-            joinColumns = @JoinColumn(name = "news_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
-    private List<Category> categories;
+    @Lob
+    private String image;
 
     @Column
     private LocalDateTime createdDate;
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @Column
+    private int likes = 0;
+
+    @Column
+    private int views = 0;
 
 }

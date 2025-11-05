@@ -1,0 +1,284 @@
+:root {
+    /* --- ZÁKLADNÉ FARBY (z vášho nového bloku) --- */
+    --bg-dark: #0C0B1A;      /* Hlavné tmavé pozadie (Pôvodné z body) */
+    --bg-card: #100E22;      /* Pozadie kariet/blokov (Pôvodné --color-bg-primary) */
+    --text-light: #ffffff;   /* Svetlý text (Pôvodné --color-text-primary) */
+    --text-secondary: #7d84a7; /* Sekundárny (šedý) text (Pôvodné --color-text-detail) */
+    --border-color: #161329; /* Farba pre jemné oddeľovače (Pôvodné --color-border-primary) */
+
+    /* --- AKCENTNÉ FARBY (Upravené podľa starého dizajnu) --- */
+    --accent-color: #7289DA; /* Primárny akcent - Discord Modrá (Pôvodné --color-accent-discord) */
+    --accent-color-success: #4a902f; /* Zelený akcent - Peniaze (Pôvodné --color-accent-money) */
+    --accent-color-stat: #9b91ff; /* Fialový akcent - Štatistiky (Pôvodné --color-accent-stat) */
+    --offline-color: #f44336; /* Červená farba (OFFLINE) - Ponechaná z vášho nového bloku */
+    --code-bg: #2c2c44; /* Pozadie pre code/bio (Pôvodné --color-bg-secondary) */
+
+    /* CSS premenné pre dynamický border (DEFAULT - OFFLINE) */
+    --avatar-border-color: var(--offline-color);
+    --avatar-shadow-color: transparent;
+}
+
+/* ========================================================== */
+/* ZÁKLADNÉ ŠTÝLY */
+/* ========================================================== */
+h3 {
+    color: var(--accent-color); /* Discord modrá pre sekciu */
+    border-left: 4px solid var(--accent-color);
+    padding-left: 10px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.15em;
+    cursor: default;
+    user-select: none;
+    font-weight: bold;
+}
+
+
+h1 { margin: 0 0 5px 0; font-size: 2.5em; }
+h2 {
+    color: var(--accent-color);
+    border-left: 4px solid var(--accent-color);
+    padding-left: 10px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.25em;
+    cursor: default;
+    user-select: none;
+}
+
+/* ========================================================== */
+/* WRAPPER A KARTY */
+/* ========================================================== */
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.content-wrapper {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+.main-content {
+    flex: 3;
+    min-width: 60%;
+}
+.sidebar-widgets {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+}
+.profile-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    padding: 20px 20px 10px 20px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+/* RANK BADGE */
+.rank-badge-container {
+    position: absolute;
+    top: -25px;
+    right: -20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--accent-color-success);
+    border-radius: 10%;
+    color: var(--bg-dark);
+    padding: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 10px rgba(74, 144, 47, 0.5);
+    z-index: 10;
+}
+.rank-badge-container .rank-level {
+    font-size: 2.5em;
+    line-height: 1;
+}
+
+/* ========================================================== */
+/* HEAD SEKCIA (AVATAR A NICK) */
+/* ========================================================== */
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+.avatar-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 25px;
+    object-fit: cover;
+    border: 4px solid var(--avatar-border-color);
+    box-shadow: 0 0 10px var(--avatar-shadow-color);
+    transition: transform 0.3s ease;
+}
+.role-badge {
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-size: 0.85em;
+    margin-left: 10px;
+}
+
+/* --- DYNAMICKÉ STAVY --- */
+.status-offline {
+    color: var(--offline-color);
+}
+.avatar-offline {
+    --avatar-border-color: var(--offline-color);
+    --avatar-shadow-color: transparent;
+}
+.status-online {
+    color: var(--accent-color-success);
+}
+.avatar-online {
+    --avatar-border-color: var(--accent-color-success);
+    --avatar-shadow-color: rgba(74, 144, 47, 0.7);
+    box-shadow: 0 0 10px var(--avatar-shadow-color);
+}
+
+
+/* ========================================================== */
+/* DETAILEY, ŠTATISTIKY A BIO */
+/* ========================================================== */
+.info-section { margin-top: 30px; }
+.stat-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--border-color);
+}
+.stat-group:last-child { border-bottom: none; }
+.stat-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.95em;
+}
+.bio-text {
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+code {
+    background: var(--bg-secondary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: var(--text-light);
+    font-family: 'Consolas', monospace;
+}
+
+/* --- TEXTOVÉ A ZAROVNACIE TRIEDY --- */
+.text-secondary-small {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+.text-right {
+    text-align: right;
+}
+.text-detail {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+/* --- SOCIÁLNE ODKAZY --- */
+.social-links-wrapper {
+    text-align: center;
+}
+.social-links-wrapper a {
+    margin-right: 20px;
+}
+.social-links a:hover {
+    color: var(--accent-color-success);
+}
+
+
+/* ========================================================== */
+/* SIDEBAR WIDGETS */
+/* ========================================================== */
+.sidebar-widgets ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar-widgets li {
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--border-color);
+    color: var(--text-secondary);
+}
+.sidebar-widgets li:last-child {
+    border-bottom: none;
+}
+
+/* Všeobecné odkazy vo widgetoch */
+.widget-link {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-weight: 600;
+}
+.widget-link:hover {
+    color: var(--accent-color);
+}
+.widget-link i {
+    margin-right: 0.5rem;
+}
+
+/* Päta widgetov (link Zobraziť všetky ocenenia) */
+.sidebar-footer-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+/* Ocenenia (Špeciálny zoznam detailov) */
+.widget-detail-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--border-color);
+}
+.widget-detail-item .icon-large {
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+.widget-detail-item .title-bold {
+    font-weight: 600;
+    color: var(--text-light);
+}
+.widget-detail-item .detail-meta {
+    margin-left: auto;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+/* Návštevníci (Flexbox) */
+.visitor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.visitor-item a {
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.visitor-item a:hover {
+    color: var(--accent-color);
+}
+.visitor-item .time-ago {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
