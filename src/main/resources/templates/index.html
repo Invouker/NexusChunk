@@ -1,163 +1,12 @@
 <!DOCTYPE html>
 <html lang="sk" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <div th:replace="~{fragments/head :: head('NexusChunk Server | Domov')}"></div>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+<head th:replace="~{fragments/head :: head('NexusChunk Server | Domov', true)}"></head>
 
-
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-</head>
-<body class="text-white">
-
+<body>
 <div th:replace="~{fragments/navbar :: navbar('domov')}"></div>
 
 <div class="container">
-
-    <style>
-        .welcome {
-            min-height: 25rem;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            box-shadow: 0 0 10rem rgba(0,0,0,1) inset;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            border-radius: 2rem;
-        }
-
-        .welcome::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("/images/minecraft3.png");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            filter: blur(1.5px);
-            z-index: 1;
-        }
-
-        .welcome-villager {
-            background-image: url("/images/villager3.png");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            height: 100%;
-            width: 15rem;
-            position: absolute;
-
-            top: 3rem;
-            right: 1rem;
-            z-index: 10;
-
-            filter: blur(0.04rem);
-        }
-
-        /* ================================================================= */
-        /* I. ZÁKLADNÉ A UNIVERZÁLNE TRIEDY */
-        /* ================================================================= */
-
-        .minecraft-server {
-            background-image: url("/images/minecraft_bg.png");
-            height: 100%;
-            border-radius: 1rem;
-        }
-
-        .discord {
-            background-image: url("/images/discord_bg2.png");
-            height: 100%;
-            border-radius: 1rem;
-        }
-
-        .info-image {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 144px;
-        }
-
-        .info-image .btn {
-            float: right;
-            width: 30%;
-
-            background-color: white;
-            color: #7289DA;
-            font-weight: bold;
-            font-size: 1.3rem;
-            border: none;
-            transition: transform 0.3s ease-out;
-            will-change: transform;
-        }
-
-        .info-image .title {
-            font-weight: bold;
-            font-size: 1.7rem;
-            text-shadow: 2px 2px 7px #0C0B1A;
-        }
-
-        .info-image .subtitle {
-            font-weight: bold;
-            text-shadow: -1px -1px 7px #000, 1px -1px 7px #000, -1px 1px 7px #000, 1px 1px 7px #000;
-        }
-        .info-image .btn:hover {
-            transform: scale(1.07);
-        }
-
-        .welcome .logo {
-            height: 100%; /* Rozširujeme na celú výšku bannera */
-            width: 100%;
-            position: absolute;
-            z-index: 10;
-            transform: none !important;
-        }
-
-        .welcome .logo::after {
-            content: "";
-            background-image: url("/images/logo.png");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-
-
-            height: 20rem;
-            width: 20rem;
-            position: absolute;
-
-            top: 50%;
-            left: 50%;
-
-            transform: translate(-50%, -50%);
-
-            animation-name: pulse-logo;
-            animation-duration: 7s;
-            animation-iteration-count: infinite;
-            animation-timing-function: ease-in-out;
-            will-change: transform;
-        }
-
-        @keyframes pulse-logo {
-            0% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .particles-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9; /* Toto je dôležité! Udržuje partikly nad pozadím (1) a pod logom/villagerom (10) */
-        }
-
-    </style>
     <div class="row">
 
         <div class="col-lg-12 col-md-12 welcome">
@@ -166,164 +15,23 @@
             <div id="particles-js-nether" class="particles-container"></div>
         </div>
 
-            <div class="col-lg-6">
-                <div class="info-image minecraft-server p-3">
-                    <span class="title ms-auto">MINECRAFT SERVER</span>
-                    <span class="subtitle ms-auto">Práve je online XXX hráčov.</span>
-                    <button class="btn-primary btn mt-auto ms-auto">PLAY NOW</button>
-                </div>
+        <div class="col-lg-6">
+            <div class="info-image minecraft-server p-3">
+                <span class="title ms-auto">MINECRAFT SERVER</span>
+                <span class="subtitle ms-auto">Práve je online XXX hráčov.</span>
+                <button class="btn-primary btn mt-auto ms-auto">PLAY NOW</button>
             </div>
+        </div>
 
-            <div class="col-lg-6">
-                <div class="info-image discord p-3">
-                    <span class="title">DISCORD</span>
-                    <span class="subtitle" style="left: -5.8rem!important;">Práve je online XXX členov.</span>
-                    <button class="btn-primary btn mt-auto">JOIN NOW</button>
-                </div>
+        <div class="col-lg-6">
+            <div class="info-image discord p-3">
+                <span class="title">DISCORD</span>
+                <span class="subtitle" style="left: -5.8rem!important;">Práve je online XXX členov.</span>
+                <button class="btn-primary btn mt-auto">JOIN NOW</button>
             </div>
-
+        </div>
 
     </div>
-
-    <style>
-        .news-container {
-            margin-top: 3rem;
-            font-family: "Quicksand", sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-        }
-
-        .news {
-            background-color: #100E22;
-            overflow: hidden;
-            border-radius: 0.5rem;
-            border: 3px solid #161329;
-            width: fit-content;
-            margin-bottom: 2rem;
-        }
-
-        .image-wrapper {
-            position: relative;
-            left: -1px;
-            width: 100%;
-            height: 20rem;
-            overflow: hidden;
-        }
-
-        .news img {
-            position: absolute;
-            width: 101%;
-            height: 101%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease-out;
-            will-change: transform;
-        }
-
-        .news img:hover {
-            transform: scale(1.1);
-        }
-
-        .news .title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            padding: .7rem 7rem .7rem 1rem;
-            color: #f5c542;
-            font-size: 1.5rem;
-            font-weight: bold;
-            z-index: 10;
-            text-shadow: 3px 3px 10px black;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
-            width: fit-content;
-        }
-
-        .news .content {
-            padding: 1rem;
-            color: #606199;
-            margin-bottom: 0.5rem;
-        }
-
-        .news .footer {
-            margin: 0 1rem 1rem 1rem;
-            border-top: 3px solid #161329;
-        }
-
-        .news .footer .info {
-            margin: .9rem 0 .3rem 0;
-            color: #7d84a7;
-            font-weight: bold;
-            font-size: 0.95rem;
-            width: 100%;
-        }
-        .news .footer .hearth-widget, .continue {
-            margin-right: 0.5rem;
-        }
-
-        .news .footer .continue {
-            background-color: #7289DA;
-            color: white;
-            font-weight: bold;
-            font-size: .85rem;
-            padding: 0.7rem;
-            border: none;
-        }
-
-        .news .footer .continue:hover {
-            background-color: #4a568f;
-        }
-
-        .news .footer .hearth-widget {
-            padding: 0.7rem;
-            background-color: rgba(78, 42, 119, 0.6);
-            border-radius: 0.6rem;
-            font-size: 0.85rem;
-            font-weight: bold;
-            position: relative;
-            display: inline-flex;
-            color: white;
-        }
-
-        .news .footer .hearth{
-            color: red;
-            transition: transform 0.3s ease-out;
-            position: relative;
-            z-index: 2;
-            transform-origin: right center;
-            will-change: transform;
-        }
-
-        .news .footer .hearth:hover {
-            transform: scale(1.5);
-        }
-
-        .news .footer .like-count {
-            padding-left: 0.5rem;
-            position: relative;
-            z-index: 3;
-        }
-
-        .news .footer .author a {
-            color: #7d84a7;
-            text-decoration: none;
-            margin-left: 1rem;
-        }
-
-        .news .footer .author a:hover {
-            color: #b1baec;
-        }
-
-        .news .footer .wrapper-right {
-            margin-left: auto;
-            display: flex;
-            align-items: center;
-        }
-
-        .news .footer .info > div:not(.wrapper-right) { /** GAP-3 replacement **/
-            margin-right: 1.5rem;
-        }
-    </style>
 
     <div class="row">
         <div class="col-lg-8 news-container">
@@ -339,13 +47,9 @@
                 </div>
 
                 <div class="content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    It has survived not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the 1960s with the release of
-                    Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+                    survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+                    with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </div>
 
                 <div class="footer">
@@ -382,13 +86,9 @@
                 </div>
 
                 <div class="content">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    It has survived not only five centuries, but also the leap into electronic typesetting,
-                    remaining essentially unchanged. It was popularised in the 1960s with the release of
-                    Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                    software like Aldus PageMaker including versions of Lorem Ipsum.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has
+                    survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+                    with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                 </div>
 
                 <div class="footer">
@@ -414,125 +114,10 @@
 
                 </div>
             </div>
-
-
-
         </div>
 
 
-        <style>
-            .sidebar {
-                border-radius: .5rem!important;
-                background-color: #100E22;
-                padding: 1rem;
-                color: #606199;
-                font-family: "Quicksand", sans-serif;
-                border: 3px solid #161329;
-
-            }
-
-            .sidebar .title {
-                font-weight: bold;
-                font-size: 1.5rem;
-            }
-
-            /**************************************/
-            /********    PLAYER STATS    **********/
-            /**************************************/
-
-            .sidebar.top .content .player {
-                margin: 0.7rem;
-            }
-
-            .sidebar.top .content .player .name {
-                font-weight: bold;
-                font-size: 1.2rem;
-                color: white;
-                text-decoration: none!important;
-            }
-
-            .sidebar.top .content .player img {
-                background-color: #2c2c44;
-                border-radius: 0.5rem;
-                padding: 0.3rem;
-                transition: transform 0.2s ease-in-out;
-                transform-origin: center center;
-            }
-
-            .sidebar.top .content a {
-                text-decoration: none;
-            }
-
-            .sidebar.top .content a:hover img {
-                transform: scale(1.2); /* Zväčší obrázok o 20% (1.2 = 120%) */
-                z-index: 10;           /* Zabezpečí, že zväčšený obrázok bude nad ostatnými prvkami */
-            }
-
-            .sidebar.top .content .player .money {
-                color: #4a902f;
-            }
-
-            .sidebar.space-top {
-                margin-top: 1.5rem;
-            }
-            /************************************/
-
-            /************************************/
-            /********    SERVER STATS    ********/
-            /************************************/
-
-            .sidebar.server-stats .content .stat .icon {
-                color: #997bff;
-                font-size: 1.4rem;
-                background-color: #2c2c44;
-                border-radius: 0.5rem;
-                padding: 0.6rem;
-                margin: 0.4rem;
-                min-width: 3rem;
-                text-align: center;
-            }
-
-            .sidebar.server-stats .content .stat .name {
-                color: #b6b6b6;
-                flex-grow: 1;
-                flex-basis: 0;
-            }
-
-            .sidebar.server-stats .content .stat .value {
-                color: #9b91ff;
-                padding-left: 1rem;
-                flex-shrink: 0;
-            }
-
-            /************************************/
-
-            /************************************/
-            /*******    TOP LIST STATS    *******/
-            /************************************/
-
-            .sidebar.top-list .content .player .value {
-                color: #9b91ff;
-            }
-
-            .sidebar.top-list .content .player .state {
-                color: #9b91ff;
-                font-weight: bold;
-                font-size: 0.95rem;
-            }
-
-            .sidebar.top-list .content .player .name {
-                color: white;
-                font-weight: bold;
-                font-size: 1rem;
-            }
-
-            .sidebar.top-list .content .player .player-details {
-                margin: 0.8rem;
-            }
-
-        </style>
         <div class="col-lg-4" style="margin-top: 3rem;">
-
             <div class="sidebar server-stats">
                 <div class="title">Štatistiky servera</div>
                 <div class="content">
@@ -577,7 +162,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar"/>
+                            <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najbohatší hráč</div>
                                 <div class="name">Invouk</div>
@@ -588,7 +173,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/notch" alt="notch Avatar"/>
+                            <img src="https://vzge.me/head/64/notch" alt="notch Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najviac odohraný čas</div>
                                 <div class="name">notch</div>
@@ -599,7 +184,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_cactus" alt="MHF_cactus Avatar"/>
+                            <img src="https://vzge.me/head/64/MHF_cactus" alt="MHF_cactus Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najviac zabití</div>
                                 <div class="name">MHF_cactus</div>
@@ -611,7 +196,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_grass" alt="MHF_grass Avatar"/>
+                            <img src="https://vzge.me/head/64/MHF_grass" alt="MHF_grass Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najviac smrtí</div>
                                 <div class="name">MHF_grass</div>
@@ -622,7 +207,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_chest" alt="MHF_chest Avatar"/>
+                            <img src="https://vzge.me/head/64/MHF_chest" alt="MHF_chest Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najviac prejdených blokov</div>
                                 <div class="name">MHF_chest</div>
@@ -633,7 +218,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_iron" alt="MHF_iron Avatar"/>
+                            <img src="https://vzge.me/head/64/MHF_iron" alt="MHF_iron Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najviac vyťažených blokov</div>
                                 <div class="name">MHF_iron</div>
@@ -644,7 +229,7 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_cake" alt="MHF_cake Avatar"/>
+                            <img src="https://vzge.me/head/64/MHF_cake" alt="MHF_cake Avatar" />
                             <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
                                 <div class="state">Najviac položených blokov</div>
                                 <div class="name">MHF_cake</div>
@@ -662,14 +247,14 @@
 
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar"/>
+                            <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar" />
                             <div class="name">Invouk</div>
                             <div class="money">8,536,574$</div>
                         </div>
                     </a>
                     <a href="/invouk">
                         <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_TNT" alt="MHF_TNT Avatar"/>
+                            <img src="https://vzge.me/head/64/MHF_TNT" alt="MHF_TNT Avatar" />
                             <div class="name">MHF_TNT</div>
                             <div class="money">3,536,574$</div>
                         </div>
@@ -685,67 +270,67 @@
     </div>
 
     <!--
-    <div class="news-thread-list-container">
+<div class="news-thread-list-container">
 
-        <div th:if="${newsPage != null}">
+    <div th:if="${newsPage != null}">
 
-            <div class="news-card" th:each="news : ${newsPage.content}">
-                <a th:href="@{/news/{id}(id=${news.id})}" style="text-decoration: none; color: inherit;">
-                    <div class="news-body">
+        <div class="news-card" th:each="news : ${newsPage.content}">
+            <a th:href="@{/news/{id}(id=${news.id})}" style="text-decoration: none; color: inherit;">
+                <div class="news-body">
 
-                        <div class="news-image"
-                             th:style="|background-image: url('${news.image != null ? news.image : 'https://via.placeholder.com/90x60/5c7aff/fff?text=NEWS'}');|">
-                        </div>
-
-                        <div class="news-content">
-                            <h4><span th:text="${news.title}">Titulok Novinky</span></h4>
-
-                            <div class="news-summary">
-                                <span th:text="${#strings.substring(news.content, 0, #strings.length(news.content) > 100 ? 100 : #strings.length(news.content)) + '...'}">
-                                    Krátky úvod, aby sa zmestil na riadok.
-                                </span>
-                            </div>
-
-                            <p class="news-meta">
-                                <span class="badge badge-custom"
-                                      th:if="${!news.categories.isEmpty()}"
-                                      th:text="${news.categories[0].name}">
-                                    TAG
-                                </span>
-                                Publikované:
-                                <span th:text="${#temporals.format(news.createdDate, 'dd. MMM. yy')}">20. Okt.</span>
-                                | Autor: <span th:text="${news.author}">Nexus</span>
-                            </p>
-                        </div>
+                    <div class="news-image"
+                         th:style="|background-image: url('${news.image != null ? news.image : 'https://via.placeholder.com/90x60/5c7aff/fff?text=NEWS'}');|">
                     </div>
-                </a>
-            </div>
 
-            <div class="news-card">
-                <a href="#" style="text-decoration: none; color: inherit;">
-                    <div class="news-body">
-                        <div class="news-image" style="background-image: url('https://via.placeholder.com/90x60/ffc107/212529?text=NEW');"></div>
-                        <div class="news-content">
-                            <h4><span >Aktualizácia obchodu s mincami</span></h4>
-                            <div class="news-summary">
-                                Do in-game obchodu bolo pridaných 5 nových kozmetických predmetov! Prihláste sa ešte dnes!
-                            </div>
-                            <p class="news-meta">
-                                <span class="badge badge-custom">UPDATE</span>
-                                Publikované: 27. Okt. | Autor: Admin
-                            </p>
+                    <div class="news-content">
+                        <h4><span th:text="${news.title}">Titulok Novinky</span></h4>
+
+                        <div class="news-summary">
+                            <span th:text="${#strings.substring(news.content, 0, #strings.length(news.content) > 100 ? 100 : #strings.length(news.content)) + '...'}">
+                                Krátky úvod, aby sa zmestil na riadok.
+                            </span>
                         </div>
-                    </div>
-                </a>
-            </div>
 
+                        <p class="news-meta">
+                            <span class="badge badge-custom"
+                                  th:if="${!news.categories.isEmpty()}"
+                                  th:text="${news.categories[0].name}">
+                                TAG
+                            </span>
+                            Publikované:
+                            <span th:text="${#temporals.format(news.createdDate, 'dd. MMM. yy')}">20. Okt.</span>
+                            | Autor: <span th:text="${news.author}">Nexus</span>
+                        </p>
+                    </div>
+                </div>
+            </a>
         </div>
 
-        <div th:replace="~{fragments/pagination :: paginationFragment(${newsPage})}"></div>
+        <div class="news-card">
+            <a href="#" style="text-decoration: none; color: inherit;">
+                <div class="news-body">
+                    <div class="news-image" style="background-image: url('https://via.placeholder.com/90x60/ffc107/212529?text=NEW');"></div>
+                    <div class="news-content">
+                        <h4><span >Aktualizácia obchodu s mincami</span></h4>
+                        <div class="news-summary">
+                            Do in-game obchodu bolo pridaných 5 nových kozmetických predmetov! Prihláste sa ešte dnes!
+                        </div>
+                        <p class="news-meta">
+                            <span class="badge badge-custom">UPDATE</span>
+                            Publikované: 27. Okt. | Autor: Admin
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
 
     </div>
-    </div>
-    -->
+
+    <div th:replace="~{fragments/pagination :: paginationFragment(${newsPage})}"></div>
+
+</div>
+</div>
+-->
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -911,4 +496,5 @@
 
 </body>
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 </html>
