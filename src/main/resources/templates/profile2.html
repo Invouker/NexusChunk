@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | ' + ${targetUser.minecraftNick})}"></div>
+
+    <style>
+        /* Len základný štýl pre vizualizáciu - odstráňte a použite svoje CSS */
+        body { font-family: sans-serif; background-color: #f4f7f6; padding: 20px; }
+        .profile-card { max-width: 800px; margin: 20px auto; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 30px; }
+        .header { display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .avatar-img { width: 100px; height: 100px; border-radius: 50%; margin-right: 20px; object-fit: cover; border: 4px solid #4CAF50; }
+        .info-section { margin-top: 20px; }
+        .stat-group { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .stat-label { font-weight: bold; color: #555; }
+        .social-link { margin-right: 15px; }
+        .social-icon { width: 20px; height: 20px; }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar('profile')}"></div>
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <div class="content-card p-4 mb-4 border-start border-warning border-5 shadow-lg">
+                <div class="d-flex align-items-center">
+
+                    <img
+                            th:src="${avatar.data}"
+                            alt="Avatar používateľa"
+                            class="avatar-img transition-transform duration-300 hover:scale-105"
+                    />
+
+                    <div>
+                        <h1 class="display-6 mb-1 text-white" th:text="${targetUser.minecraftNick}">Hráč Nickname</h1>
+
+                        <span th:each="role : ${targetUser.roles}">
+                            <span class="badge bg-secondary me-1 py-2" th:text="${role.name}">USER</span>
+                        </span>
+                    </div>
+                </div>
+
+                <hr class="border-secondary mt-4 mb-3">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <small class="d-block">Dátum registrácie</small>
+                        <span th:text="${#temporals.format(targetUser.registrationDate, 'dd.MM.yyyy')}">00.00.0000</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <small class="d-block">Naposledy online</small>
+                        <span th:text="${#temporals.format(targetUser.lastLogin, 'dd.MM.yyyy')}">00.00.0000</span>
+                    </div>
+
+
+                    <div class="col-md-6" th:if="${isOwner}">
+                        <small class="d-block">E-mailová adresa</small>
+                        <p class="mb-0 text-white" th:text="${targetUser.email}">user.email@example.com</p>
+                    </div>
+
+                    <div class="col-md-6" th:if="${isOwner}">
+                        <small class="d-block">Stav účtu</small>
+                        <p class="mb-0">
+                            <span th:if="${targetUser.enabled}" class="badge bg-success"><i class="fa fa-check-circle"></i> Aktívny</span>
+                            <span th:unless="${targetUser.enabled}" class="badge bg-danger"><i class="fa fa-times-circle"></i> Deaktivovaný</span>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12 mb-4" th:if="${isOwner}">
+                    <div class="content-card p-4">
+                        <h4 class="text-warning mb-3"><i class="fa fa-shield"></i> Nastavenia a bezpečnosť</h4>
+
+                        <a th:href="@{/settings}" class="btn btn-warning me-2 mb-2">
+                            <i class="fa fa-cog"></i> Upraviť profil
+                        </a>
+                        <a th:href="@{/change-password}" class="btn btn-secondary me-2 mb-2">
+                            <i class="fa fa-lock"></i> Zmeniť heslo
+                        </a>
+                        <a th:href="@{/2fa}" class="btn btn-info me-2 mb-2">
+                            <i class="fa fa-mobile"></i> 2FA
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mb-4" th:unless="${isOwner}">
+                    <div class="content-card p-4">
+                        <h4 class="text-warning mb-3"><i class="fa fa-bar-chart"></i> Verejné štatistiky hráča</h4>
+                        <p class="text-muted">Tu môžete zobraziť herné štatistiky ako čas hrania, počet zabití, level atď.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

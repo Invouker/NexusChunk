@@ -7,6 +7,8 @@ import eu.invouk.nexuschunk.user.permissions.EPermission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -15,6 +17,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 @Slf4j
 @Configuration
@@ -32,8 +37,34 @@ public class SecurityConfiguration {
         log.info("Security configuration has been initialized");
     }
 
+    private static final String LIVE_RELOAD_CSP =
+            "default-src 'self';" +
+                    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://kit.fontawesome.com https://www.google.com https://www.gstatic.com http://localhost:35729 http://localhost:*;" +
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net;" +
+
+                    "img-src 'self' data: https: https://vzge.me;" +
+                    "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://ka-f.fontawesome.com;" +
+                    "frame-src 'self' https://www.google.com;" +
+                    "worker-src 'self' blob:;" +
+                    "connect-src 'self' ws://localhost:35729 http://localhost:35729 https://cdn.jsdelivr.net https://ka-f.fontawesome.com;";
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, Environment environment) throws Exception {
+
+        http.headers(headers -> headers
+                        // Odstránenie všetkých predvolených hlavičiek
+                        .defaultsDisabled()
+
+                        // 1. CSP (používame LIVE_RELOAD_CSP, ktorá musí obsahovať povolenia pre tsParticles a LiveReload)
+                        .addHeaderWriter(new ContentSecurityPolicyHeaderWriter(LIVE_RELOAD_CSP))
+
+                        // 2. X-Frame-Options
+                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
+                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+
+                // Prípadne iné hlavičky, ktoré chcete zachovať...
+        );
+
         http
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
@@ -63,7 +94,7 @@ public class SecurityConfiguration {
                         .permitAll()
                 )
                 .oauth2Login(oauth2 -> {
-                    oauth2.loginPage("/");
+                    oauth2.loginPage("/login-oauth");
                     oauth2.userInfoEndpoint(userInfoEndpoint ->
                                     userInfoEndpoint
                                             // Pre OAuth2
@@ -72,6 +103,9 @@ public class SecurityConfiguration {
                                             .oidcUserService(customOIDCUserService))
                             .defaultSuccessUrl("/");
                 })
+                .csrf(csrf ->
+                        csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                )
                 .userDetailsService(customUserDetailsService);
 
         return http.build();

@@ -12,7 +12,6 @@ import java.util.Set;
 @Data
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -53,9 +52,6 @@ public class User {
 
     private boolean enabled = false;
 
-    @Column(name = "minecraft_uuid", unique = true)
-    private String minecraftUuid;
-
     @Column(name = "oauth_provider")
     private String oauthProvider;
 
@@ -65,10 +61,25 @@ public class User {
     @Column
     private LocalDateTime registrationDate;
 
-    @Column
+    @Column()
     private LocalDateTime lastLogin;
 
-    @Column
-    private LocalDateTime lastActivity;
+    @Column()
+    private LocalDateTime lastActivity = LocalDateTime.now();
+
+    @Column(length = 2048)
+    private String aboutMe;
+
+    @Column(length = 50)
+    private String discordName;
+
+    @Column(length = 50)
+    private String facebookName;
+
+    @Column(length = 50)
+    private String instagramName;
+
+    @Column(length = 50)
+    private String githubName;
 
 }

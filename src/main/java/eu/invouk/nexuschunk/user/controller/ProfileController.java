@@ -93,7 +93,7 @@ public class ProfileController {
 
         model.addAttribute("isOnline", isOnline(targetUser));
         model.addAttribute("targetUser", targetUser);
-        model.addAttribute("avatar", avatarService.getAvatar(targetUser, 100));
+        model.addAttribute("profileAvatar", avatarService.getAvatar(targetUser, 100));
 
         return "profile";
     }

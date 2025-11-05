@@ -2,13 +2,24 @@
 <html lang="sk" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 <nav th:fragment="navbar(active)" class="navbar navbar-custom navbar-expand-lg navbar-fixed-top">
+    <style>
+        .navbar-nav .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .dropdown-menu-dark {
+            background-color: #1e1e2c;
+        }
+    </style>
+
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-
+        <!--
         <a class="navbar-brand" th:href="@{/}" href="index.html">NEXUSCHUNK</a>
-
+-->
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 main-nav">
 
@@ -21,9 +32,6 @@
                 <li class="nav-item">
                     <a class="nav-link" th:classappend="${active == 'team' ? 'active' : ''}" th:href="@{/team}" href="team.html"><i class="fa fa-users"></i> Tím</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:classappend="${active == 'admin' ? 'active' : ''}" th:href="@{/admin/overview}" href="admin-overview.html"><i class="fa fa-lock"></i> Admin Panel</a>
-                </li>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0" sec:authorize="!isAuthenticated()">
                 <li class="nav-item">
@@ -34,10 +42,25 @@
                 </li>
             </ul>
 
+
+
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0" sec:authorize="isAuthenticated()">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${active == 'admin' ? 'active' : ''}" th:href="@{/admin/overview}" href="/admin-overview.html"><i class="fa fa-lock"></i> Admin Panel</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-user-circle fa-lg"></i>
+                        <!--<i class="fa fa-user-circle fa-lg"></i>-->
+                       <!-- <img
+                                th:src="${avatar.data}"
+                                alt="Avatar používateľa"
+                                style="width:35px; height:35px; border-radius: 50%; vertical-align: middle;"
+                        />-->  <img
+
+                                th:src="'https://vzge.me/bust/64/' + ${user.username}"
+                                alt="Avatar používateľa"
+                                style="width:35px; height:35px; border-radius: 50%; vertical-align: middle;"
+                        />
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarDropdown">
@@ -51,6 +74,12 @@
                         <li>
                             <a class="dropdown-item" th:href="@{/settings}" href="settings.html">
                                 <i class="fa fa-cog"></i> Nastavenia
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" th:href="@{/settings}" href="send-message.html">
+                                <i class="fa fa-cog"></i> Odoslať správu
                             </a>
                         </li>
 

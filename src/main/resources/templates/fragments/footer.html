@@ -2,32 +2,130 @@
 <html lang="sk" xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="footer">
+    <div th:fragment="footer">
 
-    <footer class="text-center mt-5">
-        <p><i class="fa fa-code"></i> Kódované pre NexusChunk | &copy; 2025</p>
-    </footer>
+        <style>
+            footer {
+                position: relative;
+                padding: 0;
+                color: var(--color-text-secondary);
+                width: 100%;
 
-    <div th:replace="~{fragments/modals/login :: loginModal}"></div>
-    <div th:replace="~{fragments/modals/register :: registerModal}"></div>
-    <div th:replace="~{fragments/modals/forgot-password :: forgotModal}"></div>
-    <div th:replace="~{fragments/toast :: toast}"></div>
+                /* Kľúčové: Nastavíme footer ako Grid kontajner */
+                display: grid;
+                /* Výška footera je teraz určená výškou detí v riadku */
+            }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const modalToOpen = urlParams.get('modal');
-            if (modalToOpen === 'login') {
-                const loginModalEl = document.getElementById('loginModal');
-                if (loginModalEl) {
-                    const loginModal = new bootstrap.Modal(loginModalEl);
-                    loginModal.show();
-                    if (urlParams.has('registered')) {
-                         console.log("Registrácia úspešná. Prosím, prihláste sa.");
+            /* Všetky priame deti footera sa umiestnia do prvého riadku/stĺpca, čím sa prekrývajú */
+            footer > * {
+                grid-area: 1 / 1 / 2 / 2; /* Umiestni element do prvej bunky */
+            }
+
+            /* 1. Obrázok: Zmenšenie bez orezania */
+            .footer-image {
+                display: block;
+                width: 100%;
+                height: auto; /* Kľúčové: Zachováva pomer strán! */
+
+                /* Nastavíme maximálnu výšku, na ktorú sa obrázok zmenší */
+                max-height: 400px; /* <--- NASTAVTE NOVÚ ŽELANÚ VÝŠKU VIZUÁLNEHO OBRÁZKA */
+
+                z-index: 1; /* Pod obsahom */
+            }
+
+            /* 2. Kontajner pre obsah: Umiestnenie nad obrázok */
+            .footer-content-wrapper {
+                z-index: 10; /* Nad obrázkom */
+                width: 100%;
+                height: 100%; /* Vyplní výšku, ktorú určil zmenšený obrázok */
+
+                /* Flexbox pre vertikálne zarovnanie (teraz sa aplikuje priamo tu) */
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end; /* Alebo center */
+
+                padding: 15px 0; /* Vertikálny padding pre odsadenie obsahu */
+            }
+
+            /* Pre zabezpečenie, že obsah je v strede: */
+            .footer-content-wrapper .container {
+                width: 100%;
+            }
+
+            footer h3 {
+                border-left: 5px solid #2C2C44;
+                border-radius: 0.1rem;
+                padding-left: 0.6rem;
+                font-weight: bold;
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            footer a {
+                text-decoration: none;
+                color: #829ebc;
+            }
+
+            footer a i {
+                background-color: #2C2C44;
+                padding: 0.5rem;
+                border-radius: 0.7rem;
+                margin-bottom: 1rem;
+                min-width: 2.7rem;
+                text-align: center;
+            }
+
+            footer .copyright {
+                font-weight: bold;
+                text-align: center;
+                margin-top: 3.2rem;
+            }
+        </style>
+
+
+        <footer class="col-lg-12 mb-4 order-0 center-box ">
+            <img src="/images/footer.png" class="footer-image">
+
+            <div class="footer-content-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h3>Odkazy</h3>
+                            <a href="/#1"><i class="fa-brands fa-github"></i> Github</a><br />
+                            <a href="/#1"><i class="fa-brands fa-discord"></i> Github</a>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3>Dôležité odkazy</h3>
+                            <a href="/#1">Obchodné podmienky</a><br />
+                            <a href="/#1">Licencia</a><br />
+                        </div>
+                        <div class="copyright">
+                            Copyright &copy; 2025 - Made on <i class="fa-solid fa-earth-europe"></i> with <i class="fa-solid fa-heart"></i> by
+                            <a href="/profile/Invouk">Invouk</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div th:replace="~{fragments/modals/login :: loginModal}"></div>
+        <div th:replace="~{fragments/modals/register :: registerModal}"></div>
+        <div th:replace="~{fragments/modals/forgot-password :: forgotModal}"></div>
+        <div th:replace="~{fragments/toast :: toast}"></div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const modalToOpen = urlParams.get('modal');
+                if (modalToOpen === 'login') {
+                    const loginModalEl = document.getElementById('loginModal');
+                    if (loginModalEl) {
+                        const loginModal = new bootstrap.Modal(loginModalEl);
+                        loginModal.show();
                     }
                 }
-            }
-        });
-    </script>
-</div> </body>
+            });
+        </script>
+    </div>
+</body>
 </html>
