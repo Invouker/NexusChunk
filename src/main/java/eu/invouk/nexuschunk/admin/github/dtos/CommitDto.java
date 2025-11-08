@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk;
+package eu.invouk.nexuschunk.admin.github.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

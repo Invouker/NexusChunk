@@ -1,7 +1,8 @@
 package eu.invouk.nexuschunk.admin;
 
-import eu.invouk.nexuschunk.CommitDisplayDto;
-import eu.invouk.nexuschunk.CommitDto;
+import eu.invouk.nexuschunk.admin.github.CommitMapper;
+import eu.invouk.nexuschunk.admin.github.dtos.CommitDisplayDto;
+import eu.invouk.nexuschunk.admin.github.dtos.CommitDto;
 import eu.invouk.nexuschunk.services.GithubService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,58 +21,24 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final GithubService githubService;
+    private final CommitMapper commitMapper;
 
-    public AdminController(GithubService githubService) {
+    public AdminController(GithubService githubService, CommitMapper commitMapper) {
         this.githubService = githubService;
+        this.commitMapper = commitMapper;
     }
 
 
     @GetMapping("/admin/dashboard")
     public String adminDashboard(Model model){
 
-        // 1. Získanie surových commitov
+        //Commits
         List<CommitDto> rawCommits = githubService.getCommits().stream().limit(10).toList();
-
-        // --- LOGIKA FORMÁTOVANIA DÁTUMU ---
-        DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        // Nastavte časovú zónu, v ktorej sa má dátum zobraziť (napr. stredoeurópsky čas)
-        ZoneId targetZone = ZoneId.systemDefault();
-
-        // 2. Konverzia surových DTO na DTO pre zobrazenie
-        List<CommitDisplayDto> displayCommits = rawCommits.stream()
-                .map(raw -> {
-                    String formattedDate;
-                    String rawDate = raw.commitDetails().committer().date(); // Prístup cez record metódy
-
-                    if (rawDate != null) {
-                        try {
-                            // Parsuje ISO 8601 reťazec (napr. '2025-11-05T21:36:04Z')
-                            Instant instant = Instant.parse(rawDate);
-                            // Konvertuje na ZonedDateTime v cieľovej zóne (napr. pre +01:00)
-                            ZonedDateTime zdt = instant.atZone(targetZone);
-                            formattedDate = zdt.format(targetFormatter);
-                        } catch (Exception e) {
-                            log.error("Chyba parsovania dátumu z Gitu: {}", rawDate, e);
-                            formattedDate = "Chybný formát";
-                        }
-                    } else {
-                        formattedDate = "Dátum neznámy";
-                    }
-
-                    // Vytvorenie DTO pre Thymeleaf
-                    return new CommitDisplayDto(
-                            raw.sha(),
-                            raw.commitDetails().message(),
-                            raw.commitDetails().committer().name(),
-                            formattedDate
-                    );
-                })
-                .collect(Collectors.toList());
-
-        log.warn("Formátované Commits: {}", displayCommits);
-
-        // 3. Pridanie SPRACVANÝCH dát do modelu
+        List<CommitDisplayDto> displayCommits = commitMapper.mapToDisplayDtos(rawCommits);
         model.addAttribute("commits", displayCommits);
+
+        //News
+
 
         return "admin/index";
     }
