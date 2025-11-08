@@ -7,7 +7,6 @@ import eu.invouk.nexuschunk.news.services.NewsLikeService;
 import eu.invouk.nexuschunk.services.FileStorageService;
 import eu.invouk.nexuschunk.services.UserService;
 import eu.invouk.nexuschunk.user.User;
-import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller

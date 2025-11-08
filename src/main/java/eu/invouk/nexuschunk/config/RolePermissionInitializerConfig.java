@@ -1,15 +1,16 @@
 package eu.invouk.nexuschunk.config;
 
 // Importujeme novú triedu Permission, ktorá slúži ako komponent a zoznam konštánt
+
 import eu.invouk.nexuschunk.permissions.Permission;
-// Musíme aktualizovať import servisu, ak ste ho premenovali alebo presunuli
 import eu.invouk.nexuschunk.user.permissions.RolePermissionInitializerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Configuration

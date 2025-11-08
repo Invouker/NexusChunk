@@ -7,11 +7,10 @@ import eu.invouk.nexuschunk.services.AvatarService;
 import eu.invouk.nexuschunk.services.UserService;
 import eu.invouk.nexuschunk.user.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.ui.Model;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.security.Principal;
 
 @ControllerAdvice
