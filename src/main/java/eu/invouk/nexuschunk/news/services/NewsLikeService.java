@@ -8,6 +8,8 @@ import eu.invouk.nexuschunk.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -60,5 +62,13 @@ public class NewsLikeService {
 
         // 2. Kontrolujeme, či existuje záznam Like
         return newsLikeRepository.findByUserAndNews(user, news).isPresent();
+    }
+
+    public long countLikesForLastDays(long days) {
+        // 1. Vypočíta LocalDateTime X dní dozadu
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(days);
+
+        // 2. Zavolá Repository, ktorá vykoná COUNT s podmienkou WHERE likedAt >= dátum
+        return newsLikeRepository.countByLikedAtGreaterThanEqual(thirtyDaysAgo);
     }
 }
