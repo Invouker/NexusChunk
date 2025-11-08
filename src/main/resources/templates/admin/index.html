@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Admin Dashboard', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+<div class="admin-wrapper">
+
+    <div th:replace="~{admin/fragments/admin_navbar :: admin_navbar('dashboard')}"></div>
+
+    <div class="admin-main-content">
+        <h1 class="section-title">Dashboard Prehľad</h1>
+
+        <div class="dashboard-grid">
+
+            <div class="admin-card">
+                <h4><i class="fa-solid fa-user-plus"></i> Noví Členovia (30d)</h4>
+                <div class="stat-value">145</div>
+                <div class="stat-label">Priemerne 5 denne</div>
+            </div>
+
+            <div class="admin-card">
+                <h4><i class="fa-solid fa-earth-americas"></i> Aktívne Novinky</h4>
+                <div class="stat-value" th:text="${countNews}"></div>
+                <div class="stat-label" th:text="${countNewsForLastDays} + ' za posledných 30dní.'"></div>
+            </div>
+
+            <div class="admin-card">
+                <h4><i class="fa-solid fa-thumbs-up"></i> Počet likov (30d)</h4>
+                <div class="stat-value status-active" th:text="${countNewsLikeLastDays}">0</div>
+                <div class="stat-label">Celkovo</div>
+            </div>
+
+            <div class="admin-card">
+                <h4><i class="fa-solid fa-code-branch"></i> Verzia Dashboardu</h4>
+                <div class="stat-value status-active">v0.0.3</div>
+                <div class="stat-label">Najnovšia: v0.0.4</div>
+            </div>
+
+        </div>
+
+        <div class="admin-card" style="margin-bottom: 25px;">
+            <h4><i class="fa-solid fa-newspaper"></i> Správa Noviniek</h4>
+            <a th:href="@{/admin/news/create}" class="btn-admin"><i class="fa-solid fa-plus"></i> Vytvoriť novú novinku</a>
+
+            <table class="admin-table">
+            </table>
+        </div>
+
+        <div class="admin-card" style="margin-bottom: 25px;">
+            <h4><i class="fa-solid fa-newspaper"></i> Changelog</h4>
+
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <td>SHA</td>
+                    <td>Description</td>
+                    <td>Committer</td>
+                    <td>Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="commit : ${commits}">
+
+                    <td>
+                        <span th:text="'#' + ${#strings.substring(commit.sha, 0, 7)}">#b5e9466</span>
+                    </td>
+
+                    <td>
+                        <span th:text="${commit.message}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                    </td>
+
+                    <td>
+                        <span th:text="${commit.committerName}">Invouk</span>
+                    </td>
+
+                    <td>
+                        <span th:text="${commit.formattedDate}">Dátum neznámy</span>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(commits)}">
+                    <td colspan="4">Commity neboli nájdené alebo nebolo možné načítať dáta z GitHubu.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-card">
+            <h4><i class="fa-solid fa-users"></i> Nedávno Registrovaní Členovia</h4>
+            <a th:href="@{/admin/members/list}" class="btn-admin"><i class="fa-solid fa-magnifying-glass"></i> Hľadať/Upraviť člena</a>
+
+            <table class="admin-table">
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

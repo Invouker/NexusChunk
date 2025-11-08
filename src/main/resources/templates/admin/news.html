@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="sk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{fragments/head :: head('NexusChunk Server | Správa Členov', false)}"></div>
+
+    <link rel="stylesheet" th:href="@{/css/admin.style.css}">
+</head>
+<body>
+
+
+<div class="admin-wrapper">
+
+    <div th:replace="~{admin/fragments/admin_navbar :: admin_navbar('news')}"></div>
+
+    <div class="admin-main-content">
+        <h1 class="section-title">Novinky a Články</h1>
+
+        <div class="admin-card" style="margin-bottom: 25px;">
+            <a href="/admin/news/create">
+                <h4><i class="fa-solid fa-plus"></i> Vytvoriť novú novinku</h4>
+           </a>
+        </div>
+
+        <div class="admin-card">
+            <h4><i class="fa-solid fa-list"></i> Zoznam Existujúcich Noviniek</h4>
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Titulok</th>
+                    <th>Autor</th>
+                    <th>Hashtags</th>
+                    <th>Published</th>
+                    <th>Created At</th>
+                    <th>Akcie</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="newsItem : ${newsList}">
+                    <td th:text="${newsItem.title}">Title</td>
+                    <td th:text="${newsItem.author}">Author</td>
+                    <td th:text="${newsItem.hashtags}">Hashtags</td>
+                    <td th:text="${newsItem.published}">Published</td>
+                    <td th:text="${#temporals.format(newsItem.createdDate, 'dd.MM.yyyy - HH:mm')}">Created Date</td>
+                    <td>
+                        <a th:href="@{/admin/news/edit/{id}(id=${newsItem.id})}" class="btn-admin" style="background-color: var(--accent-color-stat);">
+                            <i class="fa-solid fa-pen-to-square"></i> Upraviť
+                        </a>
+
+                        <a th:href="@{/admin/news/delete/{id}(id=${newsItem.id})}" class="btn-admin" style="background-color: var(--offline-color);">
+                            <i class="fa-solid fa-trash"></i> Zmazať
+                        </a>
+                    </td>
+
+                <tr th:if="${#lists.isEmpty(newsList)}">
+                    <td colspan="5">Zatiaľ nebola vytvorená žiadna novinka.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>
