@@ -8,6 +8,7 @@ import eu.invouk.nexuschunk.news.services.NewsLikeService;
 import eu.invouk.nexuschunk.news.services.NewsService;
 import eu.invouk.nexuschunk.services.GithubService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class AdminController {
     }
 
 
+    @PreAuthorize("hasAuthority(@permissions.ADMIN_DASHBOARD)")
     @GetMapping("/admin/dashboard")
     public String adminDashboard(Model model){
 
@@ -50,6 +52,7 @@ public class AdminController {
     }
 
 
+    @PreAuthorize("hasAnyAuthority(@permissions.ADMIN_DASHBOARD, @permissions.ADMIN_MEMBERS)")
     @GetMapping("/admin/members")
     public String members(){
         return "admin/members";
