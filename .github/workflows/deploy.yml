@@ -48,15 +48,14 @@ jobs:
           retention-days: 1
 
   deploy:
-    needs: build # Spustí sa len, ak bol build úspešný
+    needs: build
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
-    # Načítanie Secretov z prostredia 'Deploy'
     environment: Deploy
 
     env:
-      APP_DIR: /opt/nexus-chunk # Cieľový adresár na VPS
+      APP_DIR: /opt/nexus-chunk
 
     steps:
       # 1. STIAHNUTIE ARTEFAKTU DO KOREŇA
@@ -64,7 +63,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nexus-chunk-jar
-          path: . # Súbor sa stiahne priamo do koreňa
+          path: .
+
+      # *** NOVÝ KROK: OPRAVA VLASTNÍCTVA A POVOLENÍ PRED SCP ***
+      - name: Ensure APP_DIR Ownership
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          port: ${{ secrets.VPS_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Vytvorí adresár, ak neexistuje a zmení vlastníka na VPS_USER
+            sudo mkdir -p ${{ env.APP_DIR }}
+            sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ env.APP_DIR }}
+            echo "Vlastníctvo adresára ${{ env.APP_DIR }} opravené."
 
       # 2. Skopíruje nový JAR pomocou SCP
       - name: Copy JAR to VPS
@@ -74,7 +87,6 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # *** OPRAVENÁ CESTA: Už len názov súboru! ***
           source: "${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
 
@@ -88,12 +100,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Stopping existing service..."
-            sudo systemctl stop nexus-chunk || true 
+            sudo systemctl stop nexus-chunk || true
             
             # Premenuje skopírovaný JAR
             cd ${{ env.APP_DIR }}
             NEW_JAR_NAME="${{ needs.build.outputs.jar_name }}"
-            # Premenuje nový súbor na app.jar (dôležité pre systemd)
             mv "$NEW_JAR_NAME" app.jar
             
             # Spustí novú inštanciu
