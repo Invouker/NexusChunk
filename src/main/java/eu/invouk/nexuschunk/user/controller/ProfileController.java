@@ -98,7 +98,7 @@ public class ProfileController {
         return "profile";
     }
 
-    public boolean isOnline(@NotNull User user) {
+    public boolean isOnline(User user) {
         if(user.getLastActivity() == null)
             return false;
 
