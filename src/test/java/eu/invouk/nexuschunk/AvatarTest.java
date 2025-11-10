@@ -12,12 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Base64;
 import java.util.Optional;
 
-@SpringBootTest(
-        properties = {
-                "spring.main.allow-bean-definition-overriding=true",
-                "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration"
-        }
-)
+@SpringBootTest
 class AvatarTest {
 
     @Autowired
