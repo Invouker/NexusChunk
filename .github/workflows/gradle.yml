@@ -27,7 +27,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '25' # <--- ZMENENÉ NA VERZIU 25
-        distribution: 'temurin' 
+        distribution: 'zulu'
         cache: 'gradle' 
 
     # 3. Nastavenie Gradle (táto akcia tiež optimalizuje cachovanie)
