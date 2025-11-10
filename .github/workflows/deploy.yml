@@ -81,7 +81,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           # MUSÍ odkazovať na podadresár vytvorený artefaktom!
-          source: "nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
+          source: "./jar_dir/nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
 
       # 2. Spustí aplikáciu (cez SSH)
