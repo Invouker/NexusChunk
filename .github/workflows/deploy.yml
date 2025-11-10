@@ -52,28 +52,29 @@ jobs:
           retention-days: 1 # Voliteľné: ako dlho artefakt uchovávať
 
   deploy:
-    needs: build # Spustí sa len, ak bol build úspešný
-    # Pridávame 'if' podmienku, aby sa deploy nespustil na Pull Requestoch (dobrá prax)
+    needs: build
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-
-    # Musí byť DEPLOY pre načítanie Environment Secrets
     environment: Deploy
-
     env:
-      APP_DIR: /opt/nexus-chunk # Cieľový adresár na VPS
+      APP_DIR: /opt/nexus-chunk
 
     steps:
-      # *** NOVÝ KROK: STIAHNUTIE SÚBORU Z BUILD JOBU ***
+      # 1. STIAHNUTIE ARTEFAKTU DO KOREŇA
       - name: Download JAR artifact
         uses: actions/download-artifact@v4
         with:
           name: nexus-chunk-jar
-          # Súbor sa stiahne do podadresára s názvom artefaktu: ./nexus-chunk-jar/
           path: .
 
+      # *** NOVÝ KROK PRE ZISTENIE SKUTOČNEJ CESTY ***
+      - name: Debug Artifact Content
+        run: |
+          echo "Kontrola obsahu stiahnutého adresára..."
+          find . -name "*.jar"
+          echo "Koniec kontroly."
 
-      # 1. Skopíruje nový JAR pomocou SCP
+      # 2. Skopíruje nový JAR pomocou SCP
       - name: Copy JAR to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -81,16 +82,12 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # MUSÍ odkazovať na podadresár vytvorený artefaktom!
-          source: "./jar_dir/nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
+          # Predpokladáme, že sa stiahol do podadresára s názvom artefaktu
+          source: "nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
-            # KROK PRE DEBUG: Vypíše obsah adresára, kam sa stiahol artefakt
-                    - name: Debug Artifact Content
-                    run: |
-                      echo "Obsah adresára nexus-chunk-jar:"
-                      ls -l ./nexus-chunk-jar/
-                      echo "Obsah pracovného adresára:"
-                      ls -l .
+
+      # 3. Spustí aplikáciu (cez SSH)
+      # ... (SSH akcia zostáva nezmenená)
 
       # 2. Spustí aplikáciu (cez SSH)
       - name: Stop, Rename, and Start Service
