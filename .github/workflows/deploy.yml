@@ -72,6 +72,7 @@ jobs:
           # Súbor sa stiahne do podadresára s názvom artefaktu: ./nexus-chunk-jar/
           path: .
 
+
       # 1. Skopíruje nový JAR pomocou SCP
       - name: Copy JAR to VPS
         uses: appleboy/scp-action@v0.1.7
@@ -83,6 +84,13 @@ jobs:
           # MUSÍ odkazovať na podadresár vytvorený artefaktom!
           source: "./jar_dir/nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
+            # KROK PRE DEBUG: Vypíše obsah adresára, kam sa stiahol artefakt
+                    - name: Debug Artifact Content
+                    run: |
+                      echo "Obsah adresára nexus-chunk-jar:"
+                      ls -l ./nexus-chunk-jar/
+                      echo "Obsah pracovného adresára:"
+                      ls -l .
 
       # 2. Spustí aplikáciu (cez SSH)
       - name: Stop, Rename, and Start Service
