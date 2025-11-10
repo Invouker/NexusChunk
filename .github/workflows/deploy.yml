@@ -63,6 +63,8 @@ jobs:
     # Pridávame 'if' podmienku, aby sa deploy nespustil na Pull Requestoch (dobrá prax)
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+
+    environment: Production
     env:
       APP_DIR: /opt/nexus-chunk # Cieľový adresár na VPS
 
