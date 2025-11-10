@@ -64,7 +64,7 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
-    environment: Deployment
+    environment: Deploy
     env:
       APP_DIR: /opt/nexus-chunk # Cieľový adresár na VPS
 
