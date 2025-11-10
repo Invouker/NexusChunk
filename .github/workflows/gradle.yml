@@ -34,6 +34,9 @@ jobs:
     - name: Nastavenie Gradle
       uses: gradle/actions/setup-gradle@v4
 
+    - name: Pridanie spúšťacích práv pre gradlew
+      run: chmod +x gradlew
+
     # 4. Spustenie celého buildu, ktorý zahŕňa kompiláciu a spustenie testov
     - name: Build a Testy s Gradle Wrapper
       run: ./gradlew build
