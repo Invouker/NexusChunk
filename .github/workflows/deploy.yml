@@ -49,15 +49,19 @@ jobs:
         with:
           name: nexus-chunk-jar # Názov artefaktu, ktorý použijeme na stiahnutie
           path: build/libs/*.jar # Cesta k vygenerovanému JAR súboru
-          retention-days: 1 # Voliteľné: ako dlho artefakt uchovávať
+          retention-days: 1
 
   deploy:
-    needs: build
+    needs: build # Spustí sa len, ak bol build úspešný
+    # Pridávame 'if' podmienku, aby sa deploy nespustil na Pull Requestoch (dobrá prax)
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+
+    # *** KRITICKÉ: Načítanie Secretov z prostredia 'Deploy' ***
     environment: Deploy
+
     env:
-      APP_DIR: /opt/nexus-chunk
+      APP_DIR: /opt/nexus-chunk # Cieľový adresár na VPS
 
     steps:
       # 1. STIAHNUTIE ARTEFAKTU DO KOREŇA
@@ -65,14 +69,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nexus-chunk-jar
-          path: .
+          path: . # Stiahne súbory do ./nexus-chunk-jar/
 
-      # *** NOVÝ KROK PRE ZISTENIE SKUTOČNEJ CESTY ***
-      - name: Debug Artifact Content
+      # *** KROK PRE DEBUG: Ak by chyba s cestou pretrvávala, tento krok ju ukáže. ***
+      - name: Debug Artifact Content (Find JAR Path)
         run: |
-          echo "Kontrola obsahu stiahnutého adresára..."
+          echo "Hľadá sa JAR súbor na runneri:"
+          # Ak nájde súbor, vráti jeho presnú cestu (napr. ./nexus-chunk-jar/app.jar)
           find . -name "*.jar"
-          echo "Koniec kontroly."
+          echo "Koniec hľadania."
 
       # 2. Skopíruje nový JAR pomocou SCP
       - name: Copy JAR to VPS
@@ -82,14 +87,11 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Predpokladáme, že sa stiahol do podadresára s názvom artefaktu
+          # Cesta je názov artefaktu + názov súboru (predpokladaná správna cesta)
           source: "nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
 
       # 3. Spustí aplikáciu (cez SSH)
-      # ... (SSH akcia zostáva nezmenená)
-
-      # 2. Spustí aplikáciu (cez SSH)
       - name: Stop, Rename, and Start Service
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -99,9 +101,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Stopping existing service..."
-            sudo systemctl stop nexus-chunk || true
+            # Používame '|| true' pre prípad, že služba ešte neexistuje
+            sudo systemctl stop nexus-chunk || true 
             
-            # Premenuje skopírovaný JAR (ktorý bol skopírovaný s originálnym názvom)
+            # Premenuje skopírovaný JAR
             cd ${{ env.APP_DIR }}
             NEW_JAR_NAME="${{ needs.build.outputs.jar_name }}"
             # Premenuje nový súbor na app.jar (toto je dôležité pre systemd!)
