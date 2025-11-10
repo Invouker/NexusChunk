@@ -42,13 +42,26 @@
 
         </div>
 
-        <div class="admin-card" style="margin-bottom: 25px;">
-            <h4><i class="fa-solid fa-newspaper"></i> Správa Noviniek</h4>
-            <a th:href="@{/admin/news/create}" class="btn-admin"><i class="fa-solid fa-plus"></i> Vytvoriť novú novinku</a>
+       <div class="row">
+           <div class="col-lg-6"> <div class="admin-card" style="margin-bottom: 25px;">
+               <h4><i class="fa-solid fa-newspaper"></i> Správa Noviniek</h4>
+               <a th:href="@{/admin/news/create}" class="btn-admin"><i class="fa-solid fa-plus"></i> Vytvoriť novú novinku</a>
 
-            <table class="admin-table">
-            </table>
-        </div>
+               <table class="admin-table">
+               </table>
+           </div>
+
+            </div>
+           <div class="col-lg-6">
+               <div class="admin-card">
+                   <h4><i class="fa-solid fa-users"></i> Nedávno Registrovaní Členovia</h4>
+                   <a th:href="@{/admin/members/list}" class="btn-admin"><i class="fa-solid fa-magnifying-glass"></i> Hľadať/Upraviť člena</a>
+
+                   <table class="admin-table">
+                   </table>
+               </div>
+           </div>
+       </div>
 
         <div class="admin-card" style="margin-bottom: 25px;">
             <h4><i class="fa-solid fa-newspaper"></i> Changelog</h4>
@@ -66,7 +79,7 @@
                 <tr th:each="commit : ${commits}">
 
                     <td>
-                        <span th:text="'#' + ${#strings.substring(commit.sha, 0, 7)}">#b5e9466</span>
+                        <a th:href="'https://github.com/Invouker/NexusChunk/commit/' + ${commit.sha}"><span th:text="'#' + ${#strings.substring(commit.sha, 0, 7)}">#b5e9466</span></a>
                     </td>
 
                     <td>
@@ -89,13 +102,7 @@
             </table>
         </div>
 
-        <div class="admin-card">
-            <h4><i class="fa-solid fa-users"></i> Nedávno Registrovaní Členovia</h4>
-            <a th:href="@{/admin/members/list}" class="btn-admin"><i class="fa-solid fa-magnifying-glass"></i> Hľadať/Upraviť člena</a>
 
-            <table class="admin-table">
-            </table>
-        </div>
 
     </div>
 </div>

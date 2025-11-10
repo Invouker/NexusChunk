@@ -24,31 +24,39 @@
         </div>
 
         <div class="admin-card">
-            <h4><i class="fa-solid fa-users"></i> Prehľad Aktívnych Členov</h4>
+            <h4><i class="fa-solid fa-users"></i> Prehľad Uživateľov</h4>
             <table class="admin-table">
                 <thead>
                 <tr>
                     <th>Nick</th>
+                    <th>E-Mail</th>
+                    <th>Registrácia</th>
+                    <th>Minecraft Nickname</th>
                     <th>Rola</th>
-                    <th>Discord</th>
-                    <th>Status</th>
                     <th>Akcie</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>MasterCode_SK</td>
-                    <td style="color: var(--accent-color);">ADMIN</td>
-                    <td>Áno</td>
-                    <td class="status-active">Online</td>
-                    <td><a href="#" class="btn-admin" style="background-color: var(--accent-color-stat);"><i class="fa-solid fa-user-pen"></i> Upraviť</a></td>
-                </tr>
-                <tr>
-                    <td>GameFanatics</td>
-                    <td style="color: var(--accent-color-success);">VIP+</td>
-                    <td>Nie</td>
-                    <td class="status-inactive">Offline</td>
-                    <td><a href="#" class="btn-admin" style="background-color: var(--offline-color);"><i class="fa-solid fa-hand"></i> Ban</a></td>
+                <tr th:each="user : ${userPage}">
+                    <td th:text="${user.username}">Meno</td>
+                    <td th:text="${user.email}">E-Mail</td>
+                    <td th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy HH:mm')}"></td>
+                    <td>
+                        <div th:text="${user.minecraftNick}" style="font-size: 16px; font-weight: 600;"></div>
+                        <div th:text="${user.minecraftUuid}" style="font-size: 12px; color: gray;"></div>
+                    </td>
+
+                    <td>
+                        <span th:each="role, iterStat : ${user.roles}"
+                              th:text="${role.name + (iterStat.last ? '' : ', ')}"></span>
+                    </td>
+
+
+                    <td>
+                        <a th:href="@{/admin/member/edit/{id}(id=${user.id})}" class="btn-admin" style="background-color: var(--accent-color-stat);">
+                            <i class="fa-solid fa-pen-to-square"></i> Upraviť
+                        </a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

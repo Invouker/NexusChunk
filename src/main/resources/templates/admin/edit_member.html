@@ -15,38 +15,77 @@
     <div class="admin-main-content">
         <h1 class="section-title"><i class="fa-solid fa-user-pen"></i> Úprava Člena: <span>Username</span></h1>
 
-        <form method="post">
+        <form th:action="@{/admin/member/edit/{id}(id=${user.id})}" method="post" th:object="${user}">
 
-            <div class="admin-card" style="margin-bottom: 20px;">
+        <div class="admin-card" style="margin-bottom: 20px;">
                 <h4>1. Základné Údaje</h4>
 
                 <div class="form-group">
-                    <label for="username" class="stat-label">Meno / Prezývka:</label>
-                    <input type="text" id="username" required class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                    <label for="userName" class="stat-label">Meno / Prezývka:</label>
+                    <input type="text" id="userName" required class="form-control"
+                           th:field="*{userName}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="email" class="stat-label">Email:</label>
-                    <input type="email" id="email" required class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                    <input type="email" id="email" required class="form-control"
+                           th:field="*{email}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label for="minecraftNickname" class="stat-label">Minecraft Nickname:</label>
-                    <input type="text" id="minecraftNickname" class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                    <label for="minecraftNick" class="stat-label">Minecraft Nickname:</label>
+                    <input type="text" id="minecraftNick" class="form-control"
+                           th:field="*{minecraftNick}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
                 </div>
 
                 <div class="form-group">
                     <label for="aboutMe" class="stat-label">O mne (About Me):</label>
-                    <textarea id="aboutMe" rows="4" class="form-control" placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)"></textarea>
+                    <input id="aboutMe" class="form-control"
+                           th:field="*{aboutMe}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="uuid" class="stat-label">Minecraft UUID</label>
+                    <input id="uuid" class="form-control"
+                           th:field="*{uuid}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne) readonly">
                 </div>
 
                 <hr style="margin: 20px 0;">
+
                 <div class="form-group">
-                    <label for="newPassword" class="stat-label">Zmeniť Heslo:</label>
-                    <input type="password" id="newPassword" name="newPassword" placeholder="Zadajte nové heslo (ak nechcete meniť, nechajte prázdne)" class="form-control">
-                    <small style="color: var(--text-secondary); display: block; margin-top: 5px;">Heslo sa zmení len vtedy, ak je pole vyplnené.</small>
+                    <label for="discord" class="stat-label">Discord</label>
+                    <input id="discord" class="form-control"
+                           th:field="*{discord}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="github" class="stat-label">Github</label>
+                    <input id="github" class="form-control"
+                           th:field="*{github}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="instagram" class="stat-label">Instagram</label>
+                    <input id="instagram" class="form-control"
+                           th:field="*{instagram}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
+                </div>
+
+                <div class="form-group">
+                    <label for="facebook" class="stat-label">Facebook</label>
+                    <input id="facebook" class="form-control"
+                           th:field="*{facebook}"
+                           placeholder="Vyplňte pre zmenu (ak nechcete meniť, nechajte prázdne)">
                 </div>
             </div>
+
 
             <div class="admin-card" style="margin-bottom: 20px;">
                 <h4>2. Stav Účtu a Zablokovanie</h4>
@@ -54,52 +93,52 @@
                 <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="stat-group">
                         <label class="stat-label" for="enabled">Povolený účet (Môže sa prihlásiť):</label>
-                        <input type="checkbox" id="enabled" >
+                        <input type="checkbox" id="enabled" th:field="*{enabled}">
                         <span>ÁNO/NIE</span>
                     </div>
 
                     <div class="stat-group">
                         <label class="stat-label" for="locked">Účet ZABLOKOVANÝ (Dočasne/Trvalo):</label>
-                        <input type="checkbox" id="locked" >
+                        <input type="checkbox" id="locked" th:field="*{locked}">
                         <span>ZABLOKOVANÝ/AKTÍVNY</span>
                     </div>
                 </div>
             </div>
+
 
             <div class="admin-card" style="margin-bottom: 20px;">
                 <h4>3. Nastavenia Oprávnení</h4>
 
                 <div class="form-group">
                     <label for="role" class="stat-label">Zmena Roly:</label>
-                   <!--
-                     <select id="role" th:field="*{role}" class="form-control" style="width: auto;">
-                        <option th:each="r : ${roles}"
-                                th:value="${r.name}"
-                                th:text="${r.displayName}"
-                                th:selected="${r.name} == *{role} ? true : false">ROLE_USER</option>
-                    </select>
-                    -->
 
-                    <select name="test:)" id="role">
-                        <option value="USER">USER</option>
-                        <option value="MODERATOR">MODERATOR</option>
+                    <select id="role" class="form-control" multiple th:field="*{roles}">
+                        <option th:each="r : ${allRoles}"
+                                th:value="${r.name}"
+                                th:text="${r.name}">
+                        </option>
                     </select>
+
                     <small style="color: var(--accent-color-danger); display: block; margin-top: 5px;">
                         POZOR: Zmenou Roly meníte prístupové práva člena!
                     </small>
                 </div>
             </div>
 
+
             <div style="margin-top: 30px;">
-                <button type="submit" class="btn-admin" style="background-color: var(--accent-color-success); margin-right: 15px;">
+                <button type="submit" class="btn-admin"
+                        style="background-color: var(--accent-color-success); margin-right: 15px;">
                     <i class="fa-solid fa-floppy-disk"></i> Uložiť Zmeny Člena
                 </button>
+
                 <a th:href="@{/admin/members}" class="btn-admin" style="background-color: var(--text-secondary);">
                     <i class="fa-solid fa-xmark"></i> Zrušiť / Späť na Zoznam
                 </a>
             </div>
 
         </form>
+
 
     </div>
 </div>
