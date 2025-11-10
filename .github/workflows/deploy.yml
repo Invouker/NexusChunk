@@ -25,25 +25,21 @@ jobs:
         with:
           java-version: '25'
           distribution: 'temurin'
-          # Zmena cache z maven na gradle
           cache: gradle
 
-      # Zmena z Maven príkazu na Gradle Wrapper príkaz
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        # Používa sa typický Gradle príkaz na clean a build
         run: ./gradlew clean build
 
       # Nájde názov vygenerovaného JAR súboru (štandardne sa ukladá do build/libs)
       - name: Get JAR file name
         id: get_jar_name
         # Štandardná cesta pre Spring Boot JAR je build/libs/
-        # Hľadáme v build/libs/ (zvyčajne je tam len jeden)
         run: echo "JAR_NAME=$(find build/libs/ -name "*.jar" | head -n 1 | xargs basename)" >> $GITHUB_OUTPUT
 
-      # *** NOVÝ KROK: ULOŽENIE SÚBORU PRE DEPLOY JOB ***
+      # ULOŽENIE SÚBORU PRE DEPLOY JOB
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
@@ -53,11 +49,10 @@ jobs:
 
   deploy:
     needs: build # Spustí sa len, ak bol build úspešný
-    # Pridávame 'if' podmienku, aby sa deploy nespustil na Pull Requestoch (dobrá prax)
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
-    # *** KRITICKÉ: Načítanie Secretov z prostredia 'Deploy' ***
+    # Načítanie Secretov z prostredia 'Deploy'
     environment: Deploy
 
     env:
@@ -69,15 +64,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: nexus-chunk-jar
-          path: . # Stiahne súbory do ./nexus-chunk-jar/
-
-      # *** KROK PRE DEBUG: Ak by chyba s cestou pretrvávala, tento krok ju ukáže. ***
-      - name: Debug Artifact Content (Find JAR Path)
-        run: |
-          echo "Hľadá sa JAR súbor na runneri:"
-          # Ak nájde súbor, vráti jeho presnú cestu (napr. ./nexus-chunk-jar/app.jar)
-          find . -name "*.jar"
-          echo "Koniec hľadania."
+          path: . # Súbor sa stiahne priamo do koreňa
 
       # 2. Skopíruje nový JAR pomocou SCP
       - name: Copy JAR to VPS
@@ -87,8 +74,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # Cesta je názov artefaktu + názov súboru (predpokladaná správna cesta)
-          source: "nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
+          # *** OPRAVENÁ CESTA: Už len názov súboru! ***
+          source: "${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
 
       # 3. Spustí aplikáciu (cez SSH)
@@ -101,13 +88,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Stopping existing service..."
-            # Používame '|| true' pre prípad, že služba ešte neexistuje
             sudo systemctl stop nexus-chunk || true 
             
             # Premenuje skopírovaný JAR
             cd ${{ env.APP_DIR }}
             NEW_JAR_NAME="${{ needs.build.outputs.jar_name }}"
-            # Premenuje nový súbor na app.jar (toto je dôležité pre systemd!)
+            # Premenuje nový súbor na app.jar (dôležité pre systemd)
             mv "$NEW_JAR_NAME" app.jar
             
             # Spustí novú inštanciu
