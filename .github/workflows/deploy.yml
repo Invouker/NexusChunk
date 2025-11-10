@@ -4,7 +4,10 @@ name: Java CI/CD & Deploy (Debian VPS)
 # Spustenie pri push do main vetvy
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
