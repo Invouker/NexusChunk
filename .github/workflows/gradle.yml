@@ -65,5 +65,3 @@ jobs:
     - name: Generovanie a odoslanie grafu závislostí
       uses: gradle/actions/dependency-submission@v4
 
-
-Teraz váš CI workflow používa **Java 25** na build a má aktívne cachovanie závislostí!
