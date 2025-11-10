@@ -32,7 +32,7 @@ public class MinecraftAvatarService {
      * @param username Minecraft prezývka.
      * @return Optional obsahujúci base64 encoded obrázok v png.
      */
-    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()")
+    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()", condition = "#username != null")
     public Optional<String> getBase64Avatar(String username) {
         Optional<byte[]> bytesAvatar = getAvatarImageBytes(username);
 
@@ -50,7 +50,7 @@ public class MinecraftAvatarService {
      * @param username Minecraft prezývka.
      * @return Optional obsahujúci pole bajtov obrázka (PNG), ak bol nájdený, inak prázdny Optional.
      */
-    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()")
+    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()", condition = "#username != null")
     public Optional<byte[]> getAvatarImageBytes(String username) {
         // 1. Získanie UUID pomocou existujúcej služby
         Optional<String> uuidOptional = minecraftApiService.getUuidByUsername(username);

@@ -27,7 +27,7 @@ public class MinecraftApiService {
      * @param username Minecraft prezývka.
      * @return Optional obsahujúci UUID, ak bol nájdený, inak prázdny Optional.
      */
-    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()")
+    @Cacheable(value = "minecraftAvatars", key = "#username.toLowerCase()", condition = "#username != null")
     public Optional<String> getUuidByUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             return Optional.empty();
