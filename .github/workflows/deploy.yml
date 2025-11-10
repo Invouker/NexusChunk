@@ -81,7 +81,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           # Cesta sa mení, pretože artefakt bol stiahnutý do podadresára
-          source: "nexus-chunk-jar/${{ needs.build.outputs.jar_name }}"
+          source: "${{ needs.build.outputs.jar_name }}"
           target: ${{ env.APP_DIR }}
 
       # 2. Spustí aplikáciu (cez SSH)
