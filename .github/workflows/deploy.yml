@@ -54,8 +54,9 @@ jobs:
 
     environment: Deploy
 
+    # *** KRITICKÁ ZMENA: Cieľový adresár je v Home adresári, kde má používateľ práva. ***
     env:
-      APP_DIR: /home/Invouk/nexus-chunk
+      APP_DIR: /home/invouk/nexus-chunk
 
     steps:
       # 1. STIAHNUTIE ARTEFAKTU DO KOREŇA
@@ -64,7 +65,8 @@ jobs:
         with:
           name: nexus-chunk-jar
           path: .
-      # 2. Skopíruje nový JAR pomocou SCP
+
+      # 2. Skopíruje nový JAR pomocou SCP (Tento krok už nevyžaduje sudo)
       - name: Copy JAR to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -85,15 +87,17 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Stopping existing service..."
+            # Zastavenie Služby (vyžaduje sudo)
             sudo systemctl stop nexus-chunk || true
             
-            # Premenuje skopírovaný JAR
+            # Premenovanie súboru (v adresári invouk, bez sudo)
             cd ${{ env.APP_DIR }}
             NEW_JAR_NAME="${{ needs.build.outputs.jar_name }}"
             mv "$NEW_JAR_NAME" app.jar
             
             # Spustí novú inštanciu
             echo "Starting new service instance..."
+            # Spustenie Služby (vyžaduje sudo)
             sudo systemctl start nexus-chunk
             
             echo "Deployment successful."
