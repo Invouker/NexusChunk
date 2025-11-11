@@ -4,9 +4,9 @@ name: Gradle CI/CD & Deploy (Debian VPS)
 # Spustenie pri push do main vetvy, pri Pull Request alebo manuálne
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:

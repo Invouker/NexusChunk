@@ -5,9 +5,9 @@ name: Java CI s Gradle
 # 2. Pri každom Pull Requeste smerujúcom do vetvy 'main'
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
