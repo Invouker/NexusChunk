@@ -55,7 +55,7 @@ jobs:
     environment: Deploy
 
     env:
-      APP_DIR: /opt/nexus-chunk
+      APP_DIR: /home/Invouk/nexus-chunk
 
     steps:
       # 1. STIAHNUTIE ARTEFAKTU DO KOREŇA
@@ -64,21 +64,6 @@ jobs:
         with:
           name: nexus-chunk-jar
           path: .
-
-      # *** NOVÝ KROK: OPRAVA VLASTNÍCTVA A POVOLENÍ PRED SCP ***
-      - name: Ensure APP_DIR Ownership
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          port: ${{ secrets.VPS_PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Vytvorí adresár, ak neexistuje a zmení vlastníka na VPS_USER
-            sudo mkdir -p ${{ env.APP_DIR }}
-            sudo chown -R ${{ secrets.VPS_USER }}:${{ secrets.VPS_USER }} ${{ env.APP_DIR }}
-            echo "Vlastníctvo adresára ${{ env.APP_DIR }} opravené."
-
       # 2. Skopíruje nový JAR pomocou SCP
       - name: Copy JAR to VPS
         uses: appleboy/scp-action@v0.1.7
