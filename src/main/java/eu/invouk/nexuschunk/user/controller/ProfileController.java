@@ -4,7 +4,6 @@ import eu.invouk.nexuschunk.services.AvatarService;
 import eu.invouk.nexuschunk.user.User;
 import eu.invouk.nexuschunk.user.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

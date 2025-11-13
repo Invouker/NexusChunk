@@ -3,6 +3,7 @@ package eu.invouk.nexuschunk.config;
 import eu.invouk.nexuschunk.auth.services.CustomOAuth2UserService;
 import eu.invouk.nexuschunk.auth.services.CustomOIDCUserService;
 import eu.invouk.nexuschunk.auth.services.CustomUserDetailsService;
+import eu.invouk.nexuschunk.permissions.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-
-import eu.invouk.nexuschunk.permissions.Permission;
 
 @Slf4j
 @Configuration

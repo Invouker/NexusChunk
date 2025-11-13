@@ -1,6 +1,5 @@
 package eu.invouk.nexuschunk.admin.dtos;
 
-import eu.invouk.nexuschunk.user.permissions.Role;
 import lombok.Data;
 
 import java.util.Set;

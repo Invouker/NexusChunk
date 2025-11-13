@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.Base64;
-import java.util.Optional;
 
 @SpringBootTest
 @Import(TestSecurityConfiguration.class)
