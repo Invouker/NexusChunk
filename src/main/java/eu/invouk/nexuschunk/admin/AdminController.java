@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -49,9 +48,8 @@ public class AdminController {
         this.roleRepository = roleRepository;
     }
 
-
-    @PreAuthorize("hasAuthority(@permissions.ADMIN_DASHBOARD)")
     @GetMapping("/admin/dashboard")
+    @PreAuthorize("hasAuthority(@permissions.ADMIN_DASHBOARD)")
     public String adminDashboard(Model model){
 
         //Commits
@@ -69,7 +67,7 @@ public class AdminController {
         return "admin/index";
     }
     @GetMapping("/admin/members")
-    @PreAuthorize("hasAnyAuthority(@permissions.ADMIN_DASHBOARD)")
+    @PreAuthorize("hasAuthority(@permissions.VIEW_MEMBERS)")
     public String members(Model model, @RequestParam(defaultValue = "0") int page) {
 
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
@@ -145,16 +143,20 @@ public class AdminController {
     private String emptyToNull(String v) {
         return (v == null || v.isBlank()) ? null : v;
     }
+
     @GetMapping("/admin/permission")
+    @PreAuthorize("hasAuthority(@permissions.VIEW_PERMISSIONS)")
     public String permission(){
         return "admin/permission";
     }
 
     @GetMapping("/admin/settings")
+    @PreAuthorize("hasAuthority(@permissions.VIEW_SETTINGS)")
     public String settings(){
         return "admin/settings";
     }
     @GetMapping("/admin/server")
+    @PreAuthorize("hasAuthority(@permissions.VIEW_SERVER)")
     public String server(){
         return "admin/server";
     }

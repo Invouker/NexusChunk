@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,9 +20,12 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
+import eu.invouk.nexuschunk.permissions.Permission;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     private final CustomUserDetailsService customUserDetailsService;
@@ -66,7 +70,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
-                        .requestMatchers("/admin/**").permitAll()//.hasAuthority(EPermission.ADMIN_VIEW.getPermission())
+                        .requestMatchers("/admin/**").hasAuthority(Permission.ADMIN_DASHBOARD)
 
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         //.requestMatchers("/dashboard").authenticated()
