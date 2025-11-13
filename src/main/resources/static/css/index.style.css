@@ -9,7 +9,7 @@
     --color-text-secondary: #606199; /* Šedý/Fialový text (Obsah sidebar/news content) */
     --color-text-detail: #7d84a7; /* Detailný/Informačný text (Autor, dátum) */
     --color-text-light: #b6b6b6; /* Svetlejší text (Stat name) */
-    --color-text-hover: #b1baec; /* Text pri hoveri */
+    --color-text-hover: #ffffff; /* Text pri hoveri */
 
     /* --- AKCENTNÉ FARBY --- */
     --color-accent-discord: #7289DA; /* Discord Modrá */
@@ -25,7 +25,6 @@
     --shadow-text-default: 2px 2px 7px #0C0B1A; /* Text tieň (Pre title) */
     --shadow-text-outline: -1px -1px 7px #000, 1px -1px 7px #000, -1px 1px 7px #000, 1px 1px 7px #000; /* Outline tieň */
 }
-
 
 
 .welcome {
@@ -440,4 +439,75 @@
 
 .sidebar.top-list .content .player .player-details {
     margin: 0.8rem;
+}
+
+
+/* Globálne definície tmavého modalu */
+.modal-custom-dark {
+    /* Telo Modalu (modal-content) */
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-primary);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); /* Tmavší tieň */
+}
+
+/* Hlavička Modalu (modal-header) */
+.modal-custom-dark .modal-header {
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+/* Titulok Modalu (modal-title) */
+.modal-custom-dark .modal-title {
+    color: var(--color-accent-money); /* Žltý/Oranžový nadpis */
+    text-shadow: var(--shadow-text-default);
+}
+
+/* Popisky formulára (form-label) */
+.modal-custom-dark .form-label {
+    color: var(--color-text-primary);
+}
+
+/* Tmavé formulárové polia (form-control) */
+.form-control-dark {
+    /* Použijeme sekundárne pozadie, ktoré je o niečo svetlejšie ako primárne pozadie modalu */
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-primary);
+}
+
+/* Placeholder text */
+.form-control-dark::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 1;
+}
+
+/* Focus stav inputu */
+.form-control-dark:focus {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent-money); /* Akcentný focus okraj */
+    box-shadow: 0 0 0 0.25rem rgba(245, 197, 66, 0.25);
+}
+
+/* Spoločné štýly pre tlačidlá (btn) */
+.btn-custom {
+    color: white;
+    font-weight: bold;
+    background-color: #1e1e2c; /* Tmavé pozadie */
+}
+
+.btn-custom:hover {
+    color: var(--color-accent-money); /* Akcentná farba pri hoveri */
+    background-color: #1e1e2c;
+}
+
+/* Akcentný odkaz v modale */
+.modal-link-accent {
+    color: var(--color-accent-gold); /* Žltý/Oranžový odkaz */
+    text-decoration: none;
+}
+
+.modal-link-accent:hover {
+    color: #ccc26d;
+    text-decoration: underline;
 }

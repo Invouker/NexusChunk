@@ -12,7 +12,7 @@
     --color-text-content: #606199;    /* Šedý/Fialový text (Obsah sidebar/news content) */
     --color-text-detail: #7d84a7;     /* Detailný/Informačný text (Autor, dátum) */
     --color-text-stat-name: #b6b6b6;  /* Svetlejší text (Stat name) */
-    --color-text-hover: #b1baec;      /* Text pri hoveri */
+    --color-text-hover: #ffffff;      /* Text pri hoveri */
 
     /* --- AKCENTNÉ FARBY --- */
     --color-accent-gold: #f5c542;     /* Zlatá (News title/Akcent/Badge) */
@@ -57,9 +57,22 @@ html, body {
 a {
     color: var(--color-accent-primary);
     transition: color 0.3s;
+    text-decoration: none!important;
 }
 a:hover {
     color: var(--color-accent-money); /* Ponecháme money zelenú, keďže to má Minecraft nádych */
+    text-decoration: none!important;
+}
+
+.btn {
+    color: white;
+    font-weight: bold;
+    background-color: #1e1e2c;
+}
+
+.btn:hover {
+    color: var(--color-accent-money);
+    background-color: #1e1e2c;
 }
 
 /* ========================================================== */
