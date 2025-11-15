@@ -15,6 +15,8 @@ public class Permission {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @Column
+    private String description;
 
     public Permission(String name) {
         this.name = name;
