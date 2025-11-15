@@ -23,7 +23,7 @@ public class RolePermissionInitializerConfig {
             "MODERATOR", Set.of(
                     Permission.VIEW_ADMIN_DASHBOARD,
                     Permission.VIEW_NEWS,
-                    Permission.VIEW_MEMBERS,
+                    Permission.VIEW_MEMBERS
             ),
             "ADMIN", Permission.ALL_PERMISSIONS.stream().collect(Collectors.toSet())
 
