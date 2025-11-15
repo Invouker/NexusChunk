@@ -46,7 +46,7 @@
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0" sec:authorize="isAuthenticated()">
                 <li class="nav-item">
-                    <a class="nav-link" sec:authorize="hasAuthority('ADMIN_DASHBOARD')" th:classappend="${active == 'admin' ? 'active' : ''}" th:href="@{/admin/dashboard}" href="/admin-dashboard"><i class="fa fa-lock"></i> Admin Panel</a>
+                    <a class="nav-link" sec:authorize="hasAuthority('VIEW_ADMIN_DASHBOARD')" th:classappend="${active == 'admin' ? 'active' : ''}" th:href="@{/admin/dashboard}" href="/admin-dashboard"><i class="fa fa-lock"></i> Admin Panel</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

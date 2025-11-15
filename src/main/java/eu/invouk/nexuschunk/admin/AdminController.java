@@ -1,5 +1,6 @@
 package eu.invouk.nexuschunk.admin;
 
+import eu.invouk.nexuschunk.Utils;
 import eu.invouk.nexuschunk.admin.dtos.UserDto;
 import eu.invouk.nexuschunk.admin.github.CommitMapper;
 import eu.invouk.nexuschunk.admin.github.dtos.CommitDisplayDto;
@@ -53,7 +54,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/dashboard")
-    @PreAuthorize("hasAuthority(@permissions.ADMIN_DASHBOARD)")
+    @PreAuthorize("hasAuthority(@permissions.VIEW_ADMIN_DASHBOARD)")
     public String adminDashboard(Model model, Authentication authentication){
 
         //Commits
@@ -132,15 +133,15 @@ public class AdminController {
         }
 
         User user = userOptional.get();
-        user.setUsername(userDto.getUserName());
-        user.setEmail(emptyToNull(userDto.getEmail()));
-        user.setMinecraftNick(emptyToNull(userDto.getMinecraftNick()));
-        user.setMinecraftUuid(emptyToNull(userDto.getUuid()));
-        user.setAboutMe(emptyToNull(userDto.getAboutMe()));
-        user.setGithubName(emptyToNull(userDto.getGithub()));
-        user.setDiscordName(emptyToNull(userDto.getDiscord()));
-        user.setFacebookName(emptyToNull(userDto.getFacebook()));
-        user.setInstagramName(emptyToNull(userDto.getInstagram()));
+        //user.setUsername(userDto.getUserName());
+        //user.setEmail(Utils.emptyToNull(userDto.getEmail()));
+        user.setMinecraftNick(Utils.emptyToNull(userDto.getMinecraftNick()));
+        user.setMinecraftUuid(Utils.emptyToNull(userDto.getUuid()));
+        user.setAboutMe(Utils.emptyToNull(userDto.getAboutMe()));
+        user.setGithubName(Utils.emptyToNull(userDto.getGithub()));
+        user.setDiscordName(Utils.emptyToNull(userDto.getDiscord()));
+        user.setFacebookName(Utils.emptyToNull(userDto.getFacebook()));
+        user.setInstagramName(Utils.emptyToNull(userDto.getInstagram()));
         user.setEnabled(userDto.isEnabled());
         Set<Role> newRoles = userDto.getRoles().stream()
                 .map(roleRepository::findByName)   // Optional<Role>
@@ -150,16 +151,6 @@ public class AdminController {
         user.setRoles(newRoles);
         userRepository.save(user);
         return "redirect:/admin/members";
-    }
-
-    private String emptyToNull(String v) {
-        return (v == null || v.isBlank()) ? null : v;
-    }
-
-    @GetMapping("/admin/permission")
-    @PreAuthorize("hasAuthority(@permissions.VIEW_PERMISSIONS)")
-    public String permission(){
-        return "admin/permission";
     }
 
     @GetMapping("/admin/settings")

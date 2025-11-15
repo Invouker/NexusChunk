@@ -7,12 +7,18 @@
 </head>
 <body>
 
-
 <div class="admin-wrapper">
-    <div th:replace="~{/admin/fragments/admin_navbar :: admin_navbar('permission')}"></div>
-    
+    <div th:replace="~{/admin/fragments/admin_navbar :: admin_navbar('permissions')}"></div>
+
     <div class="admin-main-content">
         <h1 class="section-title"><i class="fa-solid fa-users-gear"></i> Správa Oprávnení a Rolí</h1>
+
+        <div th:if="${successMessage}" class="alert alert-success mt-3" role="alert" th:text="${successMessage}">
+            Rola bola úspešne uložená!
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger mt-3" role="alert" th:text="${errorMessage}">
+            Nastala chyba pri spracovaní roly.
+        </div>
 
         <div class="roles-grid">
 
@@ -21,36 +27,35 @@
                 <div class="admin-card" style="margin-bottom: 25px;">
                     <h4><i class="fa-solid fa-list-check"></i> Zoznam Existujúcich Rolí</h4>
 
-                    <ul>
-                        <li class="selected">
-                            <span>ADMIN</span>
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                        </li>
-                        <li>
-                            <span>MODERATOR</span>
-                            <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
-                        </li>
-                        <li>
-                            <span>VIP+</span>
-                            <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
-                        </li>
-                        <li>
-                            <span>USER (Základná)</span>
-                            <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
+                    <ul th:if="${!#lists.isEmpty(roles)}">
+                        <li th:each="role : ${roles}"
+                            th:classappend="${selectedRole != null and role.id == selectedRole.id} ? 'selected' : ''">
+
+                            <a th:href="@{/admin/permissions(roleId=${role.id})}"
+                               title="Upraviť rolu"
+                               style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+
+                                <span th:text="${role.name}">ADMIN</span>
+
+                                <i class="fa-solid fa-arrow-right-to-bracket" style="color: var(--accent-color);"></i>
+                            </a>
+
                         </li>
                     </ul>
+                    <div th:if="${#lists.isEmpty(roles)}" class="alert alert-info">Žiadne roly neboli nájdené.</div>
                 </div>
+
 
                 <div class="admin-card">
                     <h4><i class="fa-solid fa-plus"></i> Vytvoriť Novú Rolu</h4>
-                    <form>
+                    <form th:action="@{/admin/permissions/create}" method="post" th:object="${newRole}">
                         <div class="form-group" style="margin-bottom: 15px;">
                             <label for="newRoleName" class="stat-label">Názov Roly (napr. TESTER):</label>
-                            <input type="text" id="newRoleName" name="newRoleName" placeholder="Názov roly (veľké písmená)" required class="form-control">
+                            <input type="text" id="newRoleName" name="newRoleName" th:field="*{newRoleName}" placeholder="Názov roly (veľké písmená)" required class="form-control">
                         </div>
                         <div class="form-group" style="margin-bottom: 15px;">
-                            <label for="newRoleDisplay" class="stat-label">Zobrazovaný názov:</label>
-                            <input type="text" id="newRoleDisplay" name="newRoleDisplay" placeholder="Zobrazovaný názov" required class="form-control">
+                            <label for="newRoleDisplay" class="stat-label">Zobrazovaný názov (Nepoužité v entite Role):</label>
+                            <input type="text" id="newRoleDisplay" name="newRoleDisplay" th:field="*{newRoleDisplay}" placeholder="Zobrazovaný názov" required class="form-control">
                         </div>
                         <button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);"><i class="fa-solid fa-plus"></i> Vytvoriť</button>
                     </form>
@@ -58,84 +63,155 @@
 
             </div>
 
-            <div class="role-details">
+            <div class="role-details" th:if="${selectedRole != null}">
 
                 <div class="admin-card">
                     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">
-                        <h4 style="border: none; margin: 0; padding: 0; color: var(--accent-color);">Úprava Oprávnení pre: ADMIN</h4>
-                        <button
-                                class="btn-admin"
-                                style="background-color: var(--offline-color);"
-                                onclick="alert('Akcia Zmazať Rolu bola stlačená.')">
-                            <i class="fa-solid fa-trash"></i> Zmazať Rolu
-                        </button>
+                        <h4 style="border: none; margin: 0; padding: 0; color: var(--accent-color);">
+                            Úprava Oprávnení pre: <span th:text="${selectedRole.name}">ADMIN</span>
+                        </h4>
                     </div>
 
-                    <form>
+                    <form th:action="@{/admin/permissions/update}" method="post">
+                        <input type="hidden" name="roleId" th:value="${selectedRole.id}" />
 
-                        <h5 style="margin-top: 20px; color: var(--text-light);">Dashboard & Všeobecné</h5>
-                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" id="perm1" name="permissionCodes" value="DASHBOARD_VIEW" checked style="transform: scale(1.1); margin-right: 15px;">
-                                <label for="perm1" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
-                                    <span>Prezerať Admin Dashboard</span>
-                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(DASHBOARD_VIEW)</small>
-                                </label>
-                            </div>
-                            <span class="status-active">POVOLENÉ</span>
+                        <div class="column-headers-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid var(--border-color);">
+                            <h5 style="color: var(--text-light); margin-bottom: 0;"><i class="fa-solid fa-eye"></i> Zobrazenie</h5>
+                            <h5 style="color: var(--text-light); margin-bottom: 0;"><i class="fa-solid fa-pencil"></i> Zápis alebo úprava</h5>
+                            <h5 style="color: var(--text-light); margin-bottom: 0;"><i class="fa-solid fa-gear"></i> Iné</h5>
                         </div>
 
-                        <h5 style="margin-top: 20px; color: var(--text-light);">Novinky a Články</h5>
-                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" id="perm2" name="permissionCodes" value="NEWS_CREATE" checked style="transform: scale(1.1); margin-right: 15px;">
-                                <label for="perm2" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
-                                    <span>Vytvárať Nové Články</span>
-                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(NEWS_CREATE)</small>
-                                </label>
-                            </div>
-                            <span class="status-active">POVOLENÉ</span>
-                        </div>
-                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" id="perm3" name="permissionCodes" value="NEWS_EDIT" style="transform: scale(1.1); margin-right: 15px;">
-                                <label for="perm3" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
-                                    <span>Upravovať Novinky</span>
-                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(NEWS_EDIT)</small>
-                                </label>
-                            </div>
-                            <span class="status-inactive">ZAKÁZANÉ</span>
-                        </div>
+                        <div th:each="entry : ${groupedPermissions}">
 
-                        <h5 style="margin-top: 20px; color: var(--text-light);">Správa Členov</h5>
-                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" id="perm4" name="permissionCodes" value="MEMBERS_VIEW" checked style="transform: scale(1.1); margin-right: 15px;">
-                                <label for="perm4" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
-                                    <span>Prezerať Profily Členov</span>
-                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(MEMBERS_VIEW)</small>
-                                </label>
-                            </div>
-                            <span class="status-active">POVOLENÉ</span>
-                        </div>
-                        <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0;">
-                            <div style="display: flex; align-items: center;">
-                                <input type="checkbox" id="perm5" name="permissionCodes" value="MEMBERS_EDIT_ROLE" checked style="transform: scale(1.1); margin-right: 15px;">
-                                <label for="perm5" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
-                                    <span>Meniť Roly a Banovať</span>
-                                    <small style="color: var(--text-secondary); display: block; font-weight: normal;">(MEMBERS_EDIT_ROLE)</small>
-                                </label>
-                            </div>
-                            <span class="status-active">POVOLENÉ</span>
-                        </div>
+                            <h4 style="margin-top: 25px; color: var(--accent-color); padding-bottom: 5px; border-bottom: 1px solid var(--border-color);">
+                                <i class="fa-solid fa-folder-open"></i>  <span th:text="${entry.key}">MEMBERS</span>
+                            </h4>
 
-                        <p style="margin-top: 30px;">
+                            <div class="permission-section-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+
+                                <div class="column-view">
+                                    <div th:each="permission : ${entry.value}">
+                                        <th:block th:if="${#strings.startsWith(permission.name, 'VIEW_')}">
+
+                                            <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="display: flex; align-items: center;">
+
+                                                    <input type="checkbox" th:id="${'perm-' + permission.id}" name="permissionCodes" th:value="${permission.name}"
+                                                           th:checked="${assignedPermissions.contains(permission.name)}" style="transform: scale(1.1); margin-right: 15px"
+                                                    />
+
+                                                    <label th:for="${'perm-' + permission.id}" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                                        <span>Povoliť zobrazenie</span>
+                                                        <small style="color: var(--text-secondary); display: block; font-weight: normal;">(<th:block th:text="${permission.name}"></th:block>)</small>
+                                                    </label>
+                                                </div>
+                                                <span class="permission-badge"
+                                                      th:classappend="${assignedPermissions.contains(permission.name)} ? 'bg-success' : 'bg-danger'"
+                                                      style="padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; min-width: 80px; text-align: center;"
+                                                      th:text="${assignedPermissions.contains(permission.name)} ? 'AKTÍVNE' : 'NEAKTÍVNE'">AKTÍVNE</span>
+                                            </div>
+
+                                        </th:block>
+                                    </div>
+                                </div>
+
+                                <div class="column-write">
+                                    <div th:each="permission : ${entry.value}">
+                                        <th:block th:if="${(#strings.startsWith(permission.name, 'CREATE_') or #strings.startsWith(permission.name, 'EDIT_') or #strings.startsWith(permission.name, 'UPDATE_') or #strings.startsWith(permission.name, 'DELETE_'))}">
+
+                                            <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="display: flex; align-items: center;">
+
+                                                    <input type="checkbox" th:id="${'perm-' + permission.id}" name="permissionCodes" th:value="${permission.name}"
+                                                           th:checked="${assignedPermissions.contains(permission.name)}" style="transform: scale(1.1); margin-right: 15px"
+                                                    />
+
+                                                    <label th:for="${'perm-' + permission.id}" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+                                                        <span th:text="${#strings.substringBefore(permission.name, '_')}">EDIT</span>
+                                                        <small style="color: var(--text-secondary); display: block; font-weight: normal;">(<th:block th:text="${permission.name}"></th:block>)</small>
+                                                    </label>
+                                                </div>
+                                                <span class="permission-badge"
+                                                      th:classappend="${assignedPermissions.contains(permission.name)} ? 'bg-success' : 'bg-danger'"
+                                                      style="padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; min-width: 80px; text-align: center;"
+                                                      th:text="${assignedPermissions.contains(permission.name)} ? 'AKTÍVNE' : 'NEAKTÍVNE'">AKTÍVNE</span>
+                                            </div>
+
+                                        </th:block>
+                                    </div>
+                                </div>
+
+                                <div class="column-other">
+                                    <div th:each="permission : ${entry.value}">
+
+                                        <th:block th:if="${
+                        (
+                            !#strings.startsWith(permission.name, 'VIEW_') and
+                            !#strings.startsWith(permission.name, 'CREATE_') and
+                            !#strings.startsWith(permission.name, 'EDIT_') and
+                            !#strings.startsWith(permission.name, 'UPDATE_') and
+                            !#strings.startsWith(permission.name, 'DELETE_')
+                        )
+
+                    }">
+
+                                            <div class="stat-group" style="border-bottom: 1px dotted var(--border-color); padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="display: flex; align-items: center;">
+
+                                                    <input type="checkbox" th:id="${'perm-' + permission.id}" name="permissionCodes" th:value="${permission.name}"
+                                                           th:checked="${assignedPermissions.contains(permission.name)}" style="transform: scale(1.1); margin-right: 15px"
+                                                    />
+
+                                                    <label th:for="${'perm-' + permission.id}" class="stat-label" style="font-weight: bold; margin-bottom: 0;">
+
+
+                                    <span th:text="${#strings.contains(permission.name, '_')} ?
+                                                    ${#strings.substringBefore(permission.name, '_')} :
+                                                    ${permission.name}">OTHER</span>
+
+
+                                                        <small style="color: var(--text-secondary); display: block; font-weight: normal;">(<th:block th:text="${permission.name}"></th:block>)</small>
+                                                    </label>
+                                                </div>
+
+                                                <span class="permission-badge" th:classappend="${assignedPermissions.contains(permission.name)} ? 'bg-success' : 'bg-danger'"
+                                                      style="padding: 4px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; color: white; min-width: 100px; text-align: center;">
+                                <th:block th:if="${assignedPermissions.contains(permission.name)}"><i class="fa-solid fa-check"></i> AKTÍVNE</th:block>
+                                <th:block th:unless="${assignedPermissions.contains(permission.name)}"><i class="fa-solid fa-xmark"></i> NEAKTÍVNE</th:block>
+                            </span>
+                                            </div>
+
+                                        </th:block>
+                                    </div>
+                                </div>
+
+                            </div> </div>
+                        <div class="d-flex justify-content-end gap-3" style="margin-top: 30px;">
                             <button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);">
                                 <i class="fa-solid fa-save"></i> Uložiť Zmeny
                             </button>
-                        </p>
+
+                        <form th:action="@{/admin/permissions/delete/{roleId}(roleId=${selectedRole.id})}" method="post"
+                              th:if="${selectedRole.name != 'USER'}"
+                              onsubmit="return confirm('Ste si istý, že chcete ZMAZAŤ rolu: ' + this.getAttribute('data-role-name') + '? Táto akcia je nevratná!');"
+                              th:data-role-name="${selectedRole.name}"
+                              >
+                            <button type="submit" class="btn-admin" style="background-color: var(--offline-color);">
+                                <i class="fa-solid fa-trash"></i> Zmazať Rolu
+                            </button>
+                        </form>
+
+
+
+                        </div>
                     </form>
 
+                </div>
+            </div>
+
+            <div class="role-details" th:if="${selectedRole == null}">
+                <div class="admin-card alert alert-info text-center">
+                    Vyberte rolu zo zoznamu vľavo pre úpravu oprávnení.
                 </div>
             </div>
 

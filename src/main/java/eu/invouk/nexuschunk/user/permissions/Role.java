@@ -21,7 +21,7 @@ public class Role {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY) // Načítajte povolenia spolu s rolou
+    @ManyToMany(fetch = FetchType.EAGER) // Načítajte povolenia spolu s rolou
     @JoinTable(
             name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),

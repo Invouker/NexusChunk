@@ -72,7 +72,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
-                        .requestMatchers("/admin/**").hasAuthority(Permission.ADMIN_DASHBOARD)
+                        .requestMatchers("/admin/**").hasAuthority(Permission.VIEW_ADMIN_DASHBOARD)
                         .requestMatchers("/403").permitAll()
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         //.requestMatchers("/dashboard").authenticated()
