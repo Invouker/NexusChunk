@@ -51,7 +51,7 @@ public class NewsController {
     }
 
     @GetMapping("/admin/news/edit/{id}")
-    @PreAuthorize("hasAuthority(@permissions.EDIT_NEWS)")
+    @PreAuthorize("hasAuthority(@permissions.VIEW_NEWS)")
     public String createNews(Model model, @PathVariable("id") Long id){
 
         News news = newsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Neplatný ID novinky: " + id));
@@ -61,7 +61,7 @@ public class NewsController {
     }
 
     @PostMapping("/admin/news/save")
-    @PreAuthorize("hasAnyAuthority(@permissions.CREATE_NEWS, @permissions.EDIT_NEWS)")
+    @PreAuthorize("hasAnyAuthority(@permissions.CREATE_NEWS, @permissions.VIEW_NEWS)")
     public String createNews(NewsDto newsDto, Principal principal) {
         boolean isNew = newsDto.getId() == null;
         News news;

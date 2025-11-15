@@ -16,6 +16,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -50,7 +54,7 @@ public class AdminController {
 
     @GetMapping("/admin/dashboard")
     @PreAuthorize("hasAuthority(@permissions.ADMIN_DASHBOARD)")
-    public String adminDashboard(Model model){
+    public String adminDashboard(Model model, Authentication authentication){
 
         //Commits
         List<CommitDto> rawCommits = githubService.getCommits().stream().limit(10).toList();
@@ -63,6 +67,14 @@ public class AdminController {
 
         //News Like
         model.addAttribute("countNewsLikeLastDays", newsLikeService.countLikesForLastDays(30));
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        // 2. (Voliteľné) Prevedenie na List<String> pre jednoduchšiu prácu
+        List<String> permissions = authorities.stream()
+                .map(GrantedAuthority::getAuthority) // Extrahujeme String názov povolenia
+                .toList(); // Použijeme .toList()
+        log.info(permissions.toString());
 
         return "admin/index";
     }

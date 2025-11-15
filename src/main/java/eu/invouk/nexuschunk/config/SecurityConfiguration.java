@@ -3,6 +3,7 @@ package eu.invouk.nexuschunk.config;
 import eu.invouk.nexuschunk.auth.services.CustomOAuth2UserService;
 import eu.invouk.nexuschunk.auth.services.CustomOIDCUserService;
 import eu.invouk.nexuschunk.auth.services.CustomUserDetailsService;
+import eu.invouk.nexuschunk.error.CustomAccessDeniedHandler;
 import eu.invouk.nexuschunk.permissions.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -30,11 +31,13 @@ public class SecurityConfiguration {
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOIDCUserService customOIDCUserService;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService, CustomOAuth2UserService customOAuth2UserService, CustomOIDCUserService customOIDCUserService) {
+    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService, CustomOAuth2UserService customOAuth2UserService, CustomOIDCUserService customOIDCUserService, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.customUserDetailsService = customUserDetailsService;
         this.customOAuth2UserService = customOAuth2UserService;
         this.customOIDCUserService = customOIDCUserService;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
         log.info("Security configuration has been initialized");
     }
 
@@ -70,7 +73,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
                         .requestMatchers("/admin/**").hasAuthority(Permission.ADMIN_DASHBOARD)
-
+                        .requestMatchers("/403").permitAll()
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         //.requestMatchers("/dashboard").authenticated()
 
@@ -108,6 +111,8 @@ public class SecurityConfiguration {
                 .csrf(csrf ->
                         csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 )
+                .exceptionHandling(
+                        exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
                 .userDetailsService(customUserDetailsService);
 
         return http.build();
@@ -130,6 +135,7 @@ public class SecurityConfiguration {
                         response.sendRedirect("/?modal=login&error=bad_credentials");
                 case null, default -> {
                     assert authException != null;
+                    log.info("Authentication failed: {}", String.valueOf(authException));
                     response.sendRedirect("/?modal=login&error=" + authException);
                 }
             }

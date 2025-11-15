@@ -46,8 +46,10 @@ public class Error implements ErrorController {
         model.addAttribute("errorDetails", errorDetails); // Používajte len pre adminov/debug
 
         // Vrátenie názvu šablóny
-        return "error";
+        return "error/error";
     }
+
+
 
     // Pomocná metóda na získanie Stack Trace ako String
     private String getStackTrace(Throwable throwable) {

@@ -3,6 +3,8 @@ package eu.invouk.nexuschunk.user;
 import eu.invouk.nexuschunk.user.permissions.Role;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.NaturalId;
+import org.springframework.context.annotation.Primary;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -16,23 +18,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Basic
+    @NaturalId
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Basic
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Basic
     @Column(nullable = false)
     private String password;
 
-    @Basic
     @Column(name = "minecraft_nick", unique = true)
     private String minecraftNick;
 
-    @Basic
     @Column(name = "minecraft_uuid", unique = true)
     private String minecraftUuid;
 
