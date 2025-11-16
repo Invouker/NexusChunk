@@ -1,5 +1,8 @@
 package eu.invouk.nexuschunk.config;
 
+import eu.invouk.nexuschunk.app.AdminMaintenanceSuccessHandler;
+import eu.invouk.nexuschunk.app.MaintenanceFilter;
+import eu.invouk.nexuschunk.app.settings.AppSettingsService;
 import eu.invouk.nexuschunk.auth.services.CustomOAuth2UserService;
 import eu.invouk.nexuschunk.auth.services.CustomOIDCUserService;
 import eu.invouk.nexuschunk.auth.services.CustomUserDetailsService;
@@ -17,6 +20,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
@@ -32,12 +36,17 @@ public class SecurityConfiguration {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOIDCUserService customOIDCUserService;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final AppSettingsService appSettingsService;
+    private final MaintenanceFilter maintenanceFilter;
 
-    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService, CustomOAuth2UserService customOAuth2UserService, CustomOIDCUserService customOIDCUserService, CustomAccessDeniedHandler customAccessDeniedHandler) {
+    public SecurityConfiguration(CustomUserDetailsService customUserDetailsService, CustomOAuth2UserService customOAuth2UserService, CustomOIDCUserService customOIDCUserService, CustomAccessDeniedHandler customAccessDeniedHandler, AppSettingsService appSettingsService, MaintenanceFilter maintenanceFilter) {
         this.customUserDetailsService = customUserDetailsService;
         this.customOAuth2UserService = customOAuth2UserService;
         this.customOIDCUserService = customOIDCUserService;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.appSettingsService = appSettingsService;
+        this.maintenanceFilter = maintenanceFilter;
+
         log.info("Security configuration has been initialized");
     }
 
@@ -52,8 +61,12 @@ public class SecurityConfiguration {
                     "worker-src 'self' blob:;" +
                     "connect-src 'self' ws://localhost:35729 http://localhost:35729 https://cdn.jsdelivr.net https://ka-f.fontawesome.com;";
 
+
+    // TODO: Add sessions ( remember me ) system.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, Permission permissions) throws Exception {
+        AdminMaintenanceSuccessHandler adminMaintenanceSuccessHandler = new AdminMaintenanceSuccessHandler(appSettingsService);
+        http.addFilterBefore(maintenanceFilter, AuthorizationFilter.class);
         http
                 .headers(headers -> headers
                         // Odstránenie všetkých predvolených hlavičiek
@@ -88,6 +101,7 @@ public class SecurityConfiguration {
                 .formLogin((form) -> form
                         .loginPage("/?modal=login")
                         .failureHandler(authenticationFailureHandler())
+                        .successHandler(adminMaintenanceSuccessHandler)
                         .loginProcessingUrl("/login")// Kde sa nachádza náš vlastný prihlasovací formulár
                         .defaultSuccessUrl("/", true) // Kam presmerovať po úspešnom prihlásení
                         .permitAll()
@@ -113,6 +127,10 @@ public class SecurityConfiguration {
                 .exceptionHandling(
                         exception -> exception.accessDeniedHandler(customAccessDeniedHandler))
                 .userDetailsService(customUserDetailsService);
+
+        http.exceptionHandling(exceptions -> exceptions
+                .accessDeniedPage("/maintenance") // Presmerovanie pri 403, ale hlavne to necháva na filter
+        );
 
         return http.build();
     }

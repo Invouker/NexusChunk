@@ -1,5 +1,6 @@
 package eu.invouk.nexuschunk.news.controller;
 
+import eu.invouk.nexuschunk.app.settings.AppSettingsService;
 import eu.invouk.nexuschunk.news.repositories.News;
 import eu.invouk.nexuschunk.news.repositories.NewsRepository;
 import eu.invouk.nexuschunk.news.services.NewsLikeService;
@@ -23,11 +24,13 @@ public class HomeController {
     private final NewsRepository newsRepository;
     private final UserService userService;
     private final NewsLikeService newsLikeService;
+    private final AppSettingsService appSettingsService;
 
-    public HomeController(NewsRepository newsRepository, UserService userService, NewsLikeService newsLikeService) {
+    public HomeController(NewsRepository newsRepository, UserService userService, NewsLikeService newsLikeService, AppSettingsService appSettingsService) {
         this.newsRepository = newsRepository;
         this.userService = userService;
         this.newsLikeService = newsLikeService;
+        this.appSettingsService = appSettingsService;
     }
 
     @GetMapping("/")
@@ -59,6 +62,8 @@ public class HomeController {
 
         // 3. Pridanie mapy stavov do modelu pre Thymeleaf
         model.addAttribute("likedStatus", likedStatusMap);
+
+        model.addAttribute("isMaintenanceMode", appSettingsService.isMaintenanceMode());
 
         return "index";
     }

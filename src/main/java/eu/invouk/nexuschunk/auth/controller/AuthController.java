@@ -1,5 +1,6 @@
 package eu.invouk.nexuschunk.auth.controller;
 
+import eu.invouk.nexuschunk.app.settings.AppSettingsService;
 import eu.invouk.nexuschunk.auth.model.EmailDto;
 import eu.invouk.nexuschunk.auth.model.RecaptchaProperties;
 import eu.invouk.nexuschunk.auth.model.UserRegistrationDto;
@@ -43,11 +44,12 @@ public class AuthController {
     private final RecaptchaProperties recaptchaProperties;
     private final WebClient webClient;
     private final EmailService emailService;
+    private final AppSettingsService appSettingsService;
 
     private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
-    public AuthController(UserRepository userRepository, RoleRepository roleRepository,VerificationTokenRepository verificationTokenRepository, PasswordEncoder passwordEncoder, WebClient webClient, RecaptchaProperties recaptchaProperties, EmailService emailService) {
+    public AuthController(UserRepository userRepository, RoleRepository roleRepository, VerificationTokenRepository verificationTokenRepository, PasswordEncoder passwordEncoder, WebClient webClient, RecaptchaProperties recaptchaProperties, EmailService emailService, AppSettingsService appSettingsService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.verificationTokenRepository = verificationTokenRepository;
@@ -55,6 +57,7 @@ public class AuthController {
         this.recaptchaProperties = recaptchaProperties;
         this.webClient = webClient;
         this.emailService = emailService;
+        this.appSettingsService = appSettingsService;
     }
 
     @GetMapping("/verify")
@@ -141,7 +144,8 @@ public class AuthController {
             return "redirect:/?error=recaptcha&modal=register";
         }
 
-        if(registrationDto.getPassword().length() <= 5) {
+        int minimumPasswordLength = appSettingsService.getMinimumPasswordLength();
+        if(registrationDto.getPassword().length() <= minimumPasswordLength) { // 6
             log.debug("Password it too short!");
             return "redirect:/?error=password_too_short&modal=register";
         }
@@ -151,6 +155,7 @@ public class AuthController {
             return "redirect:/?error=password_complexity&modal=register";
         }
 
+        // TODO: Zakladná rola, voliteľná v "permissions" page
         Optional<Role> userRoleOptional = roleRepository.findByName("USER");
         Role userRole;
         if (userRoleOptional.isEmpty()) {

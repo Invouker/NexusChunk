@@ -6,315 +6,271 @@
 <body>
 <div th:replace="~{fragments/navbar :: navbar('domov')}"></div>
 
-<div class="container">
-    <div class="row">
+<div id="maintenance-overlay"
+     th:if="${isMaintenanceMode} and !${#authorization.expression('isAuthenticated()')}"
+     class="container text-center" style="padding-top: 100px; padding-bottom: 100px;">
 
-        <div class="col-lg-12 col-md-12 welcome">
-            <!--<div class="welcome-villager"></div>-->
-            <div class="logo"></div>
-            <div id="particles-js-nether" class="particles-container"></div>
-        </div>
+    <div class="alert alert-warning" role="alert" style="max-width: 600px; margin: 0 auto; background-color: var(--color-bg-body); border: 1px solid var(--border-color);">
+        <h4><i class="fa-solid fa-screwdriver-wrench"></i> Režim údržby</h4>
+        <p>Web je momentálne v režime údržby. Prístup je obmedzený iba pre administrátorov.</p>
+        <p>Prosím, prihláste sa pomocou modalu na tejto stránke.</p>
 
-        <div class="col-lg-6">
-            <div class="info-image minecraft-server p-3">
-                <span class="title ms-auto">MINECRAFT SERVER</span>
-                <span class="subtitle ms-auto">Práve je online XXX hráčov.</span>
-                <button class="btn-primary btn mt-auto ms-auto">PLAY NOW</button>
-            </div>
-        </div>
-
-        <div class="col-lg-6">
-            <div class="info-image discord p-3">
-                <span class="title">DISCORD</span>
-                <span class="subtitle" style="left: -5.8rem!important;">Práve je online XXX členov.</span>
-                <button class="btn-primary btn mt-auto">JOIN NOW</button>
-            </div>
-        </div>
+        <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+            Prihlásenie Administrátora
+        </button>
 
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-lg-8 news-container">
 
-            <div class="news" th:each="newsItem : ${newsPage}">
-                <div class="image-wrapper">
-                    <!--<img src="http://localhost:8080/images/news/title_00.png" class="image" alt="Image Content" /> -->
-                    <!--<img th:src="@{/images/news/{id}.png(id=${newsItem.id})}" class="image" alt="Image Content" />-->
-                    <img th:if="${newsItem.image}"
-                         th:src="@{/images/news/{filename}(filename=${newsItem.image})}"
-                         alt="Obrázok k novinke"
+<div id="main-content"
+     th:if="${!isMaintenanceMode} or (${isMaintenanceMode} and ${#authorization.expression('hasAuthority(''VIEW_ADMIN_MAINTENANCE'')')})">
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-12 col-md-12 welcome">
+                <div class="logo"></div>
+                <div id="particles-js-nether" class="particles-container"></div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-image minecraft-server p-3">
+                    <span class="title ms-auto">MINECRAFT SERVER</span>
+                    <span class="subtitle ms-auto">Práve je online XXX hráčov.</span>
+                    <button class="btn-primary btn mt-auto ms-auto">PLAY NOW</button>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-image discord p-3">
+                    <span class="title">DISCORD</span>
+                    <span class="subtitle" style="left: -5.8rem!important;">Práve je online XXX členov.</span>
+                    <button class="btn-primary btn mt-auto">JOIN NOW</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 news-container">
+
+                <div class="news" th:each="newsItem : ${newsPage}">
+                    <div class="image-wrapper">
+                        <img th:if="${newsItem.image}"
+                             th:src="@{/images/news/{filename}(filename=${newsItem.image})}"
+                             alt="Obrázok k novinke"
                         >
 
-                    <div class="title">
-                        <span th:text="${newsItem.title}">Pravý pád?</span>
+                        <div class="title">
+                            <span th:text="${newsItem.title}">Pravý pád?</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="content">
-                    <p th:text="${newsItem.content}">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry...
-                    </p>
-                </div>
+                    <div class="content">
+                        <p th:text="${newsItem.content}">
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+                        </p>
+                    </div>
 
-                <div class="footer">
-                    <div class="info d-flex align-items-center text-center">
+                    <div class="footer">
+                        <div class="info d-flex align-items-center text-center">
 
-                        <div class="author">
-                            <a th:href="@{/profile/{author}(author=${newsItem.author})}">
-                                <i class="fa-solid fa-user"></i> <span th:text="${newsItem.author}">Invouk</span>
-                            </a>
-                        </div>
-
-                        <div class="created-date">
-                            <i class="fa-solid fa-calendar-days"></i>
-                            <span th:text="${#temporals.format(newsItem.createdDate, 'dd.MM.yyyy')}">30.10.2025</span>
-                        </div>
-
-                        <div class="views">
-                            <i class="fa-solid fa-eye"></i>
-                            <span th:text="${#numbers.formatInteger(newsItem.views, 0, 'POINT') + 'x'}">2,754x</span>
-                        </div>
-
-                        <div class="wrapper-right">
-                            <div class="hearth-widget">
-                                <form th:action="@{/news/like/{id}(id=${newsItem.id})}" method="post" style="display: inline;">
-                                    <button type="submit" class="hearth btn btn-link" style="padding: 0; border: none; background: none; color: inherit;">
-                                        <i class="fa-solid fa-heart"
-                                           th:classappend="${likedStatus.get(newsItem.id) ?: false ? 'liked' : ''}"></i>
-                                    </button>
-                                </form>
-
-                                <span class="like-count" th:text="${newsItem.likes}">0</span>
+                            <div class="author">
+                                <a th:href="@{/profile/{author}(author=${newsItem.author})}">
+                                    <i class="fa-solid fa-user"></i> <span th:text="${newsItem.author}">Invouk</span>
+                                </a>
                             </div>
 
-                            <button class="btn btn-primary continue"
-                                    th:onclick="|window.location.href='@{/news/{id}(id=${newsItem.id})}'|">
-                                <i class="fa-solid fa-glasses"></i> Continue reading....
-                            </button>
+                            <div class="created-date">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span th:text="${#temporals.format(newsItem.createdDate, 'dd.MM.yyyy')}">30.10.2025</span>
+                            </div>
+
+                            <div class="views">
+                                <i class="fa-solid fa-eye"></i>
+                                <span th:text="${#numbers.formatInteger(newsItem.views, 0, 'POINT') + 'x'}">2,754x</span>
+                            </div>
+
+                            <div class="wrapper-right">
+                                <div class="hearth-widget">
+                                    <form th:action="@{/news/like/{id}(id=${newsItem.id})}" method="post" style="display: inline;">
+                                        <button type="submit" class="hearth btn btn-link" style="padding: 0; border: none; background: none; color: inherit;">
+                                            <i class="fa-solid fa-heart"
+                                               th:classappend="${likedStatus.get(newsItem.id) ?: false ? 'liked' : ''}"></i>
+                                        </button>
+                                    </form>
+
+                                    <span class="like-count" th:text="${newsItem.likes}">0</span>
+                                </div>
+
+                                <button class="btn btn-primary continue"
+                                        th:onclick="|window.location.href='@{/news/{id}(id=${newsItem.id})}'|">
+                                    <i class="fa-solid fa-glasses"></i> Continue reading....
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
-        </div>
 
+            <div class="col-lg-4" style="margin-top: 3rem;">
+                <div class="sidebar server-stats">
+                    <div class="title">Štatistiky servera</div>
+                    <div class="content">
 
-        <div class="col-lg-4" style="margin-top: 3rem;">
-            <div class="sidebar server-stats">
-                <div class="title">Štatistiky servera</div>
-                <div class="content">
+                        <div class="stat d-flex justify-content-between align-items-center position-relative">
+                            <div class="icon"><i class="fa-solid fa-users"></i></div>
+                            <div class="name">Počet registrovaných uživateľov</div>
+                            <div class="value">83,577x</div>
+                        </div>
 
-                    <div class="stat d-flex justify-content-between align-items-center position-relative">
-                        <div class="icon"><i class="fa-solid fa-users"></i></div>
-                        <div class="name">Počet registrovaných uživateľov</div>
-                        <div class="value">83,577x</div>
+                        <div class="stat d-flex justify-content-between align-items-center position-relative">
+                            <div class="icon"><i class="fa-solid fa-hourglass-start"></i></div>
+                            <div class="name">Odohraných hodín</div>
+                            <div class="value">102,745h</div>
+                        </div>
+
+                        <div class="stat d-flex justify-content-between align-items-center position-relative">
+                            <div class="icon"><i class="fa-solid fa-users"></i></div>
+                            <div class="name">Rekord hráčov</div>
+                            <div class="value">120</div>
+                        </div>
+
+                        <div class="stat d-flex justify-content-between align-items-center position-relative">
+                            <div class="icon"><i class="fa-solid fa-book-skull"></i></div>
+                            <div class="name">Počet smrtí</div>
+                            <div class="value">120,476x</div>
+                        </div>
+
+                        <div class="stat d-flex justify-content-between align-items-center position-relative">
+                            <div class="icon"><i class="fa-solid fa-money-bills"></i></div>
+                            <div class="name">Celkový počet peňazí</div>
+                            <div class="value">17,536,574$</div>
+                        </div>
+
                     </div>
-
-                    <div class="stat d-flex justify-content-between align-items-center position-relative">
-                        <div class="icon"><i class="fa-solid fa-hourglass-start"></i></div>
-                        <div class="name">Odohraných hodín</div>
-                        <div class="value">102,745h</div>
-                    </div>
-
-                    <div class="stat d-flex justify-content-between align-items-center position-relative">
-                        <div class="icon"><i class="fa-solid fa-users"></i></div>
-                        <div class="name">Rekord hráčov</div>
-                        <div class="value">120</div>
-                    </div>
-
-                    <div class="stat d-flex justify-content-between align-items-center position-relative">
-                        <div class="icon"><i class="fa-solid fa-book-skull"></i></div>
-                        <div class="name">Počet smrtí</div>
-                        <div class="value">120,476x</div>
-                    </div>
-
-                    <div class="stat d-flex justify-content-between align-items-center position-relative">
-                        <div class="icon"><i class="fa-solid fa-money-bills"></i></div>
-                        <div class="name">Celkový počet peňazí</div>
-                        <div class="value">17,536,574$</div>
-                    </div>
-
                 </div>
-            </div>
 
 
-            <div class="sidebar top top-list space-top">
-                <div class="title">Top Tier Hráči</div>
-                <div class="content">
+                <div class="sidebar top top-list space-top">
+                    <div class="title">Top Tier Hráči</div>
+                    <div class="content">
 
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najbohatší hráč</div>
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najbohatší hráč</div>
+                                    <div class="name">Invouk</div>
+                                </div>
+                                <div class="value">2,536,574$</div>
+                            </div>
+                        </a>
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/notch" alt="notch Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najviac odohraný čas</div>
+                                    <div class="name">notch</div>
+                                </div>
+                                <div class="value">1,250h</div>
+                            </div>
+                        </a>
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/MHF_cactus" alt="MHF_cactus Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najviac zabití</div>
+                                    <div class="name">MHF_cactus</div>
+                                </div>
+                                <div class="value">1,500x</div>
+                            </div>
+                        </a>
+
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/MHF_grass" alt="MHF_grass Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najviac smrtí</div>
+                                    <div class="name">MHF_grass</div>
+                                </div>
+                                <div class="value">1,500x</div>
+                            </div>
+                        </a>
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/MHF_chest" alt="MHF_chest Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najviac prejdených blokov</div>
+                                    <div class="name">MHF_chest</div>
+                                </div>
+                                <div class="value">2,6m</div>
+                            </div>
+                        </a>
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/MHF_iron" alt="MHF_iron Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najviac vyťažených blokov</div>
+                                    <div class="name">MHF_iron</div>
+                                </div>
+                                <div class="value">4,6m</div>
+                            </div>
+                        </a>
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/MHF_cake" alt="MHF_cake Avatar" />
+                                <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
+                                    <div class="state">Najviac položených blokov</div>
+                                    <div class="name">MHF_cake</div>
+                                </div>
+                                <div class="value">8,6m</div>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="sidebar top space-top">
+                    <div class="title">Najbohatší hráči (TOP 5)</div>
+                    <div class="content">
+
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar" />
                                 <div class="name">Invouk</div>
+                                <div class="money">8,536,574$</div>
                             </div>
-                            <div class="value">2,536,574$</div>
-                        </div>
-                    </a>
-
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/notch" alt="notch Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najviac odohraný čas</div>
-                                <div class="name">notch</div>
+                        </a>
+                        <a href="/invouk">
+                            <div class="player d-flex justify-content-between align-items-center position-relative">
+                                <img src="https://vzge.me/head/64/MHF_TNT" alt="MHF_TNT Avatar" />
+                                <div class="name">MHF_TNT</div>
+                                <div class="money">3,536,574$</div>
                             </div>
-                            <div class="value">1,250h</div>
-                        </div>
-                    </a>
+                        </a>
 
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_cactus" alt="MHF_cactus Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najviac zabití</div>
-                                <div class="name">MHF_cactus</div>
-                            </div>
-                            <div class="value">1,500x</div>
-                        </div>
-                    </a>
-
-
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_grass" alt="MHF_grass Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najviac smrtí</div>
-                                <div class="name">MHF_grass</div>
-                            </div>
-                            <div class="value">1,500x</div>
-                        </div>
-                    </a>
-
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_chest" alt="MHF_chest Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najviac prejdených blokov</div>
-                                <div class="name">MHF_chest</div>
-                            </div>
-                            <div class="value">2,6m</div>
-                        </div>
-                    </a>
-
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_iron" alt="MHF_iron Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najviac vyťažených blokov</div>
-                                <div class="name">MHF_iron</div>
-                            </div>
-                            <div class="value">4,6m</div>
-                        </div>
-                    </a>
-
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_cake" alt="MHF_cake Avatar" />
-                            <div class="player-details d-flex flex-column text-start flex-grow-1 me-2">
-                                <div class="state">Najviac položených blokov</div>
-                                <div class="name">MHF_cake</div>
-                            </div>
-                            <div class="value">8,6m</div>
-                        </div>
-                    </a>
-
+                    </div>
                 </div>
+
             </div>
 
-            <div class="sidebar top space-top">
-                <div class="title">Najbohatší hráči (TOP 5)</div>
-                <div class="content">
-
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/Invouk" alt="Invouk Avatar" />
-                            <div class="name">Invouk</div>
-                            <div class="money">8,536,574$</div>
-                        </div>
-                    </a>
-                    <a href="/invouk">
-                        <div class="player d-flex justify-content-between align-items-center position-relative">
-                            <img src="https://vzge.me/head/64/MHF_TNT" alt="MHF_TNT Avatar" />
-                            <div class="name">MHF_TNT</div>
-                            <div class="money">3,536,574$</div>
-                        </div>
-                    </a>
-
-                </div>
-            </div>
-
-        </div>
 
 
-
-    </div>
-
-    <!--
-<div class="news-thread-list-container">
-
-    <div th:if="${newsPage != null}">
-
-        <div class="news-card" th:each="news : ${newsPage.content}">
-            <a th:href="@{/news/{id}(id=${news.id})}" style="text-decoration: none; color: inherit;">
-                <div class="news-body">
-
-                    <div class="news-image"
-                         th:style="|background-image: url('${news.image != null ? news.image : 'https://via.placeholder.com/90x60/5c7aff/fff?text=NEWS'}');|">
-                    </div>
-
-                    <div class="news-content">
-                        <h4><span th:text="${news.title}">Titulok Novinky</span></h4>
-
-                        <div class="news-summary">
-                            <span th:text="${#strings.substring(news.content, 0, #strings.length(news.content) > 100 ? 100 : #strings.length(news.content)) + '...'}">
-                                Krátky úvod, aby sa zmestil na riadok.
-                            </span>
-                        </div>
-
-                        <p class="news-meta">
-                            <span class="badge badge-custom"
-                                  th:if="${!news.categories.isEmpty()}"
-                                  th:text="${news.categories[0].name}">
-                                TAG
-                            </span>
-                            Publikované:
-                            <span th:text="${#temporals.format(news.createdDate, 'dd. MMM. yy')}">20. Okt.</span>
-                            | Autor: <span th:text="${news.author}">Nexus</span>
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <div class="news-card">
-            <a href="#" style="text-decoration: none; color: inherit;">
-                <div class="news-body">
-                    <div class="news-image" style="background-image: url('https://via.placeholder.com/90x60/ffc107/212529?text=NEW');"></div>
-                    <div class="news-content">
-                        <h4><span >Aktualizácia obchodu s mincami</span></h4>
-                        <div class="news-summary">
-                            Do in-game obchodu bolo pridaných 5 nových kozmetických predmetov! Prihláste sa ešte dnes!
-                        </div>
-                        <p class="news-meta">
-                            <span class="badge badge-custom">UPDATE</span>
-                            Publikované: 27. Okt. | Autor: Admin
-                        </p>
-                    </div>
-                </div>
-            </a>
         </div>
 
     </div>
 
-    <div th:replace="~{fragments/pagination :: paginationFragment(${newsPage})}"></div>
-
 </div>
-</div>
--->
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <script>
@@ -456,6 +412,7 @@
 
 
     // Načítanie tsParticles do elementu
+    // Kód beží, ale častice sa zobrazia len ak je element #particles-js-nether viditeľný
     if (typeof tsParticles !== 'undefined') {
         tsParticles.load(PARTICLE_ID, activeNetherPortalConfig)
             .then(container => {

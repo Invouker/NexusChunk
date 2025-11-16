@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.app;
+package eu.invouk.nexuschunk.app.settings;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -12,6 +12,7 @@ public class Permission {
     public static final Map<String, String> PERMISSION_DESCRIPTIONS;
 
     public static final String VIEW_ADMIN_DASHBOARD = "VIEW_ADMIN_DASHBOARD";
+    public static final String VIEW_ADMIN_MAINTENANCE = "VIEW_ADMIN_MAINTENANCE";
 
     public static final String VIEW_NEWS = "VIEW_NEWS";
     public static final String CREATE_NEWS = "CREATE_NEWS";
@@ -33,6 +34,7 @@ public class Permission {
 
     public static final Set<String> ALL_PERMISSIONS = Set.of(
             VIEW_ADMIN_DASHBOARD,
+            VIEW_ADMIN_MAINTENANCE,
             VIEW_NEWS,
             CREATE_NEWS,
             VIEW_MEMBERS,
@@ -54,7 +56,8 @@ public class Permission {
         // ---------------------------------
 
         PERMISSION_DESCRIPTIONS = Map.ofEntries(
-                Map.entry(VIEW_ADMIN_DASHBOARD, "Zobrazenie administrátorskej nástenky"),
+                Map.entry(VIEW_ADMIN_DASHBOARD, "administrátorskej nástenky"),
+                Map.entry(VIEW_ADMIN_MAINTENANCE, "pokiaľ je maintenance mode."),
                 Map.entry(VIEW_NEWS, "Prezeranie noviniek"),
                 Map.entry(CREATE_NEWS, "Vytváranie nových noviniek"),
                 Map.entry(VIEW_MEMBERS, "Prezeranie zoznamu členov"),

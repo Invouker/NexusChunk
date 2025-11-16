@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.auth.controller;
+package eu.invouk.nexuschunk;
 
 import eu.invouk.nexuschunk.auth.model.EmailDto;
 import eu.invouk.nexuschunk.auth.model.UserLoginDto;

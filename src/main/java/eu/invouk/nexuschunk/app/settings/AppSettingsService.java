@@ -1,4 +1,4 @@
-package eu.invouk.nexuschunk.app;
+package eu.invouk.nexuschunk.app.settings;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
