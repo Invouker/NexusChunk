@@ -15,62 +15,93 @@
     <div class="admin-main-content">
         <h1 class="section-title">Nastavenia Systému</h1>
 
+        <style>
+            .stat-group {
+                /* Vynúti, aby sa prvky hromadili na začiatku riadku */
+                justify-content: flex-start !important;
+
+                /* Vynúti, aby bol label zarovnaný doľava */
+                text-align: left !important;
+            }
+
+            /* Pridajte medzeru medzi labelom a nasledujúcim prvkom */
+            .stat-group label {
+                margin-right: 15px !important;
+                min-width: 250px; /* Aby boli labely konzistentné */
+            }
+        </style>
+
         <div class="settings-grid">
 
             <div class="admin-card">
                 <h4><i class="fa-solid fa-wrench"></i> Všeobecné a Prevádzkové Nastavenia</h4>
 
                 <form>
-                    <div class="stat-group">
-                        <label class="stat-label" for="maintenance">Web v režime údržby:</label>
+                    <div class="stat-group d-flex align-items-center mb-2">
+                        <label class="stat-label me-3" for="maintenance">Web v režime údržby:</label>
                         <input type="checkbox" id="maintenance" th:checked="${isMaintenanceMode}">
-                        <span th:classappend="${isMaintenanceMode} ? 'status-inactive' : 'status-active'" th:text="${isMaintenanceMode} ? 'VYPNUTÝ' : 'ONLINE'">ONLINE</span>
+                        <span class="ms-2"
+                              th:classappend="${isMaintenanceMode} ? 'status-inactive' : 'status-active'"
+                              th:text="${isMaintenanceMode} ? 'VYPNUTÝ' : 'ONLINE'">ONLINE</span>
                     </div>
 
-                    <div class="stat-group">
-                        <label class="stat-label" for="registration">Povolená registrácia:</label>
+                    <div class="stat-group d-flex align-items-center mb-2">
+                        <label class="stat-label me-3" for="registration">Povolená registrácia:</label>
                         <input type="checkbox" id="registration" th:checked="${isRegistrationEnabled}">
-                        <span th:classappend="${isRegistrationEnabled} ? 'status-active' : 'status-inactive'" th:text="${isRegistrationEnabled} ? 'ÁNO' : 'NIE'">ÁNO</span>
+                        <span class="ms-2"
+                              th:classappend="${isRegistrationEnabled} ? 'status-active' : 'status-inactive'"
+                              th:text="${isRegistrationEnabled} ? 'ÁNO' : 'NIE'">ÁNO</span>
+                    </div>
+                    <div class="stat-group d-flex align-items-center mb-2">
+                        <label class="stat-label me-3" for="login">Povolené prihlásenie:</label>
+                        <input type="checkbox" id="login" th:checked="${isLoginEnabled}">
+                        <span class="ms-2"
+                              th:classappend="${isLoginEnabled} ? 'status-active' : 'status-inactive'"
+                              th:text="${isLoginEnabled} ? 'ÁNO' : 'NIE'">ÁNO</span>
+                    </div>
+
+                    <h5 style="margin-top: 25px; margin-bottom: 10px;">🛡️ Nastavenia Bezpečnosti</h5>
+
+                    <div class="stat-group d-flex align-items-center mb-2">
+                        <label class="stat-label me-3" for="loginAttempts">Limit pokusov o prihlásenie (3):</label>
+                        <input type="number" id="loginAttempts" value="5" min="1" class="form-control" style="width: 100px;">
+                    </div>
+
+                    <div class="stat-group d-flex align-items-center mb-2">
+                        <label class="stat-label me-3" for="lockoutDuration">Dĺžka zámku účtu v min (15min):</label>
+                        <input type="number" id="lockoutDuration" value="15" min="1" class="form-control" style="width: 100px;">
+                    </div>
+
+                    <div class="stat-group d-flex align-items-center mb-2">
+                        <label class="stat-label me-3" for="minPasswordLength">Minimálna dĺžka hesla (6):</label>
+                        <input type="number" id="minPasswordLength" value="8" min="4" class="form-control" style="width: 100px;">
+                    </div>
+
+                    <h5 style="margin-top: 25px; margin-bottom: 10px;">📝 Všeobecné Texty</h5>
+
+                    <div class="form-group mb-2">
+                        <label for="pageTitle" class="stat-label">Názov stránky:</label>
+                        <input type="text" id="pageTitle" value="NexusChunk" class="form-control">
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label for="tosLink" class="stat-label">Odkaz na Podmienky Použitia (TOS URL):</label>
+                        <input type="url" id="tosLink" value="/terms-of-service" class="form-control">
+                    </div>
+
+                    <div class="stat-group" style="margin-top: 20px;">
+                        <label class="stat-label" for="cacheClear">Vyprázdniť Všetky Cache:</label>
+                        <button type="button" id="cacheClear" class="btn-admin" style="background-color: var(--accent-color-danger);">
+                            <i class="fa-solid fa-broom"></i> Vyčistiť Cache
+                        </button>
                     </div>
 
                     <div class="form-group" style="margin-top: 15px;">
-                        <label for="maxAvatarSize" class="stat-label">Max. veľkosť avataru (KB):</label>
-                        <input type="number" id="maxAvatarSize" value="256" min="10" class="form-control" style="width: 150px; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light); display: inline-block;">
                     </div>
 
                     <p style="margin-top: 30px;"><button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);"><i class="fa-solid fa-save"></i> Uložiť Všeobecné</button></p>
                 </form>
             </div>
-
-            <div class="admin-card">
-                <h4><i class="fa-solid fa-envelope"></i> SMTP a E-mail Konfigurácia</h4>
-
-                <form>
-                    <div class="stat-group">
-                        <label class="stat-label" for="emailVerification">Vyžadovať potvrdenie e-mailu:</label>
-                        <input type="checkbox" id="emailVerification" th:checked="${isEmailVerificationRequired}">
-                        <span th:classappend="${isEmailVerificationRequired} ? 'status-active' : 'status-inactive'" th:text="${isEmailVerificationRequired} ? 'ÁNO' : 'NIE'">ÁNO</span>
-                    </div>
-                    <hr style="border-top: 1px dotted var(--border-color); margin: 15px 0;">
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="smtpHost" class="stat-label">SMTP Host:</label>
-                        <input type="text" id="smtpHost" value="smtp.nexuschunk.sk" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light);">
-                    </div>
-
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="smtpPort" class="stat-label">SMTP Port:</label>
-                        <input type="number" id="smtpPort" value="587" class="form-control" style="width: 150px; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light);">
-                    </div>
-
-                    <p style="margin-top: 30px;"><button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);"><i class="fa-solid fa-save"></i> Uložiť SMTP</button>
-                        <a href="#" class="btn-admin" style="background-color: var(--accent-color-stat); margin-left: 10px;"><i class="fa-solid fa-paper-plane"></i> Poslať Test</a></p>
-                </form>
-            </div>
-
-        </div>
-
-        <div class="settings-grid">
 
             <div class="admin-card">
                 <h4><i class="fa-solid fa-server"></i> Minecraft Server Pripojenie</h4>
@@ -96,47 +127,13 @@
                 </form>
             </div>
 
-            <div class="admin-card">
-                <h4><i class="fa-brands fa-discord"></i><i class="fa-brands fa-google" style="margin-left: 10px;"></i> OAuth Integrácia (Discord, Google, atď.)</h4>
 
-                <form>
-                    <div class="stat-group">
-                        <label class="stat-label" for="oauthEnabled">OAuth Prihlásenie Povolené:</label>
-                        <input type="checkbox" id="oauthEnabled" th:checked="${isOAuthEnabled}">
-                        <span th:classappend="${isOAuthEnabled} ? 'status-active' : 'status-inactive'" th:text="${isOAuthEnabled} ? 'ÁNO' : 'NIE'">ÁNO</span>
-                    </div>
+        </div>
 
-                    <hr style="border-top: 1px dotted var(--border-color); margin: 15px 0;">
+        <div class="settings-grid">
 
-                    <h5 style="color: var(--accent-color); margin-top: 20px; font-size: 1em;"><i class="fa-brands fa-discord"></i> Discord Konfigurácia</h5>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="discordClientId" class="stat-label">Discord Client ID:</label>
-                        <input type="text" id="discordClientId" value="1234567890..." class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light);">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="discordClientSecret" class="stat-label">Discord Client Secret:</label>
-                        <input type="password" id="discordClientSecret" value="******************" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light);">
-                    </div>
 
-                    <hr style="border-top: 1px dotted var(--border-color); margin: 15px 0;">
 
-                    <h5 style="color: var(--accent-color); margin-top: 20px; font-size: 1em;"><i class="fa-brands fa-google"></i> Google Konfigurácia</h5>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="googleClientId" class="stat-label">Google Client ID:</label>
-                        <input type="text" id="googleClientId" value="9876543210..." class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light);">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <label for="googleClientSecret" class="stat-label">Google Client Secret:</label>
-                        <input type="password" id="googleClientSecret" value="******************" class="form-control" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid var(--border-color); background-color: var(--bg-secondary); color: var(--text-light);">
-                    </div>
-
-                    <p class="text-detail" style="color: orange; margin-top: 20px;">
-                        POZOR: Nikdy nezdieľajte Client Secret! Tieto dáta sú citlivé.
-                    </p>
-
-                    <p style="margin-top: 30px;"><button type="submit" class="btn-admin" style="background-color: var(--accent-color-success);"><i class="fa-solid fa-save"></i> Uložiť OAuth</button></p>
-                </form>
-            </div>
 
         </div>
 
