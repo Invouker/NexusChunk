@@ -25,6 +25,7 @@ public class Permission {
 
     public static final String VIEW_SETTINGS = "VIEW_SETTINGS";
     public static final String EDIT_SETTINGS = "EDIT_SETTINGS";
+    public static final String RELOAD_SETTINGS_ACTUATOR = "RELOAD_SETTINGS_ACTUATOR";
 
     public static final String VIEW_SERVER = "VIEW_SERVER";
     public static final String EDIT_SERVER = "EDIT_SERVER";
@@ -41,6 +42,7 @@ public class Permission {
             CREATE_PERMISSIONS_ROLE,
             VIEW_SETTINGS,
             EDIT_SETTINGS,
+            RELOAD_SETTINGS_ACTUATOR,
             VIEW_SERVER,
             EDIT_SERVER,
             CONTROL_SERVER
@@ -62,6 +64,7 @@ public class Permission {
                 Map.entry(CREATE_PERMISSIONS_ROLE, "Vytváranie nových rolí"),
                 Map.entry(VIEW_SETTINGS, "Prezeranie systémových nastavení"),
                 Map.entry(EDIT_SETTINGS, "Úprava systémových nastavení"),
+                Map.entry(RELOAD_SETTINGS_ACTUATOR, "Obnovenie systémových nastavení"),
                 Map.entry(VIEW_SERVER, "Prezeranie informácií o stave servera"),
                 Map.entry(EDIT_SERVER, "Zmena nastavení servera"),
                 Map.entry(CONTROL_SERVER, "Kontrola stavu a reštart servera"));
