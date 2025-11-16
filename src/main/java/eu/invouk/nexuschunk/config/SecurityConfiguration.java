@@ -8,7 +8,7 @@ import eu.invouk.nexuschunk.permissions.Permission;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -53,9 +53,9 @@ public class SecurityConfiguration {
                     "connect-src 'self' ws://localhost:35729 http://localhost:35729 https://cdn.jsdelivr.net https://ka-f.fontawesome.com;";
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, Environment environment) throws Exception {
-
-        http.headers(headers -> headers
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, Permission permissions) throws Exception {
+        http
+                .headers(headers -> headers
                         // Odstránenie všetkých predvolených hlavičiek
                         .defaultsDisabled()
 
@@ -66,14 +66,13 @@ public class SecurityConfiguration {
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
 
-                // Prípadne iné hlavičky, ktoré chcete zachovať...
-        );
-
-        http
+                )
                 .authorizeHttpRequests((requests) -> requests
                         // Admin panel: Prístup len pre užívateľov s rolou ADMIN
+                        .requestMatchers(HttpMethod.POST, "/actuator/refresh").hasAuthority(Permission.RELOAD_SETTINGS_ACTUATOR)
                         .requestMatchers("/admin/**").hasAuthority(Permission.VIEW_ADMIN_DASHBOARD)
                         .requestMatchers("/403").permitAll()
+
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         //.requestMatchers("/dashboard").authenticated()
 
