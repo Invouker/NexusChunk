@@ -55,7 +55,12 @@ repositories {
     mavenLocal()
 }
 
+configurations.all {
+    exclude group: 'org.slf4j', module: 'slf4j-reload4j'
+}
+
 dependencies {
+    implementation project(':api')
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-authorization-server'
@@ -64,6 +69,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.pf4j:pf4j-spring:0.10.0'
     //implementation 'org.springframework.cloud:spring-cloud-context:5.0.0-SNAPSHOT'
     //implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
@@ -87,3 +93,34 @@ dependencies {
 }
 
 
+task copyMinecraftPanel(type: Copy) {
+    dependsOn(":plugins:minecraft-panel:jar")
+    from("plugins/minecraft-panel/build/libs/minecraft-panel-0.0.1-SNAPSHOT.jar")
+    into("plugins")
+}
+
+bootJar {
+    dependsOn copyMinecraftPanel
+}
+
+tasks.register('copyAllPlugins', Copy) {
+    description = 'Builds and copies all plugin JAR files to the PF4J plugins directory.'
+    into layout.projectDirectory.dir('plugins')
+
+    subprojects.findAll {
+        it.path.startsWith(':panel-plugins:') // Filtruj všetky projekty pod :panel-plugins:
+    }.each { pluginProject ->
+
+        def jarTask = pluginProject.tasks.named('jar')
+
+        dependsOn jarTask
+
+        from jarTask
+    }
+
+    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.FAIL
+}
+
+tasks.named('assemble').configure {
+    dependsOn(copyAllPlugins)
+}

@@ -1,1 +1,9 @@
 rootProject.name = 'nexuschunk'
+
+// API module
+include("api")
+project(":api").projectDir = file("api")
+
+// Plugin module
+include("panel-plugins:minecraft-panel")
+project(":panel-plugins:minecraft-panel").projectDir = file("panel-plugins/minecraft-panel")

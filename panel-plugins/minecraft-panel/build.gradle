@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group = 'eu.invouk'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    implementation 'org.pf4j:pf4j:3.13.0'
+}
+
+tasks.register('copyPlugin', Copy) {
+    description = 'Copies the built plugin JAR to the main application plugins directory for PF4J.'
+
+    from tasks.named('jar')
+    into project(':').file('plugins')
+
+    duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.FAIL
+}
+tasks.named('jar').configure {
+    finalizedBy(copyPlugin)
+}
+
+test {
+    useJUnitPlatform()
+    failOnNoDiscoveredTests = false
+}

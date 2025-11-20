@@ -1,0 +1,30 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'eu.invouk'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+dependencies {
+    // PF4J API – exportované aj pre pluginy
+    api 'org.pf4j:pf4j:3.10.0'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    failOnNoDiscoveredTests = false
+}
