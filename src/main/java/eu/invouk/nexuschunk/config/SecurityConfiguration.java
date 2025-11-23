@@ -85,6 +85,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/actuator/refresh").hasAuthority(Permission.RELOAD_SETTINGS_ACTUATOR)
                         .requestMatchers("/admin/**").hasAuthority(Permission.VIEW_ADMIN_DASHBOARD)
                         .requestMatchers("/403").permitAll()
+                        .requestMatchers("/ws/connect").permitAll()
 
                         // Používateľský panel: Prístup len pre prihlásených užívateľov (ADMIN aj USER)
                         //.requestMatchers("/dashboard").authenticated()

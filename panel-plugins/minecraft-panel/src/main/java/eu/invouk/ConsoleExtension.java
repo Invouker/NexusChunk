@@ -1,20 +1,22 @@
 package eu.invouk;
 
 import eu.invouk.api.NavbarExtension;
+import org.pf4j.Extension;
 
-public class MinecraftNavbarExtenstion implements NavbarExtension {
+@Extension
+public class ConsoleExtension implements NavbarExtension {
     @Override
     public String getTitle() {
-        return "Minecraft";
+        return "Console";
     }
 
     @Override
     public String getPath() {
-        return "/minecraft";
+        return "console";
     }
 
     @Override
     public String getPermission() {
-        return "minecraft_view";
+        return "VIEW_CONSOLE";
     }
 }

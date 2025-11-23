@@ -69,7 +69,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     implementation 'org.pf4j:pf4j-spring:0.10.0'
+
     //implementation 'org.springframework.cloud:spring-cloud-context:5.0.0-SNAPSHOT'
     //implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
@@ -79,7 +81,7 @@ dependencies {
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
     compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	//developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	//runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -94,8 +96,8 @@ dependencies {
 
 
 task copyMinecraftPanel(type: Copy) {
-    dependsOn(":plugins:minecraft-panel:jar")
-    from("plugins/minecraft-panel/build/libs/minecraft-panel-0.0.1-SNAPSHOT.jar")
+    dependsOn(":panel-plugins:minecraft-panel:jar")
+    from("panel-plugins/minecraft-panel/build/libs/minecraft-panel-0.0.1-SNAPSHOT.jar")
     into("plugins")
 }
 

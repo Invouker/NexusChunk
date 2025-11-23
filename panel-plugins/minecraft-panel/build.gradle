@@ -16,8 +16,9 @@ java {
 }
 
 dependencies {
-    implementation project(':api')
-    implementation 'org.pf4j:pf4j:3.13.0'
+    compileOnly project(':api')
+    compileOnly 'org.pf4j:pf4j:3.13.0'
+    annotationProcessor 'org.pf4j:pf4j:3.13.0'
 }
 
 tasks.register('copyPlugin', Copy) {
@@ -28,11 +29,18 @@ tasks.register('copyPlugin', Copy) {
 
     duplicatesStrategy = org.gradle.api.file.DuplicatesStrategy.FAIL
 }
+
+
+
 tasks.named('jar').configure {
     finalizedBy(copyPlugin)
+
+    from sourceSets.main.output
+    exclude 'eu/invouk/api/**'
 }
 
 test {
     useJUnitPlatform()
     failOnNoDiscoveredTests = false
 }
+
