@@ -2,6 +2,10 @@ package eu.invouk.nexusconnect.connector;
 
 
 import java.net.http.WebSocket;
+
+import eu.invouk.api.packets.Packet;
+import eu.invouk.api.packets.PacketDecoderFactory;
+import eu.invouk.api.packets.connection.AuthorizationPacket;
 import eu.invouk.nexusconnect.Nexusconnect;
 import org.bukkit.Bukkit;
 import org.slf4j.Logger;
@@ -15,7 +19,7 @@ public record MinecraftClientListener(Nexusconnect plugin, WebSocketManager mana
 
     @Override
     public void onOpen(WebSocket webSocket) {
-        log.info("Pripojenie otvorené. Požiadavka na prvú správu.");
+        //log.info("Pripojenie otvorene. Poziadavka na prvu spravu.");
         webSocket.request(1); // Vyžiadame si prvú správu
     }
 
@@ -27,7 +31,7 @@ public record MinecraftClientListener(Nexusconnect plugin, WebSocketManager mana
 
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
-        log.warn("Chyba na WebSocket pripojení.", error);
+        log.warn("Chyba na WebSocket pripojeni.", error);
     }
 
     // --- Spracovanie správ ---
@@ -51,14 +55,17 @@ public record MinecraftClientListener(Nexusconnect plugin, WebSocketManager mana
      * @param message Prijatý reťazec (ideálne JSON).
      */
     private void handleIncomingMessage(String message) {
-        log.info("Prijatá správa na hlavnej niťe: " + message);
+        log.info("Prijata sprava: " + message);
 
-        // TODO: Parsujte správu (ideálne JSON) a spracujte akcie
-        // Príklad spracovania jednoduchého príkazu:
-        if (message.startsWith("BROADCAST:")) {
-            String broadcastMessage = message.substring("BROADCAST:".length()).trim();
-            Bukkit.broadcastMessage("§6[Nexus] §f" + broadcastMessage);
+        Packet packet = PacketDecoderFactory.decode(message);
+        if(packet == null) {
+            log.info("Prijata sprava: null");
+            return;
         }
-        // else if (message.startsWith("TELEPORT:")) { ... }
+        switch (packet.getEPacket()) {
+            case HEARTBEAT_PACKET ->  {
+                log.info("Prijata sprava: " + message);
+            }
+        }
     }
 }

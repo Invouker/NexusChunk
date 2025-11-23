@@ -2,6 +2,7 @@ rootProject.name = 'nexuschunk'
 
 include('core')
 include('api')
+include('NexusConnect')
 
 include('nexus-plugins:minecraft-panel')
 project(':nexus-plugins:minecraft-panel').projectDir = file('nexus-plugins/minecraft-panel')

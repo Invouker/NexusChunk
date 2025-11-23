@@ -1,15 +1,19 @@
 package eu.invouk.nexusconnect.connector;
 
+import eu.invouk.api.packets.HeartBeatPacket;
+import eu.invouk.api.packets.Packet;
+import eu.invouk.api.packets.connection.AuthorizationPacket;
 import eu.invouk.nexusconnect.Nexusconnect;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Queue;
+import java.util.concurrent.*;
 
 import static java.net.http.HttpClient.newHttpClient;
 
@@ -22,6 +26,9 @@ public class WebSocketManager {
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private final long RECONNECT_DELAY = 10; // Sekúnd
 
+
+    private Queue<Packet> packetQueue = new ConcurrentLinkedQueue<>();
+
     private int tryConnection;
     private final int MAX_TRY_CONNECTION = 3;
 
@@ -31,7 +38,7 @@ public class WebSocketManager {
     }
 
     public void connect() {
-        log.info("Pokúšam sa pripojiť k WebSocket serveru: {}", wsUri);
+        log.info("Pokusam sa pripojit k WebSocket serveru: {}", wsUri);
         HttpClient client = newHttpClient();
 
         try {
@@ -39,8 +46,20 @@ public class WebSocketManager {
                     .buildAsync(URI.create(wsUri), new MinecraftClientListener(plugin, this))
                     .thenAccept(ws -> {
                         this.webSocket = ws;
-                        log.info("WebSocket úspešne pripojený.");
-                        sendMessage("Connection Successfully!");
+                        log.info("WebSocket uspesne pripojeny.");
+                        //sendMessage("Connection Successfully!");
+
+                        AuthorizationPacket authorizationPacket = new AuthorizationPacket("abc0123");
+                        sendPacket(authorizationPacket);
+
+
+                        HeartBeatPacket heartBeatPacket = new HeartBeatPacket();
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                sendPacket(heartBeatPacket);
+                            }
+                        }.runTaskTimerAsynchronously(plugin, 20L, 20*10L);
                     })
                     .exceptionally(t -> {
                         t.printStackTrace();
@@ -53,7 +72,7 @@ public class WebSocketManager {
                         return null;
                     });
         } catch (Exception e) {
-            log.warn("Chyba pri vytváraní WebSocket klienta.", e);
+            log.warn("Chyba pri vytvarani WebSocket klienta.", e);
             scheduleReconnect();
         }
     }
@@ -64,31 +83,47 @@ public class WebSocketManager {
     }
 
     public void onConnectionClosed(int statusCode, String reason) {
-        plugin.getLogger().warning(String.format("WebSocket zatvorený: Status=%d, Dôvod=%s", statusCode, reason));
+        plugin.getLogger().warning(String.format("WebSocket zatvoreny: Status=%d, Dovod=%s", statusCode, reason));
         this.webSocket = null;
 
         // Pri nekritických chybách alebo zatvorení pre opätovné pripojenie
         if (statusCode != WebSocket.NORMAL_CLOSURE) {
-            log.info("Spúšťam automatické opätovné pripojenie...");
+            log.info("Spustam automaticke opetovna pripojenie...");
             scheduleReconnect();
         }
     }
 
     public void disconnect() {
-        log.info("Zatváram WebSocket pripojenie a plánovač.");
+        log.info("Zatvaram WebSocket pripojenie a planovac.");
         if (webSocket != null && !webSocket.isInputClosed()) {
-            webSocket.sendClose(WebSocket.NORMAL_CLOSURE, "Plugin vypnutý");
+            webSocket.sendClose(WebSocket.NORMAL_CLOSURE, "Plugin vypnuty");
         }
         scheduler.shutdownNow();
     }
 
-    public void sendMessage(String message) {
+    private void sendMessage(String message) {
         if (webSocket != null && !webSocket.isInputClosed()) {
-            plugin.getLogger().info("Odosielam správu: " + message);
+            plugin.getLogger().info("Odosielam spravu: " + message);
             webSocket.sendText(message, true);
         } else {
-            plugin.getLogger().warning("WebSocket nie je pripojený. Správa neodoslaná.");
-            // Môžete tu pridať logiku pre ukladanie správ, kým sa znova nepripojí
+            plugin.getLogger().warning("WebSocket nie je pripojeny. Sprava neodoslana.");
+        }
+    }
+
+    /*public void sendPacket(Packet packet) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                packetQueue.add(packet);
+            }
+        })
+    }*/
+
+    public void sendPacket(Packet packet) {
+        if (webSocket != null && !webSocket.isInputClosed()) {
+            plugin.getLogger().info("Odosielam spravu: " + packet.toString());
+            webSocket.sendText(packet.encode(), true);
+        } else {
+            plugin.getLogger().warning("WebSocket nie je pripojeny. Sprava neodoslana.");
         }
     }
 }

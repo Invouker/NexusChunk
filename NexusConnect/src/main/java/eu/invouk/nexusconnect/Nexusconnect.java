@@ -1,5 +1,7 @@
 package eu.invouk.nexusconnect;
 
+import eu.invouk.api.packets.Packet;
+import eu.invouk.api.packets.connection.AuthorizationPacket;
 import eu.invouk.nexusconnect.connector.WebSocketManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
@@ -25,6 +27,8 @@ public final class Nexusconnect extends JavaPlugin {
         this.webSocketManager.connect();
 
         log.info("NexusConnect: Plugin a WebSocket Manager inicializované.");
+
+
 
     }
 

@@ -71,10 +71,11 @@ dependencies {
     implementation 'com.github.ben-manes.caffeine:caffeine'
 
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 	//developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	//runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
-	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'com.h2database:h2'
@@ -82,6 +83,7 @@ dependencies {
 
     //google guava
     implementation("com.google.guava:guava:33.5.0-jre")
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 
