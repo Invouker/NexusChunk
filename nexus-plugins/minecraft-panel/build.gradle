@@ -38,9 +38,3 @@ tasks.named('jar').configure {
     from sourceSets.main.output
     exclude 'eu/invouk/api/**'
 }
-
-test {
-    useJUnitPlatform()
-    failOnNoDiscoveredTests = false
-}
-

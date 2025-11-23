@@ -1,0 +1,6 @@
+name: nexusconnect
+version: '1.0-SNAPSHOT'
+main: eu.invouk.nexusconnect.Nexusconnect
+api-version: '1.21'
+authors: [Invouk]
+website: invouk.eu
