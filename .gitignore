@@ -37,3 +37,26 @@ out/
 .vscode/
 #/src/main/resources/application.properties
 qodana.yaml
+/NexusConnect/run/
+/core/static/images/news-uploads/
+
+#################### IMAGES STATIC
+/core/src/main/resources/static/images/.png
+/core/src/main/resources/static/images/background.psd
+/core/src/main/resources/static/images/background2.png
+/core/src/main/resources/static/images/discord.png
+/core/src/main/resources/static/images/discord_avatar.png
+/core/src/main/resources/static/images/discord_avatar3.png
+/core/src/main/resources/static/images/discord_bg.png
+/core/src/main/resources/static/images/discord_bg2.png
+/core/src/main/resources/static/images/footer.png
+/core/src/main/resources/static/images/logo.png
+/core/src/main/resources/static/images/minecraft.jpg
+/core/src/main/resources/static/images/minecraft2.png
+/core/src/main/resources/static/images/minecraft3.png
+/core/src/main/resources/static/images/minecraft_bg.png
+/core/src/main/resources/static/images/steve-background.png
+/core/src/main/resources/static/images/steve-background2.png
+/core/src/main/resources/static/images/villager.psd
+/core/src/main/resources/static/images/villager2.png
+/core/src/main/resources/static/images/villager3.png
